@@ -1,0 +1,24 @@
+{
+  "timezone_offset_hours": 6,
+  "slots_local": ["08:00", "18:00"],
+  "horizon_hours": 80,
+  "min_lead_minutes": 25,
+  "max_new_per_run": 4,
+  "min_queue_warning": 4,
+
+  "voice_id": "3XjJ1C8taYP9CHnHKmK5",
+  "tts_model_id": "eleven_v4_turbo",
+  "tts_language_code": "bn",
+  "tts_output_format": "mp3_44100_128",
+
+  "video": { "width": 1080, "height": 1920, "fps": 30, "crf": 20 },
+  "scene_pad_seconds": 0.55,
+  "voice_start_seconds": 0.25,
+  "music_volume": 0.13,
+
+  "platforms": {
+    "youtube": { "enabled": true, "category_id": "22", "contains_synthetic_media": false },
+    "facebook": { "enabled": true, "graph_version": "v23.0" },
+    "tiktok_via_buffer": { "enabled": true, "thumbnail_offset_ms": 300 }
+  }
+}

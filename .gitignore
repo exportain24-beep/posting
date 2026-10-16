@@ -1,0 +1,11 @@
+# never commit secrets or local outputs
+.env
+.env.*
+*.key
+*.pem
+secrets*
+.work/
+preview/
+__pycache__/
+*.mp3
+*.wav

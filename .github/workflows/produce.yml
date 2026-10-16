@@ -1,0 +1,68 @@
+name: Produce and schedule reels
+
+# Only two ways to start this workflow: the timer, or the owner pressing "Run workflow".
+# There is deliberately NO pull_request / pull_request_target / push trigger,
+# so nobody can run this code with your secrets by opening a pull request.
+on:
+  schedule:
+    - cron: "17 0 * * *"   # every day 06:17 Bangladesh time
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run: render only, publish nothing (video is attached to the run)"
+        type: boolean
+        default: false
+
+permissions: {}            # nothing by default; the job below asks only for what it needs
+
+concurrency:
+  group: produce
+  cancel-in-progress: false
+
+jobs:
+  produce:
+    # never run for forks or for any branch except main
+    if: github.repository_owner == 'exportain24-beep' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    environment: production          # secrets live here, and this environment only accepts main
+    permissions:
+      contents: write                # to update the content/state/media data branches
+    steps:
+      - name: Check out code (main only)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Install tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-noto-color-emoji > /dev/null
+          python -m pip install -q -r requirements.txt
+          python -m playwright install --with-deps chromium > /dev/null
+
+      - name: Produce and schedule
+        env:
+          DRY_RUN: ${{ inputs.dry_run && '1' || '0' }}
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          FB_APP_SECRET: ${{ secrets.FB_APP_SECRET }}
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+        run: python scripts/pipeline.py run
+
+      - name: Attach dry-run preview
+        if: ${{ inputs.dry_run }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: preview
+          path: preview/
+          retention-days: 7
