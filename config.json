@@ -1,58 +1,58 @@
 {
-  "timezone_offset_hours": 6,
-  "slots_local": [
-    "12:00",
-    "18:00"
-  ],
-  "plan_ahead_hours": 60,
-  "min_lead_minutes": 45,
-  "min_scripts_warning": 4,
-  "voice_id": "3XjJ1C8taYP9CHnHKmK5",
-  "tts_model_id": "eleven_v4_turbo",
-  "tts_language_code": "bn",
-  "tts_output_format": "mp3_44100_128",
-  "max_voice_chars_per_episode": 3600,
-  "keep_audio_days": 7,
-  "video_limits": {
-    "aspect": "16:9",
-    "min_seconds": 180,
-    "max_seconds": 300,
-    "max_mb": 900,
-    "thumb_max_mb": 2,
-    "x_teaser_seconds": 135
+ "timezone_offset_hours": 6,
+ "slots_local": [
+  "12:30",
+  "18:00"
+ ],
+ "plan_ahead_hours": 60,
+ "min_lead_minutes": 120,
+ "min_scripts_warning": 4,
+ "voice_id": "3XjJ1C8taYP9CHnHKmK5",
+ "tts_model_id": "eleven_v4_turbo",
+ "tts_language_code": "bn",
+ "tts_output_format": "mp3_44100_128",
+ "max_voice_chars_per_episode": 3600,
+ "keep_audio_days": 7,
+ "video_limits": {
+  "aspect": "16:9",
+  "min_seconds": 180,
+  "max_seconds": 300,
+  "max_mb": 900,
+  "thumb_max_mb": 2,
+  "x_teaser_seconds": 135
+ },
+ "pages_base_url": "https://exportain24-beep.github.io/posting",
+ "platforms": {
+  "youtube": {
+   "enabled": true,
+   "category_id": "27",
+   "contains_synthetic_media": false,
+   "playlist_id": "",
+   "upload_captions": false
   },
-  "pages_base_url": "https://exportain24-beep.github.io/posting",
-  "platforms": {
-    "youtube": {
-      "enabled": true,
-      "category_id": "27",
-      "contains_synthetic_media": false,
-      "playlist_id": "",
-      "upload_captions": false
-    },
-    "facebook": {
-      "enabled": true,
-      "graph_version": "v23.0",
-      "upload_captions": true
-    },
-    "buffer": {
-      "tiktok": {
-        "enabled": true,
-        "thumbnail_offset_ms": 0
-      },
-      "linkedin": {
-        "enabled": true
-      },
-      "twitter": {
-        "enabled": true
-      }
-    }
+  "facebook": {
+   "enabled": true,
+   "graph_version": "v23.0",
+   "upload_captions": true
   },
-  "prompts_file": "prompts/Exportain_Reels_500_Script_Prompts.md",
-  "start_script": 57,
-  "voice_settings": {
-    "stability": 0.5,
-    "similarity_boost": 0.75,
-    "speed": 1.0
+  "buffer": {
+   "tiktok": {
+    "enabled": true,
+    "thumbnail_offset_ms": 0
+   },
+   "linkedin": {
+    "enabled": true
+   },
+   "twitter": {
+    "enabled": true
+   }
   }
+ },
+ "prompts_file": "prompts/Exportain_Reels_500_Script_Prompts.md",
+ "start_script": 60,
+ "voice_settings": {
+  "stability": 0.5,
+  "similarity_boost": 0.75,
+  "speed": 1.0
+ }
 }

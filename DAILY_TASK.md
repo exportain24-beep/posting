@@ -1,7 +1,7 @@
 # Daily run — what Claude does every day (unattended)
 
-Goal: keep every **12:00 and 18:00** (Bangladesh) slot in the next ~2.5 days filled with a finished **3–5 minute 16:9**
-Exportain video built from the owner's numbered script prompts (starting at 057), posted to YouTube + Facebook
+Goal: keep every **12:30 and 18:00** (Bangladesh) slot filled with a finished **3–5 minute 16:9**
+Exportain video built from the owner's numbered script prompts, strictly in number order (060, 061, 062 … — the next unused number from `status`), posted to YouTube + Facebook
 (their own APIs, run by `publish.yml`) and TikTok, LinkedIn, X (Buffer). Claude never sees a key.
 
 **LOCKED by the owner (never change, never ask):** voice = Debashish `3XjJ1C8taYP9CHnHKmK5`, model = `eleven_v4_turbo`,
@@ -29,7 +29,13 @@ Read the skill's `SKILL.md`, `references/exportain-brand.md`, `references/writin
 
 `status` prints `next_script`, `scripts_left`, `free_slots`, `pending_videos`, `recent_errors`.
 - No free slots → nothing to build; go to step 6.
-- **One video per free slot, earliest first, at most 2 per run**, each with the next unused script number.
+- **Exactly one video per run, for the earliest free slot** (`free_slots[0]`), with `next_script`. Two runs a day
+  (≈ 09:00 for the 12:30 slot, ≈ 14:15 for the 18:00 slot) give the ~3 h needed for research, voice, scenes, render
+  and upload. The video is uploaded as soon as it is ready and **scheduled** for its slot (`--mode live`), so it
+  goes public exactly at 12:30 / 18:00 on every platform. If a run fails, the next run takes the earliest free slot.
+- Work fast: research ≤ 15 min, keep QA fixes to the scenes that need them, start the render as early as possible.
+- If less than 50 min is left before the slot when the video is ready, deliver to the next free slot instead
+  (edit `slot` in post.json); never post late or out of order.
 - No unused scripts → build nothing; report "scripts finished".
 
 ## 1. Research + narration (skill TURN 1, automated) — `P=/home/claude/ep/<EP>`, `EP=<NNN>-<short-english-slug>`
