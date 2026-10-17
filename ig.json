@@ -1,0 +1,6 @@
+{
+ "059-market-research": {
+  "slot": "2026-10-18T00:29+06:00",
+  "error": "HTTP 400 POST https://rupload.facebook.com/ig-api-upload/v23.0/18110566643073666: {\"debug_info\":{\"retriable\":false,\"type\":\"ProcessingFailedError\",\"message\":\"Request processing failed\"}}"
+ }
+}
