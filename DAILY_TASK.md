@@ -47,11 +47,26 @@ Pushes the narration, runs `voice.yml`, copies `vo/<id>.mp3` + `durations.json` 
 
 ## 3. Video — always the **currently installed** bangla-motion-video skill (re-read its SKILL.md and references every run;
 never a cached copy, so the owner's skill updates apply automatically)
-- Format **16:9, 1920×1080**, 3–5 minutes, professional and colourful, Exportain brand colours and logo
-  (`assets/logo.png`, same as the logo kit artifact).
-- Follow the skill's workflow for 16:9 topic videos (plan → QA stills → music → render in the background → review.py → fresh-agent
-  critic, max 2 fix rounds). Speech and motion in sync, varied scenes, no long holds.
-- Keep the skill's `captions.srt` → copy to `P/captions.srt` (subtitles for YouTube and Facebook).
+**Look (owner's rule, non-negotiable):** the skill's **illustrated, text-free motion-graphics mode (Mode D)** — every spoken idea
+drawn as its own animated scene (people, factories, farms, documents, ships, maps…), events not slides, exactly like the
+hand-made Exportain videos. **Never** the text-led captions mode (`--mode captions` / timeline.html) and never text slides.
+- 16:9, 1920×1080, 3–5 minutes, Exportain colours + logo (`assets/logo.png`).
+- Draw new scenes for every topic in `$P/scenes.js` on a **1920×1080 canvas** (`<rect width="1920" height="1080" fill="url(#studio)"/>`,
+  key art inside x 120–1800, y 120–980), one `K.e<NNN>_<name>` kind per idea, prefix every data-k/class; follow topic-mode.md
+  step 4 (recurring anchors, real proportions, 2–6 beat keys per scene, something new every 1.5–3 s, varied backgrounds).
+  Do not use the skill's built-in portrait kinds in 16:9.
+- Then:
+```bash
+python3 $SK/scripts/topic_build.py --project $P --logo assets/logo.png --brand Exportain --url exportain.com   # 0 key warnings
+python3 tools/illustrated16.py $P/scenes.html                                                                 # switch engine to 16:9
+python3 $SK/scripts/qa_stills.py --plan $P/plan.json --size 1920x1080 --cols 3 --out $P/qa.jpg <every "still:" time>   # read + fix
+python3 $SK/scripts/music_bed.py --duration <plan total> --mood <mood> --drop <turn start> --out $P/music.wav
+setsid nohup python3 $SK/scripts/make_video.py --voice $P/vo.mp3 --plan $P/plan.json --music $P/music.wav --music-db -24 \
+  --formats 16:9 --outdir $P/out > $P/out.log 2>&1 < /dev/null &      # ~35-45 min for 4 min; poll
+python3 $SK/scripts/review.py --video $P/out/final_16x9.mp4 --plan $P/plan.json --out $P/review
+```
+  then the fresh-agent critic pass (topic-mode.md), max 2 fix rounds. Rerun `illustrated16.py` after every `topic_build.py`.
+- Copy the skill output `$P/out/captions.srt` → `$P/captions.srt` (Bangla subtitles for YouTube and Facebook).
 
 ## 4. Thumbnail, final file, captions/SEO
 ```bash
