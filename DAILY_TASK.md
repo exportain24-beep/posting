@@ -4,6 +4,11 @@ Goal: keep every 08:00 and 18:00 (Bangladesh) slot in the next ~2.5 days filled 
 Exportain reel built from the user's numbered scripts. YouTube + Facebook are posted by the
 `publish.yml` workflow with the platforms' own APIs, TikTok through Buffer. Claude never sees a key.
 
+**LOCKED by the owner (never change, never ask):** voice = Debashish `3XjJ1C8taYP9CHnHKmK5`,
+model = `eleven_v4_turbo`, language = Bangla (`bn`) only. These are hard-coded in `scripts/voice.py`; the
+workflow refuses any other voice, model or non-Bangla text. Never use the ElevenLabs connector or any other
+TTS — audio comes only from `studio.py voice`.
+
 Nobody is watching: never stop to ask. If something blocks, finish what can be finished and
 report the problem in the final message (that message is what the user gets notified about).
 

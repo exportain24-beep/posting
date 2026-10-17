@@ -129,6 +129,15 @@ TAKE_ID = re.compile(r"[0-9]{2}_[a-z0-9_]{1,30}")
 TAG = re.compile(r"^\s*\[[a-z ]{2,20}\]\s*")
 
 
+def is_bangla(text):
+    """True when the spoken text (tags removed) is Bangla script: no Latin letters, >= 90% of letters Bengali."""
+    spoken = TAG.sub("", str(text))
+    if re.search(r"[A-Za-z]", spoken):
+        return False
+    letters = [c for c in spoken if c.isalpha()]
+    return bool(letters) and sum("\u0980" <= c <= "\u09FF" for c in letters) / len(letters) >= 0.9
+
+
 def text_hash(s):
     return hashlib.sha256(s.encode("utf-8")).hexdigest()[:16]
 
@@ -151,8 +160,8 @@ def validate_narration(nar):
             errs.append(f"{tid}: text length {len(spoken)} (want 5-400)")
         if "/" in spoken:
             errs.append(f"{tid}: contains '/' — write it out in Bangla (B/L -> বি এল)")
-        if re.search(r"[A-Za-z]", spoken):
-            errs.append(f"{tid}: has Latin letters — write English terms in Bangla script")
+        if not is_bangla(text):
+            errs.append(f"{tid}: must be Bangla only (Bangla script, English terms written in Bangla, no Latin letters)")
         total += len(spoken)
     if total > CFG["max_voice_chars_per_episode"]:
         errs.append(f"total {total} characters > limit {CFG['max_voice_chars_per_episode']}")

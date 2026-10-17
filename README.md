@@ -11,6 +11,8 @@ Claude (প্রতিদিনের শিডিউলড টাস্ক)   
                                                          Facebook API (title, description, থাম্বনেইল)
                                                          Buffer → TikTok
 ```
+🔒 **লক করা:** ভয়েস শুধু Debashish (`3XjJ1C8taYP9CHnHKmK5`), মডেল শুধু `eleven_v4_turbo`, ভাষা শুধু বাংলা। এগুলো `scripts/voice.py`-তে কোডে বাঁধা; অন্য কিছু দিলে ওয়ার্কফ্লো ভয়েস বানাতে অস্বীকার করে।
+
 Claude কখনো কোনো কী দেখে না। কী শুধু GitHub-এর `production` Environment-এ থাকে, আর শুধু `main` ব্রাঞ্চের ওয়ার্কফ্লো সেটা পড়তে পারে।
 
 ## ব্রাঞ্চ

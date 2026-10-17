@@ -10,19 +10,32 @@ import json, os, re, shutil, subprocess, sys, time, urllib.parse
 from datetime import datetime, timedelta, timezone
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from common import (CFG, SLUG, TAG, branch_dir, http, log, note, push_branch, redact, secret, summary,
+from common import (CFG, SLUG, TAG, branch_dir, is_bangla, http, log, note, push_branch, redact, secret, summary,
                     text_hash, validate_narration)
 
 
+# LOCKED by the owner: only this voice, only this model, only Bangla. Not read from config, not overridable.
+LOCKED_VOICE_ID = "3XjJ1C8taYP9CHnHKmK5"   # Debashish
+LOCKED_MODEL_ID = "eleven_v4_turbo"
+LOCKED_LANGUAGE = "bn"
+
+
+def check_lock():
+    for k, want in (("voice_id", LOCKED_VOICE_ID), ("tts_model_id", LOCKED_MODEL_ID), ("tts_language_code", LOCKED_LANGUAGE)):
+        if CFG.get(k) != want:
+            raise RuntimeError(f"LOCKED: config {k} must be {want} — refusing to generate")
+
+
 def tts(text, out):
+    check_lock()
+    if not is_bangla(text):
+        raise RuntimeError("LOCKED: text is not Bangla — refusing to generate")
     key = secret("ELEVENLABS_API_KEY")
     if not key:
         raise RuntimeError("ELEVENLABS_API_KEY is not set in the 'production' environment")
-    url = (f"https://api.elevenlabs.io/v1/text-to-speech/{urllib.parse.quote(CFG['voice_id'])}"
+    url = (f"https://api.elevenlabs.io/v1/text-to-speech/{LOCKED_VOICE_ID}"
            f"?output_format={urllib.parse.quote(CFG['tts_output_format'])}")
-    body = {"text": text, "model_id": CFG["tts_model_id"]}
-    if CFG.get("tts_language_code"):
-        body["language_code"] = CFG["tts_language_code"]
+    body = {"text": text, "model_id": LOCKED_MODEL_ID, "language_code": LOCKED_LANGUAGE}
     audio = http("POST", url, {"xi-api-key": key, "Accept": "audio/mpeg"}, body, timeout=180)
     if len(audio) < 2000:
         raise RuntimeError("ElevenLabs returned an empty audio file")
@@ -75,7 +88,7 @@ def main():
     os.makedirs(os.path.join(d, "vo"), exist_ok=True)
     mpath = os.path.join(d, "manifest.json")
     man = json.load(open(mpath)) if os.path.isfile(mpath) else {"takes": {}}
-    want_kind = "tone" if test else f"{CFG['tts_model_id']}:{CFG['voice_id']}"
+    want_kind = "tone" if test else f"{LOCKED_MODEL_ID}:{LOCKED_VOICE_ID}"
     made = reused = chars = 0
     durs = {}
     for t in nar:
