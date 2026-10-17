@@ -1,0 +1,236 @@
+{
+ "voice_duration": 44.944,
+ "endcard": 2.5,
+ "total": 47.444,
+ "brand": "Exportain",
+ "url": "Exportain.com",
+ "logo": "assets/logo.png",
+ "tagline": "",
+ "intro": false,
+ "pauses_found": 0,
+ "scenes": [
+  {
+   "id": "00_hook",
+   "a0": 0.6,
+   "dur": 2.978,
+   "text": "এক্সপোর্ট কোর্স শেষ? এবার বায়ার পাবেন কোথায়?",
+   "tag": "excited",
+   "icon": "question",
+   "accent": "#ff9f1c",
+   "emphasis": [],
+   "kind": "ad_hook",
+   "beats": [
+    0.689,
+    2.109,
+    2.409,
+    3.54
+   ],
+   "bg": "e_forest",
+   "sfx": [
+    "boom",
+    "pop",
+    "whoosh",
+    "riser"
+   ],
+   "start": 0.0,
+   "end": 3.928
+  },
+  {
+   "id": "01_pain",
+   "a0": 4.278,
+   "dur": 5.303,
+   "text": "এলসি, ইনকোটার্মস, শিপিং, সব শিখেছেন। কিন্তু প্রথম অর্ডারটাই আসছে না।",
+   "tag": null,
+   "icon": "ship",
+   "accent": "#26d07c",
+   "emphasis": [
+    "শিপিং,"
+   ],
+   "kind": "ad_pain",
+   "beats": [
+    4.436,
+    4.736,
+    5.76,
+    6.256,
+    7.083,
+    8.737
+   ],
+   "bg": "e_sky",
+   "sfx": [
+    "tick",
+    "tick",
+    "tick",
+    "ding",
+    "swoosh",
+    "shutter"
+   ],
+   "start": 3.928,
+   "end": 9.931
+  },
+  {
+   "id": "02_reveal",
+   "a0": 10.281,
+   "dur": 6.74,
+   "text": "এখানেই এক্সপোর্টেইন। বাংলাদেশি প্রস্তুতকারক আর রপ্তানিকারকদের জন্য আন্তর্জাতিক বিটুবি মার্কেটপ্লেস।",
+   "tag": "confident",
+   "icon": "store",
+   "accent": "#26d07c",
+   "emphasis": [
+    "আন্তর্জাতিক",
+    "বিটুবি",
+    "মার্কেটপ্লেস।"
+   ],
+   "kind": "ad_reveal",
+   "beats": [
+    10.468,
+    10.768,
+    12.141,
+    14.617,
+    15.374
+   ],
+   "bg": "e_mint",
+   "sfx": [
+    "whoosh",
+    "boom",
+    "pop",
+    "pop2",
+    "sparkle"
+   ],
+   "start": 9.931,
+   "end": 17.37
+  },
+  {
+   "id": "03_setup",
+   "a0": 17.72,
+   "dur": 4.284,
+   "text": "ফ্রি প্ল্যানে সেলার অ্যাকাউন্ট খুলুন। কোম্পানির পাতা সাজান, পণ্য লিস্ট করুন।",
+   "tag": null,
+   "icon": "network",
+   "accent": "#26d07c",
+   "emphasis": [],
+   "kind": "ad_setup",
+   "beats": [
+    17.883,
+    18.566,
+    19.731,
+    21.027
+   ],
+   "bg": "e_lime",
+   "sfx": [
+    "ding",
+    "click",
+    "swoosh",
+    "pop"
+   ],
+   "start": 17.37,
+   "end": 22.354
+  },
+  {
+   "id": "04_rfq",
+   "a0": 22.704,
+   "dur": 6.217,
+   "text": "বিদেশি বায়ারের আরএফকিউ, আপনার পণ্যের সাথে মিলিয়ে আপনার কাছে আসে। কোটেশন পাঠান, অর্ডার নিন।",
+   "tag": null,
+   "icon": "globe",
+   "accent": "#26d07c",
+   "emphasis": [
+    "বিদেশি"
+   ],
+   "kind": "ad_rfq",
+   "beats": [
+    22.828,
+    23.905,
+    25.57,
+    27.141,
+    28.184
+   ],
+   "bg": "e_sky",
+   "sfx": [
+    "whoosh",
+    "pop",
+    "pop2",
+    "click",
+    "sparkle"
+   ],
+   "start": 22.354,
+   "end": 29.272
+  },
+  {
+   "id": "05_trust",
+   "a0": 29.622,
+   "dur": 5.068,
+   "text": "সনদ যাচাই হলে ভেরিফায়েড ব্যাজ। আর পেমেন্ট আসে টাকায়, সাত দিনের মধ্যে।",
+   "tag": null,
+   "icon": "spark",
+   "accent": "#26d07c",
+   "emphasis": [],
+   "kind": "ad_trust",
+   "beats": [
+    29.774,
+    30.628,
+    32.929,
+    33.533
+   ],
+   "bg": "e_gold",
+   "sfx": [
+    "shutter",
+    "ding",
+    "pop",
+    "tick"
+   ],
+   "start": 29.272,
+   "end": 35.039
+  },
+  {
+   "id": "06_shift",
+   "a0": 35.389,
+   "dur": 4.676,
+   "text": "যা শিখেছেন, এবার কাজে লাগান। ক্লাসরুম থেকে সরাসরি বিশ্ববাজারে।",
+   "tag": null,
+   "icon": "globe",
+   "accent": "#26d07c",
+   "emphasis": [],
+   "kind": "ad_shift",
+   "beats": [
+    35.53,
+    36.569,
+    37.79,
+    38.876
+   ],
+   "bg": "e_sea",
+   "sfx": [
+    "pop",
+    "swoosh",
+    "whoosh",
+    "rise"
+   ],
+   "start": 35.039,
+   "end": 40.415
+  },
+  {
+   "id": "07_cta",
+   "a0": 40.765,
+   "dur": 3.579,
+   "text": "আজই ফ্রি সেলার অ্যাকাউন্ট খুলুন। এক্সপোর্টেইন ডট কম।",
+   "tag": "warmly",
+   "icon": "chart",
+   "accent": "#26d07c",
+   "emphasis": [],
+   "kind": "ad_cta",
+   "beats": [
+    40.893,
+    41.193,
+    42.823
+   ],
+   "bg": "e_mint",
+   "sfx": [
+    "boom",
+    "pop",
+    "ding"
+   ],
+   "start": 40.415,
+   "end": 44.944
+  }
+ ],
+ "template": "/home/claude/adseller/scenes.html"
+}

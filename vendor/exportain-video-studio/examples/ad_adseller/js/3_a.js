@@ -1,0 +1,53 @@
+// ===================== Seller ad — kinetic type + product UI =====================
+// big kinetic word: pops with overshoot; optional highlight bar behind
+const kw=(id,x,y,txt,size,col,hl,f='B')=>`<g data-k="${id}">${hl?`<rect data-k="${id}h" x="${x-txt.length*size*.29-24}" y="${y-size*.95}" width="${txt.length*size*.58+48}" height="${size*1.3}" rx="${size*.3}" fill="${hl}"/>`:''}${f=='L'?lat(x,y,txt,size,col,800):tx(x,y,txt,size,col,800)}</g>`;
+const kwU=(q,id,lt,b,t,i=0)=>{const e=q(id);if(!e)return;if(lt<b){T(e,{o:0,s:.6});return}const p=cl((lt-b)/.42);T(e,{s:L(.55,1,eb(p)),o:cl(p*3),y:L(30,0,eo(p))})};
+const flagC=(x,y,c1,c2,c3,lab)=>`<g><circle cx="${x}" cy="${y}" r="46" fill="#fff"/><clipPath id="fc${lab}"><circle cx="${x}" cy="${y}" r="38"/></clipPath><g clip-path="url(#fc${lab})"><rect x="${x-40}" y="${y-40}" width="80" height="27" fill="${c1}"/><rect x="${x-40}" y="${y-13}" width="80" height="27" fill="${c2}"/><rect x="${x-40}" y="${y+14}" width="80" height="27" fill="${c3}"/></g></g>`;
+const confetti=(id,cx,cy)=>`<g data-k="${id}">${Array.from({length:18},(_,i)=>`<rect data-k="${id}${i}" x="${cx-7}" y="${cy-7}" width="14" height="${i%2?14:22}" rx="3" fill="${[C.y,C.g2,C.o,C.t,C.b,C.r][i%6]}"/>`).join('')}</g>`;
+const confU=(q,id,lt,b)=>{const p=cl((lt-b)/1.4);for(let i=0;i<18;i++){const a=i/18*6.283+.3,r=L(0,260+(i%3)*60,eo(p));T(q(id+i),{x:Math.cos(a)*r,y:Math.sin(a)*r+p*p*160,r:p*360*(i%2?1:-1),o:p>0?1-p*p:0})}};
+
+// 00 — HOOK (dark brand green, punchy)
+K.ad_hook=()=>({svg:`<rect width="1080" height="1920" fill="url(#studio)"/>
+ <g data-k="h_c">${cert(240,300,600,420,'Export Course',C.y)}${tx(540,560,'সার্টিফিকেট',40,C.ink,800)}${check(740,640,40,C.g)}</g>
+ ${kw('h_w0',540,920,'এক্সপোর্ট কোর্স',84,'#fff')}${kw('h_w1',540,1060,'শেষ?',120,C.g2)}
+ ${kw('h_w2',540,1330,'বায়ার',150,C.f,C.y)}${kw('h_w3',540,1520,'কোথায়?',120,'#fff')}
+ <g data-k="h_in">${card(300,1610,480,120,'#ffffff22',60)}${icon('mail',380,1670,70,'#fff',7)}${lat(600,1690,'0 orders',48,'#fff',800)}</g>`,
+ upd(q,lt,t,bt){const c=cl(lt/.5);T(q('h_c'),{y:L(-700,0,eb(c)),r:L(-8,-3,c)+Math.sin(t*2)*1,o:1});kwU(q,'h_w0',lt,Math.min(bt(0),.35),t);kwU(q,'h_w1',lt,bt(1)-.05,t);
+  kwU(q,'h_w2',lt,bt(2)-.05,t);kwU(q,'h_w3',lt,bt(3)-.05,t);if(lt>bt(3)+.4)T(q('h_w3'),{r:Math.sin(t*9)*4,o:1});popG(q('h_in'),lt,bt(3)+.3,t,0,20,0,.4)}});
+
+// 01 — PAIN: learned everything, no order
+K.ad_pain=()=>{const S=[['L/C',C.b],['Incoterms',C.t],['Shipping',C.o]];return{svg:`<rect width="1080" height="1920" fill="url(#studio)"/>
+ ${S.map((s,i)=>`<g data-k="p_s${i}">${card(80+i*315,280,290,170,'#fff',36)}${lat(225+i*315,370,s[0],42,s[1],800)}<g data-k="p_k${i}">${check(330+i*315,300,30,C.g)}</g></g>`).join('')}
+ ${kw('p_w0',540,600,'সব শিখেছেন',80,C.gd)}
+ <g data-k="p_ph">${phone(330,700,420,760)}<rect x="350" y="770" width="380" height="80" fill="${C.b}"/>${lat(380,822,'Inbox',34,'#fff',800,'start')}${[0,1,2].map(i=>`<rect x="370" y="${880+i*120}" width="340" height="96" rx="14" fill="#f1f5f9"/>`).join('')}${lat(540,1300,'No orders yet',34,C.mute,800)}</g>
+ <g data-k="p_clk"><circle cx="880" cy="900" r="90" fill="#fff" stroke="${C.ink}" stroke-width="10"/><g data-k="p_hand"><rect x="-5" y="-70" width="10" height="70" rx="5" fill="${C.r}"/></g></g>
+ ${kw('p_w1',540,1590,'প্রথম অর্ডার?',96,'#fff',C.r)}`,
+ upd(q,lt,t,bt){for(let i=0;i<3;i++){popIn(q('p_s'+i),pe(lt,Math.min(bt(i)-.15,.1+i*.3),.4),t,i,40,2);popIn(q('p_k'+i),pe(lt,bt(i)+.1,.3),t,i,0,0)}kwU(q,'p_w0',lt,bt(3)-.1,t);
+  popG(q('p_ph'),lt,bt(4)-.4,t,3,40,0,.5);popIn(q('p_clk'),pe(lt,bt(4)-.2,.4),t,4,0,0);T(q('p_hand'),{x:880,y:900,r:t*240,o:1});kwU(q,'p_w1',lt,bt(5)-.15,t);if(lt>bt(5)+.4)T(q('p_w1'),{x:Math.sin(t*25)*cl((bt(5)+1-lt)*2)*10,o:1})}}};
+
+// 02 — REVEAL: Exportain
+K.ad_reveal=()=>({svg:`<rect width="1080" height="1920" fill="url(#studio)"/>
+ <rect data-k="r_fl" width="1080" height="1920" fill="#fff"/>
+ ${kw('r_w0',540,380,'এখানেই',70,C.mute)}
+ <g data-k="r_ring"><circle cx="540" cy="640" r="260" fill="none" stroke="${C.g2}" stroke-width="10" opacity=".5"/><circle cx="540" cy="640" r="340" fill="none" stroke="${C.g}" stroke-width="6" opacity=".3"/></g>
+ <g data-k="r_logo"><image href="__LOGO__" x="140" y="520" width="800" height="240" preserveAspectRatio="xMidYMid meet"/></g>
+ <g data-k="r_gl">${icon('globe',540,1170,260,C.t,4)}${[[-1,C.o],[1,C.b],[0,C.g]].map((a,i)=>`<path data-k="r_a${i}" d="M540 1170 Q${540+a[0]*300} ${900+i*30} ${540+a[0]*380+(i==2?300:0)} ${1050-i*40}" stroke="${a[1]}" stroke-width="8" fill="none" stroke-dasharray="900" stroke-dashoffset="900"/>`).join('')}<circle cx="560" cy="1190" r="16" fill="#f42a41"/></g>
+ ${kw('r_w1',540,1420,'বাংলাদেশি প্রস্তুতকারক ও রপ্তানিকারকদের',44,C.ink)}
+ ${kw('r_w2',540,1540,'আন্তর্জাতিক',66,C.b)}
+ <g data-k="r_w3"><rect x="170" y="1600" width="740" height="110" rx="30" fill="${C.gd}"/>${lat(330,1683,'B2B',72,C.y,800)}${tx(640,1683,'মার্কেটপ্লেস',72,'#fff',800)}</g>`,
+ upd(q,lt,t,bt){T(q('r_fl'),{o:1-cl(lt/.5)});kwU(q,'r_w0',lt,Math.min(bt(0),.3),t);const l=pe(lt,bt(1)-.15,.7);T(q('r_logo'),{s:L(.4,1,eb(l))+(l>=1?Math.sin(t*1.6)*.015:0),o:cl(l*3)});
+  const r=cl((lt-bt(1))/1.2);T(q('r_ring'),{s:L(.3,1.15,eo(r)),o:r>0?1-r*.6:0});popG(q('r_gl'),lt,bt(1)+.5,t,1,30,0,.5);for(let i=0;i<3;i++){const e=q('r_a'+i);if(e)e.setAttribute('stroke-dashoffset',900*(1-eio(cl((lt-bt(1)-.8-i*.2)/.9))))}
+  kwU(q,'r_w1',lt,bt(2)-.1,t);kwU(q,'r_w2',lt,bt(3)-.1,t);kwU(q,'r_w3',lt,bt(4)-.1,t)}});
+
+// 03 — SETUP: free plan, seller account, company page, products
+K.ad_setup=()=>({svg:`<rect width="1080" height="1920" fill="url(#studio)"/>
+ <g data-k="s_f">${badge(200,370,110,C.o,'FREE',52)}</g>${kw('s_w0',650,360,'ফ্রি প্ল্যানে শুরু',64,C.gd)}
+ <g data-k="s_ph">${phone(110,520,440,820)}<rect x="130" y="590" width="400" height="70" fill="${C.g}"/>${lat(330,636,'seller.exportain.com',24,'#fff',800)}
+  ${field(160,720,340,'Company name',C.g,'s_fd0')}${field(160,800,340,'Email',C.g,'s_fd1')}<g data-k="s_bt">${card(160,900,340,80,C.g,40)}${lat(330,952,'Create seller account',24,'#fff',800)}</g>
+  <g data-k="s_ok">${check(330,1100,60,C.g)}${lat(330,1210,'Account ready',30,C.g,800)}</g></g>
+ <g data-k="s_cp">${card(590,520,400,560,'#fff',30)}<rect x="590" y="520" width="400" height="150" rx="30" fill="${C.t}"/><rect x="590" y="620" width="400" height="50" fill="${C.t}"/><circle cx="660" cy="680" r="50" fill="#fff" stroke="${C.t}" stroke-width="6"/>${icon('bld',660,680,60,C.gd,6)}${lat(730,720,'Company page',26,C.ink,800,'start')}
+  ${[0,1,2].map(i=>`<rect x="${615+i*125}" y="780" width="110" height="90" rx="10" fill="${['#cfe9d4','#fde68a','#bfdbfe'][i]}"/>${factB(670+i*125,840,.17,C.mute)}`).join('')}${tx(790,940,'কারখানার ছবি · ঠিকানা',24,C.mute,800)}</g>
+ ${[['shirt',C.b,'Knit polo'],['bag',C.g,'Jute tote'],['box',C.o,'Ceramics']].map((p,i)=>`<g data-k="s_p${i}">${card(80+i*315,1400,290,330,'#fff',30)}${icon(p[0],225+i*315,1520,130,p[1],7)}${lat(225+i*315,1650,p[2],30,C.ink,800)}${lat(225+i*315,1700,'MOQ · Price',22,C.mute,700)}</g>`).join('')}`,
+ upd(q,lt,t,bt){popIn(q('s_f'),pe(lt,Math.min(bt(0),.2),.45),t,0,0,3);if(lt>.6)T(q('s_f'),{r:Math.sin(t*3)*6,o:1});kwU(q,'s_w0',lt,Math.min(bt(0),.3),t);popG(q('s_ph'),lt,bt(1)-.4,t,1,40,0,.5);
+  fillTo(q('s_fd0'),lt,bt(1)-.2,340,.4);fillTo(q('s_fd1'),lt,bt(1)+.1,340,.4);T(q('s_bt'),{s:lt>bt(1)+.5&&lt<bt(1)+.8?.93:1,o:1});popIn(q('s_ok'),pe(lt,bt(1)+.8,.35),t,2,0,0);
+  popG(q('s_cp'),lt,bt(2)-.2,t,3,40,0,.5);for(let i=0;i<3;i++)popIn(q('s_p'+i),pe(lt,bt(3)-.1+i*.18,.4),t,i,60,3)}});

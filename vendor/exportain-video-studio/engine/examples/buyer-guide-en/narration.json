@@ -1,0 +1,97 @@
+[
+ {
+  "id": "00_hook",
+  "title": "Welcome",
+  "text": "[confident] What if you could source directly from Bangladesh, one of the world's largest garment exporters, and deal with verified factories, with no middlemen in between? No membership fees. No hidden charges. And your money held safely on Exportain until you confirm the trade. Stay with me for the next few minutes. By the end of this video, you'll know exactly how to find suppliers, compare competing quotes, and track your order all the way to your door. Welcome to Exportain."
+ },
+ {
+  "id": "01_register",
+  "title": "Create your buyer account",
+  "text": "Step one: create your buyer account. Go to buyer.exportain.com/register. It takes about two minutes, and no card is needed. Enter your Full name, your Work email, and the Company name you buy for. Choose your Country and City, then set a Password of at least eight characters. Tick the box to accept the Terms of Use and Privacy Policy, and click Send Verification Code. Enter the six-digit code from your email, then click Verify and Create Account. Remember, one email can hold only one account."
+ },
+ {
+  "id": "02_signin",
+  "title": "Sign in and reset your password",
+  "text": "Step two: signing in. On the Exportain login page, choose Sign In as Buyer. Enter your email and password, then click Sign In to Dashboard. You can also use Continue with Google, but a Google sign-up does not create a company, so you'll add one later in your Company Profile. Forgot your password? Click Forgot, choose Email or WhatsApp, and request a code. Enter the six-digit code with your new password, then click Reset Password."
+ },
+ {
+  "id": "03_roadmap",
+  "title": "Your first steps",
+  "text": "Step three: your roadmap. Here is the order that gets results fastest. First, complete your Company Profile, because you need it to post an RFQ. Next, verify your mobile and card to earn trust badges. Then find products and suppliers. Send an order request from your cart, or post an RFQ. Compare the quotations and accept the best one, which creates an order. Finally, follow your shipment and pay into Funds Holds. And the best part: buyers pay no membership fees, and there are no usage limits."
+ },
+ {
+  "id": "04_dashboard",
+  "title": "Your Buyer Desk",
+  "text": "Step four: your Buyer Desk. When you sign in, the Overview page opens. On the left is the menu, with every task area. At the top, Post a Buying Requirement starts a new RFQ, the quickest way to get several quotes for one need. Your badges show which of the eight buyer badges you've earned. The activity cards count your Active RFQs, Quotes received, Open inquiries and Active orders, and each one opens its page. Use Search to find products and suppliers, and the bell shows your unread notifications."
+ },
+ {
+  "id": "05_company",
+  "title": "Complete your company profile",
+  "text": "Step five: your company profile. Suppliers quote companies, not individuals, so this comes first. Open Company Profile from the menu. At the top is your Company ID. Copy it and share it with service providers, so they can send you offers. Fill in your Company Name, Country and City. For the Business Verified badge, also add your full Address, your Registration Number, and a Website or Company email. Suppliers never see your company email. Nothing is saved until you click Save Changes."
+ },
+ {
+  "id": "06_find",
+  "title": "Find products",
+  "text": "Step six: finding products. On exportain.com, type what you need into the search box, for example, t-shirt. Results are split into Products, Suppliers and RFQs. Use the filters to show only Exportain Verified suppliers, products with samples, or OEM and ODM capable suppliers. Each product card shows the MOQ and the price with its Incoterm, such as FOB. On the product page, set your quantity, and the subtotal updates instantly. Then choose Add to cart, Request quote, or Contact, or tap the heart to save it."
+ },
+ {
+  "id": "07_badges",
+  "title": "Read supplier trust badges",
+  "text": "Step seven: reading supplier badges. Exportain Verified means identity, phone, email and business registration have been checked. Export Verified means the supplier's export registration certificate is verified. Factory Verified and Trading Company Verified mean Exportain has seen photos of the factory or office. Trusted Trader means orders were completed without disputes. One important tip: Gold and Platinum only show a paid plan, not verification. Badges show what was checked, so always review samples and documents yourself."
+ },
+ {
+  "id": "08_cart",
+  "title": "Send order requests from your cart",
+  "text": "Step eight: order requests. Add products from one or more suppliers to your cart. In the cart, set each quantity and use Choose port to pick the loading port. Under Ship to, enter your destination country, then click Send order request. Each supplier receives a separate request, and no money is taken. Track replies under Requests, where you'll see the listed price, the loading port, your destination, and the supplier reply. Keep in mind, an order request is not an order. A firm order is created when you accept a quotation."
+ },
+ {
+  "id": "09_rfq",
+  "title": "Post an RFQ",
+  "text": "Step nine: posting an RFQ, the most powerful way to get competing prices. Click Post a Buying Requirement. Start with What are you sourcing, one clear line, and pick the closest Category. Add detailed Specifications, like material, GSM, sizes and packaging. Enter the Quantity and Unit, and optionally a Target unit price. Choose your Destination country, port and Incoterm. Add any Required certifications, such as OEKO-TEX or GOTS, and an optional Quotation deadline. Click Publish RFQ, and supplier matching starts immediately."
+ },
+ {
+  "id": "10_compare",
+  "title": "Compare and counter quotations",
+  "text": "Step ten: comparing quotations. Open your RFQ from My RFQs. The Compare quotations table puts every offer side by side. The cheapest unit price is marked Lowest, but also check the Lead time, Minimum order, Incoterm and Payment terms, because the cheapest is not always the best. Want a better deal? Click Counter on a supplier's card, enter your Unit price, Lead time in days, and how long your offer is valid, then click Send counter-offer. Every round is saved in the Negotiation history."
+ },
+ {
+  "id": "11_accept",
+  "title": "Accept or decline",
+  "text": "Step eleven: accepting a quotation. When you're happy with the terms, click Accept. Review the summary: price, quantity, lead time, Incoterm, payment terms and the Order total. Then click Accept and create order, and your order is created instantly. Click Open the order to view it. Note that an RFQ can be awarded only once. Not the right fit? Click Decline, choose a reason such as Price or Lead time, and click Decline quotation. The supplier is notified."
+ },
+ {
+  "id": "12_orders",
+  "title": "Track orders and shipments",
+  "text": "Step twelve: orders and shipments. Your confirmed orders appear in My Orders, under Active and Completed. Each row shows the order number, supplier, value and status, such as Confirmed. The shipment shows Not Booked until the supplier books it. Click the order number to open the timeline. You'll follow every stage: Booked, Departed, In transit, Arrived at destination, Import customs clearance, and Delivered, along with the carrier and the bill of lading number."
+ },
+ {
+  "id": "13_funds",
+  "title": "Funds Holds: pay safely",
+  "text": "Step thirteen: Funds Holds, your safety net. A supplier may ask you to hold an amount on Exportain against an order. Open Funds Holds, where the status shows Awaiting your payment. Check the amount, the order number and the reason, then click Pay and enter your card. The supplier is not paid yet. Once they file export clearance, the status asks you to confirm. If the goods and documents are in order, click Mark trade complete. If something is wrong, click Raise a dispute instead, and the money stays frozen. There is no extra fee."
+ },
+ {
+  "id": "14_verify",
+  "title": "Verification and buyer badges",
+  "text": "Step fourteen: verification and badges. Open the Verification Center. Your email is already verified at sign-up. Click Verify WhatsApp, check the country code, and click Send code via WhatsApp. Type the six digits, and you earn Buyer Mobile Verified. Verifying a card with Stripe costs nothing and earns Payment Verified. Complete your company profile for Business Verified. Completed orders unlock Frequent Buyer, Verified Buyer and Trusted Buyer. Badges are awarded automatically, and suppliers see them next to your name."
+ },
+ {
+  "id": "15_services",
+  "title": "Book trade services",
+  "text": "Step fifteen: trade services. Need freight, customs clearance or inspection? Open Find services, describe your need in the search box, and use the Service filter. Click Request this service, fill in What do you need, and click Send request. When a provider replies with a price, open Service Offers and click Accept this offer. Then, in Service Orders, click Pay online. Exportain holds the money until you click Confirm the work is done. If the work isn't done properly, open a dispute instead."
+ },
+ {
+  "id": "16_messages",
+  "title": "Messages and meetings",
+  "text": "Step sixteen: messages and meetings. Open Messages to chat with suppliers. Use the search box to find a conversation, and Unread only to see what needs your attention. Type in the reply box and send. You can edit your own message for two minutes. To talk face to face, click Propose a meeting, choose Google Meet or Zoom, and suggest up to three time slots. Keep prices, delivery dates and payment terms in Exportain messages, because this record is your evidence if a dispute ever arises."
+ },
+ {
+  "id": "17_support",
+  "title": "Support, disputes and safety",
+  "text": "Step seventeen: help and safety. If something blocks you, open Help and support and click New ticket. Choose what you need help with, describe the problem, add a screenshot, and click Send ticket. Check Waiting for you for replies, and click My problem is solved when it's fixed. Never share passwords, codes or card details with anyone. Exportain never asks for them. You can always email support@exportain.com, or send a WhatsApp message."
+ },
+ {
+  "id": "18_outro",
+  "title": "Start sourcing",
+  "text": "[warmly] That's it. You now know everything you need to source from Bangladesh with confidence: verified suppliers, competing quotes, protected payments, and full shipment tracking. Create your free buyer account today at buyer.exportain.com, and post your first RFQ in minutes. [confident] Exportain. Bangladesh's trade, connected to the world."
+ }
+]

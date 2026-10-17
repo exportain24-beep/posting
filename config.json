@@ -28,7 +28,7 @@
       "category_id": "27",
       "contains_synthetic_media": false,
       "playlist_id": "",
-      "upload_captions": true
+      "upload_captions": false
     },
     "facebook": {
       "enabled": true,

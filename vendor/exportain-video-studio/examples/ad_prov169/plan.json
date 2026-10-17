@@ -1,0 +1,197 @@
+{
+ "voice_duration": 34.344,
+ "endcard": 2.5,
+ "total": 36.844,
+ "brand": "Exportain",
+ "url": "Exportain.com",
+ "logo": "assets/logo.png",
+ "tagline": "",
+ "intro": false,
+ "pauses_found": 0,
+ "scenes": [
+  {
+   "id": "00_hook",
+   "a0": 0.6,
+   "dur": 4.232,
+   "text": "রপ্তানিকারকরা আপনার সেবা খুঁজছে, কিন্তু আপনাকে পাচ্ছে না!",
+   "tag": "urgent",
+   "icon": "spark",
+   "accent": "#26d07c",
+   "emphasis": [],
+   "kind": "pv_hook",
+   "beats": [
+    0.727,
+    2.129,
+    3.028,
+    3.919
+   ],
+   "bg": "e_forest",
+   "sfx": [
+    "whoosh",
+    "click",
+    "swoosh",
+    "boom"
+   ],
+   "start": 0.0,
+   "end": 5.182
+  },
+  {
+   "id": "01_who",
+   "a0": 5.532,
+   "dur": 7.001,
+   "text": "ফ্রেইট, শিপিং, সিঅ্যান্ডএফ, প্যাকেজিং, ইন্সপেকশন বা ইন্স্যুরেন্স, আপনার সেবা তুলুন এক্সপোর্টেইনে।",
+   "tag": null,
+   "icon": "freight",
+   "accent": "#26d07c",
+   "emphasis": [
+    "ফ্রেইট,",
+    "শিপিং,"
+   ],
+   "kind": "pv_who",
+   "beats": [
+    5.674,
+    5.974,
+    7.018,
+    7.318,
+    8.56,
+    8.86,
+    11.576
+   ],
+   "bg": "e_sky",
+   "sfx": [
+    "pop",
+    "pop2",
+    "pop",
+    "pop2",
+    "pop",
+    "pop2",
+    "sparkle"
+   ],
+   "start": 5.182,
+   "end": 12.883
+  },
+  {
+   "id": "02_where",
+   "a0": 13.233,
+   "dur": 3.997,
+   "text": "রপ্তানিকারক আর বিদেশি বায়ার, দুজনেই এখানে সেবা খোঁজেন।",
+   "tag": "confident",
+   "icon": "globe",
+   "accent": "#26d07c",
+   "emphasis": [
+    "বিদেশি"
+   ],
+   "kind": "pv_where",
+   "beats": [
+    13.423,
+    14.348,
+    15.524,
+    16.187
+   ],
+   "bg": "e_mint",
+   "sfx": [
+    "swoosh",
+    "swoosh",
+    "rise",
+    "ding"
+   ],
+   "start": 12.883,
+   "end": 17.579
+  },
+  {
+   "id": "03_list",
+   "a0": 17.929,
+   "dur": 3.918,
+   "text": "সেবা লিস্ট করুন, লাইসেন্স যাচাই হলে পান ভেরিফায়েড ব্যাজ।",
+   "tag": null,
+   "icon": "store",
+   "accent": "#26d07c",
+   "emphasis": [],
+   "kind": "pv_list",
+   "beats": [
+    18.124,
+    19.313,
+    20.475
+   ],
+   "bg": "e_lime",
+   "sfx": [
+    "click",
+    "shutter",
+    "sparkle"
+   ],
+   "start": 17.579,
+   "end": 22.198
+  },
+  {
+   "id": "04_leads",
+   "a0": 22.548,
+   "dur": 3.422,
+   "text": "অনুরোধ আসবে লিডে। অফার পাঠান, অর্ডার নিন।",
+   "tag": null,
+   "icon": "network",
+   "accent": "#26d07c",
+   "emphasis": [],
+   "kind": "pv_leads",
+   "beats": [
+    22.714,
+    24.259,
+    25.192
+   ],
+   "bg": "e_sky",
+   "sfx": [
+    "pop",
+    "click",
+    "sparkle"
+   ],
+   "start": 22.198,
+   "end": 26.32
+  },
+  {
+   "id": "05_free",
+   "a0": 26.67,
+   "dur": 2.534,
+   "text": "আর প্রোভাইডার অ্যাকাউন্ট, লাইফটাইম ফ্রি।",
+   "tag": null,
+   "icon": "spark",
+   "accent": "#26d07c",
+   "emphasis": [],
+   "kind": "pv_free",
+   "beats": [
+    26.832,
+    28.235
+   ],
+   "bg": "e_gold",
+   "sfx": [
+    "whoosh",
+    "boom"
+   ],
+   "start": 26.32,
+   "end": 29.554
+  },
+  {
+   "id": "06_cta",
+   "a0": 29.904,
+   "dur": 3.84,
+   "text": "আজই যুক্ত হন। প্রোভাইডার ডট এক্সপোর্টেইন ডট কম।",
+   "tag": "warmly",
+   "icon": "handshake",
+   "accent": "#26d07c",
+   "emphasis": [],
+   "kind": "pv_cta",
+   "beats": [
+    30.138,
+    31.414,
+    33.11
+   ],
+   "bg": "e_mint",
+   "sfx": [
+    "boom",
+    "pop",
+    "ding"
+   ],
+   "start": 29.554,
+   "end": 34.344
+  }
+ ],
+ "template": "/home/claude/prov169/scenes.html"
+}

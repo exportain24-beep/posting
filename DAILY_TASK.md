@@ -18,7 +18,9 @@ message (that message is what the owner is notified about).
 ## 0. Setup (every run — fresh machine)
 ```bash
 git clone --depth 1 https://github.com/exportain24-beep/posting /home/claude/posting
-S=<exportain-video-studio skill folder>; [ -w "$S" ] || { cp -r "$S" /tmp/evs; S=/tmp/evs; }; export SK=$S/engine
+S=$(ls -d /mnt/skills/*/exportain-video-studio 2>/dev/null | head -1)   # installed skill = newest; else the repo copy
+[ -n "$S" ] || S=/home/claude/posting/vendor/exportain-video-studio
+cp -r "$S" /tmp/evs; S=/tmp/evs; export SK=$S/engine
 bash $SK/scripts/setup.sh
 cd /home/claude/posting && python3 tools/studio.py status
 ```
@@ -70,7 +72,6 @@ ffmpeg -y -ss <strong moment> -i $P/out/<Name_16x9>.mp4 -frames:v 1 $P/still.jpg
 python3 tools/cover.py --size 1280x720 --headline "<4-6 words, one *highlight*>" --chip "<series>" --badge "<short hook>" \
   --bg $P/still.jpg --out $P/thumb.jpg                                   # read it: readable at phone size
 python3 tools/cover.py --prepend $P/thumb.jpg --video $P/out/<Name_16x9>.mp4 --out $P/final.mp4 --hold 0.5
-cp $P/out/<Name_16x9>.srt $P/captions.srt
 ```
 **SEO first:** `keyword-research` skill for the topic (Bangla + Banglish + English, Bangladesh). Then write every
 platform's text by **`CAPTION_GUIDE.md`** (owner's caption rules win). `$P/meta.json` (publishing meta — keep the skill's
@@ -83,8 +84,8 @@ own meta.json separate, e.g. save this one as `$P/post.json` and pass it as belo
               "tags": ["≤ 500 chars total, Bangla + Banglish + English"]},
  "facebook": {"title": "≤ 100 chars", "description": "hook, value, bullets, CTA, exactly 5 hashtags, no URL"},
  "tiktok":   {"caption": "hook + value + CTA, 15-20 relevant hashtags incl. #FYP #ForYou, no URL"},
- "linkedin": {"text": "≤ 2,900 chars, professional, 3-5 hashtags, no URL"},
- "twitter":  {"text": "≤ 275 weighted chars, 0-2 hashtags, no URL (X gets a 2:15 teaser)"}}
+ "linkedin": {"text": "ENGLISH, ≤ 2,900 chars, professional, 3-5 hashtags, no URL"},
+ "twitter":  {"text": "ENGLISH, ≤ 275 weighted chars, 0-2 hashtags, no URL (X gets a 2:15 teaser)"}}
 ```
 Never reuse identical text across platforms.
 
