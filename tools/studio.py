@@ -48,6 +48,12 @@ def ig_cover(thumb, out):
                            "-frames:v", "1", "-q:v", "3", out])
 
 
+def ig_mp4(src, out):
+    """Instagram-ready copy (AAC 128 kbps / 48 kHz, video untouched), served by GitHub Pages as video_url."""
+    subprocess.check_call(["ffmpeg", "-y", "-loglevel", "error", "-i", src, "-c:v", "copy", "-c:a", "aac", "-b:a", "128k",
+                           "-ar", "48000", "-ac", "2", "-movflags", "+faststart", out])
+
+
 def run_workflow(wf, inputs, timeout_min=40):
     t0 = datetime.now(timezone.utc) - timedelta(seconds=15)
     args = ["-X", "POST", f"repos/{REPO}/actions/workflows/{wf}/dispatches", "-f", "ref=main"]
@@ -203,6 +209,7 @@ def cmd_deliver(ep, d, mode, meta_name="meta.json"):
         shutil.copy(srt, v + ".srt")
     if CFG["platforms"].get("instagram", {}).get("enabled"):
         ig_cover(thumb, v + "_ig.jpg")
+        ig_mp4(mp4, v + "_ig.mp4")
     if CFG["platforms"]["buffer"].get("twitter", {}).get("enabled"):
         make_teaser(mp4, v + "_x.mp4", CFG["video_limits"]["x_teaser_seconds"])
     json.dump(meta, open(v + ".json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)

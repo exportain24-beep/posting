@@ -48,9 +48,19 @@ def caption(meta):
 
 def prepare(meta, mp4):
     acc, auth, proof, g = ig_account()
-    vid = ig_video(mp4)
-    size = os.path.getsize(vid)
-    data = {"media_type": "REELS", "upload_type": "resumable", "caption": caption(meta), "share_to_feed": "true", **proof}
+    data = {"media_type": "REELS", "caption": caption(meta), "share_to_feed": "true", **proof}
+    vurl = f"{CFG['pages_base_url']}/v/{meta['id']}_ig.mp4"      # Instagram-ready copy served by GitHub Pages
+    try:
+        h = http("HEAD", vurl, timeout=30, want_headers=True)[1]
+        public = "video" in (h.get("Content-Type") or h.get("content-type", ""))
+    except Exception:
+        public = False
+    if public:
+        data["video_url"] = vurl
+    else:
+        vid = ig_video(mp4)
+        size = os.path.getsize(vid)
+        data["upload_type"] = "resumable"
     cover = f"{CFG['pages_base_url']}/v/{meta['id']}_ig.jpg"
     try:
         h = http("HEAD", cover, timeout=30, want_headers=True)[1]
@@ -63,10 +73,11 @@ def prepare(meta, mp4):
     cid = c.get("id")
     if not cid:
         raise RuntimeError(f"container not created: {c}")
-    gv = PL["facebook"]["graph_version"]
-    http("POST", f"https://rupload.facebook.com/ig-api-upload/{gv}/{cid}",
-         {**auth, "offset": "0", "file_size": str(size), "Content-Type": "application/octet-stream"},
-         open(vid, "rb").read(), timeout=1800)
+    if not public:
+        gv = PL["facebook"]["graph_version"]
+        http("POST", f"https://rupload.facebook.com/ig-api-upload/{gv}/{cid}",
+             {**auth, "offset": "0", "file_size": str(size), "Content-Type": "application/octet-stream"},
+             open(vid, "rb").read(), timeout=1800)
     end = time.time() + 20 * 60
     st = {}
     while time.time() < end:
