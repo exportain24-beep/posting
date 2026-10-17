@@ -4,6 +4,7 @@
 MODE=check    read-only: verifies every platform login and the media files, posts nothing
 MODE=private  YouTube private, Facebook draft, TikTok skipped (safe first test)
 MODE=live     schedules each video at its slot on all three platforms
+MODE=now      publishes the waiting video(s) immediately on every platform (owner-requested test posts)
 
 Results go to state:posts.json and to GitHub annotations (Claude reads both).
 """
@@ -65,6 +66,8 @@ def yt_publish(meta, mp4, jpg, slot, mode):
               "containsSyntheticMedia": PL["youtube"]["contains_synthetic_media"]}
     if mode == "live":
         status["publishAt"] = utc(slot)
+    elif mode == "now":
+        status["privacyStatus"] = "public"
     body = {"snippet": {"title": title, "description": y["description"], "tags": y.get("tags", []),
                         "categoryId": PL["youtube"]["category_id"], "defaultLanguage": "bn", "defaultAudioLanguage": "bn"},
             "status": status}
@@ -142,7 +145,7 @@ def fb_publish(meta, mp4, jpg, slot, mode):
     if mode == "private":
         fields["published"] = "false"                       # unpublished: visible only in Meta Business Suite
         state = "unpublished draft"
-    elif 11 * 60 < lead < 180 * 86400:
+    elif mode == "live" and 11 * 60 < lead < 180 * 86400:
         fields.update({"published": "false", "scheduled_publish_time": str(int(slot.timestamp()))})
         state = "scheduled"
     else:
@@ -249,7 +252,7 @@ _public_ok = set()
 
 
 def buffer_publish(platform, meta, mp4, slot, mode):
-    if mode != "live":
+    if mode not in ("live", "now"):
         return None, "skipped in private mode"
     if platform == "twitter":                     # free X accounts accept max 140 s -> teaser cut
         mp4 = mp4[:-4] + "_x.mp4"
@@ -267,18 +270,20 @@ def buffer_publish(platform, meta, mp4, slot, mode):
         video["metadata"] = {"thumbnailOffset": PL["buffer"]["tiktok"].get("thumbnail_offset_ms", 0)}
     inp = {"text": meta[sec][field], "channelId": ch[platform][0], "schedulingType": "automatic",
            "mode": "customScheduled", "dueAt": utc(slot), "assets": [{"video": video}]}
+    if mode == "now":
+        inp["mode"] = "shareNow"; inp.pop("dueAt")
     q = ("mutation { createPost(input: %s) { ... on PostActionSuccess { post { id dueAt } } "
          "... on MutationError { message } } }") % gql_literal(inp, enums={"schedulingType", "mode"})
     r = buffer(q)["createPost"]
     if "post" not in r:
         raise RuntimeError(f"createPost: {r.get('message')}")
-    return r["post"]["id"], "scheduled in Buffer"
+    return r["post"]["id"], "sent now via Buffer" if mode == "now" else "scheduled in Buffer"
 
 
 # ------------------------------------------------------------------ main
 def main():
     mode = os.environ.get("MODE", "check")
-    if mode not in ("check", "private", "live"):
+    if mode not in ("check", "private", "live", "now"):
         note("error", f"publish: unknown mode {mode}"); return 1
     now = datetime.now(timezone.utc)
     media, state_d, content = branch_dir("media"), branch_dir("state"), branch_dir("content")

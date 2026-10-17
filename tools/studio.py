@@ -158,6 +158,8 @@ def cmd_deliver(ep, d, mode, meta_name="meta.json"):
     meta["id"] = ep
     mp4, thumb = os.path.join(d, "final.mp4"), os.path.join(d, "thumb.jpg")
     errs = validate_meta(meta, f"{ep}.json") + validate_files(mp4, thumb)
+    if mode == "now":
+        meta["slot"] = (datetime.now(timezone.utc) + timedelta(hours=1)).astimezone(TZ).isoformat(timespec="minutes")
     if parse_slot(meta["slot"]) < datetime.now(timezone.utc) + timedelta(minutes=20):
         errs.append("slot is less than 20 minutes away")
     if errs:

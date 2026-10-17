@@ -5,9 +5,9 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "check = test logins only, private = YouTube private + Facebook draft, live = schedule posts"
+        description: "check = test logins only, private = YouTube private + Facebook draft, live = schedule posts, now = publish immediately"
         type: choice
-        options: [check, private, live]
+        options: [check, private, live, now]
         default: check
 
 permissions: {}
