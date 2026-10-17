@@ -84,7 +84,7 @@ def prepend(a):
     """cover still for --hold seconds, then the video. Audio is delayed by the same amount."""
     hold = a.hold
     wh = subprocess.check_output(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height",
-                                  "-of", "csv=p=0:s=:", a.video]).decode().strip()
+                                  "-of", "csv=p=0:s=x", a.video]).decode().strip().replace("x", ":")
     total = hold + float(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration",
                                                    "-of", "default=nw=1:nk=1", a.video]).decode())
     subprocess.check_call([
