@@ -138,6 +138,24 @@ def is_bangla(text):
     return bool(letters) and sum("\u0980" <= c <= "\u09FF" for c in letters) / len(letters) >= 0.9
 
 
+BN_DIGITS = str.maketrans("০১২৩৪৫৬৭৮৯", "0123456789")
+
+
+def prompt_numbers(content_dir):
+    """Script numbers available in the owner's prompt file ('### ০৫৭. title'), from start_script on, as '057'."""
+    p = os.path.join(content_dir, CFG["prompts_file"])
+    if not os.path.isfile(p):
+        return []
+    nums = []
+    for line in open(p, encoding="utf-8"):
+        m = re.match(r"###\s*([০-৯0-9]{3})\.", line)
+        if m:
+            n = int(m.group(1).translate(BN_DIGITS))
+            if n >= CFG.get("start_script", 1):
+                nums.append(f"{n:03d}")
+    return nums
+
+
 def text_hash(s):
     return hashlib.sha256(s.encode("utf-8")).hexdigest()[:16]
 

@@ -47,5 +47,7 @@
         "enabled": true
       }
     }
-  }
+  },
+  "prompts_file": "prompts/Exportain_Reels_500_Script_Prompts.md",
+  "start_script": 57
 }

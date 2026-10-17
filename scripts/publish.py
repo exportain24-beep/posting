@@ -11,7 +11,7 @@ import hashlib, hmac, json, os, sys, time, glob, uuid, urllib.parse
 from datetime import datetime, timedelta, timezone
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from common import (CFG, TZ, branch_dir, http, jhttp, log, mask, note, parse_slot, push_branch, redact, secret,
+from common import (CFG, TZ, branch_dir, prompt_numbers, http, jhttp, log, mask, note, parse_slot, push_branch, redact, secret,
                     summary, validate_files, validate_meta)
 
 PL = CFG["platforms"]
@@ -342,7 +342,7 @@ def main():
         rec["updated"] = now.isoformat()
 
     # scripts left
-    scripts = {os.path.basename(f)[:-4] for f in glob.glob(os.path.join(content, "scripts", "*.txt"))}
+    scripts = set(prompt_numbers(content))
     used = {r.get("script") for r in state["posts"].values()}
     for mf in metas:
         try:
@@ -351,7 +351,7 @@ def main():
             pass
     left = len(scripts - used)
     if left < CFG["min_scripts_warning"]:
-        note("warning", f"only {left} unused script(s) left in content/scripts — add more")
+        note("warning", f"only {left} unused script prompt(s) left — add more")
 
     if mode != "check":
         cutoff = now - timedelta(days=60)

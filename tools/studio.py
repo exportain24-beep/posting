@@ -15,7 +15,7 @@ from datetime import datetime, timedelta, timezone
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "scripts"))
-from common import (CFG, ROOT, SLUG, TZ, branch_dir, parse_slot, push_branch, validate_files, validate_meta,
+from common import (CFG, ROOT, SLUG, TZ, branch_dir, prompt_numbers, parse_slot, push_branch, validate_files, validate_meta,
                     validate_narration)
 
 REPO = "exportain24-beep/posting"
@@ -92,13 +92,14 @@ def cmd_status():
     now = datetime.now(timezone.utc)
     state, md, cd = load_state(), branch_dir("media"), branch_dir("content")
     media = pending_media(md)
-    scripts = sorted(os.path.basename(f)[:-4] for f in glob.glob(os.path.join(cd, "scripts", "*.txt")))
+    scripts = prompt_numbers(cd)
     used = {r.get("script") for r in state["posts"].values()} | {m.get("script") for m in media.values()}
     taken = {parse_slot(r["slot"]).astimezone(TZ).isoformat() for r in state["posts"].values()} | \
             {parse_slot(m["slot"]).astimezone(TZ).isoformat() for m in media.values()}
     unused = [s for s in scripts if s not in used]
     info = {"now_local": now.astimezone(TZ).isoformat(timespec="minutes"),
-            "scripts_total": len(scripts), "scripts_unused": unused, "next_script": unused[0] if unused else None,
+            "scripts_total": len(scripts), "scripts_unused": unused[:10], "scripts_left": len(unused),
+            "next_script": unused[0] if unused else None,
             "free_slots": free_slots(taken, now),
             "pending_videos": {k: {"slot": v["slot"], "posted": list(state["posts"].get(k, {}).get("done", {}))}
                                for k, v in media.items()},

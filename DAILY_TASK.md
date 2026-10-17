@@ -1,7 +1,7 @@
 # Daily run — what Claude does every day (unattended)
 
 Goal: keep every 08:00 and 18:00 (Bangladesh) slot in the next ~2.5 days filled with a finished
-Exportain reel built from the user's numbered scripts. YouTube + Facebook are posted by the
+3–5 minute 16:9 Exportain video built from the owner's numbered script prompts (starting at 057). YouTube + Facebook are posted by the
 `publish.yml` workflow with the platforms' own APIs; TikTok, LinkedIn and X (Twitter) through Buffer. Claude never sees a key.
 
 **LOCKED by the owner (never change, never ask):** voice = Debashish `3XjJ1C8taYP9CHnHKmK5`,
@@ -26,55 +26,62 @@ Load the `bangla-motion-video` skill and read its `references/lessons.md` and `r
 - No unused scripts → build nothing; report "scripts finished".
 
 ## 1. Script → narration (per video, project dir `P=/tmp/ep/<EP>`, `EP=<NNN>-<short-english-slug>`)
-Read `content` branch `scripts/<NNN>.txt` (`git show origin/content:scripts/<NNN>.txt` after `git fetch origin content`).
-The user's script is the source: keep its message, order and facts. Polish it for voice and video:
-- Research every factual claim (WebSearch/WebFetch). Remove or correct anything not verifiable today. Never invent numbers.
-- Hook in the first 3 s. Mention Exportain once in the body where it fits, and end with the CTA (exportain.com).
-- Service-provider accounts are **lifetime free** (never "90 days free").
-- `P/narration.json` in the skill's format, one take per scene: `[{"id":"00_hook","text":"..."}]`, 6–12 takes, 55–110 characters each,
-  **total ≤ 900 characters** (Facebook Reels max 90 s).
-- Voice rules (checked by the workflow, it refuses otherwise): Bangla script only, no Latin letters, no `/`.
-  B/L → "বি এল", HS code → "এইচ এস কোড", LC → "এল সি", B2B → "বি টু বি", exportain.com → "এক্সপোর্টেইন ডট কম".
-- Write `P/script.md` (layers as in topic-mode.md) and `P/board.json`.
+**Source:** the user's 500-prompt file (`Exportain_Reels_500_Script_Prompts.md`, block `### NNN.`). Work through the
+numbers in order **starting at 057**; `studio.py status` → `next_script` is the next unused number.
+Follow that block's points, order, references and structure, **with these owner overrides (they win over the prompt):**
+- **Never** mention a previous or next episode/video ("গত পর্বে", "আগামী পর্বে", "পরের পর্বে", the next title). Each video stands alone.
+  The prompt's CTA line "…এবং পরের পর্বের নাম" is dropped. CTA = "আরও গাইড আর আন্তর্জাতিক বায়ারের সাথে যুক্ত হতে ভিজিট করুন
+  এক্সপোর্টেইন ডট কম।" then the last line "এক্সপোর্টেইন, বাংলাদেশের পণ্য, বিশ্বের বাজারের পথে।"
+- Voice text is **Bangla script only** (locked): LC → "এল সি", HS Code → "এইচ এস কোড", FOB → "এফ ও বি", B2B → "বি টু বি".
+  On-screen text may show the proper English form.
+- Length **3–5 minutes**: 2,000–3,300 narration characters (tags excluded), 22–40 takes, one sentence per take.
+- Research and verify every fact against the prompt's references (and official sources). No invented numbers; examples are
+  clearly called examples. Mention Exportain once in the body where it fits (seller profile / buyers), plus the CTA.
+- Write `P/narration.json` (skill format `[{"id":"00_hook","text":"[tag] …"}]`), `P/script.md`, and keep `P/sources.md`.
 
-## 2. Voice (GitHub runs ElevenLabs `eleven_v4_turbo`, voice Debashish)
+## 2. Voice (GitHub runs ElevenLabs — locked: Debashish, `eleven_v4_turbo`, Bangla)
 ```bash
 python3 tools/studio.py voice <EP> $P
 ```
-This pushes the narration, starts `voice.yml`, waits, and copies `vo/<id>.mp3` + `durations.json` into `$P`.
-Never call it twice for the same text unless the text changed (unchanged takes are reused, changed ones cost credits).
-If it fails, read the notes it prints; fix the narration if the notes say so, otherwise report and stop this video.
+Pushes the narration, runs `voice.yml`, copies `vo/<id>.mp3` + `durations.json` into `$P`. Never re-run for unchanged text.
 
-## 3. Video (bangla-motion-video skill, Mode D, 9:16)
-Follow topic-mode.md steps 4–8 exactly: new `scenes.js` art for the topic, `topic_build.py --project $P --logo assets/logo.png
---brand Exportain --url exportain.com` (0 key warnings), QA stills, `music_bed.py`, `make_video.py --formats 9:16`,
-`review.py`, then the fresh-agent critic pass, at most 2 fix rounds. Brand colours: #005A1E #003C10 #5CBF14 #2E8B2E,
-accents #F2B705 #0E8C88 #0B3B5C. Vary the look between videos. Skip the "voice it?" checkpoint (unattended).
+## 3. Video — always the **currently installed** bangla-motion-video skill (re-read its SKILL.md and references every run;
+never a cached copy, so the owner's skill updates apply automatically)
+- Format **16:9, 1920×1080**, 3–5 minutes, professional and colourful, Exportain brand colours and logo
+  (`assets/logo.png`, same as the logo kit artifact).
+- Follow the skill's workflow for 16:9 topic videos (plan → QA stills → music → render in the background → review.py → fresh-agent
+  critic, max 2 fix rounds). Speech and motion in sync, varied scenes, no long holds.
+- Keep the skill's `captions.srt` → copy to `P/captions.srt` (subtitles for YouTube and Facebook).
 
-## 4. Cover, final file, texts
+## 4. Thumbnail, final file, captions/SEO
 ```bash
-ffmpeg -y -ss <a strong moment> -i $P/out/final_9x16.mp4 -frames:v 1 $P/still.jpg
-python3 tools/cover.py --headline "<short hook, one *highlight*>" --chip "<2-3 words>" --bg $P/still.jpg --out $P/cover.jpg
-python3 tools/cover.py --prepend $P/cover.jpg --video $P/out/final_9x16.mp4 --out $P/final.mp4
+python3 tools/cover.py --size 1280x720 --headline "<4-6 words, one *highlight*>" --chip "<series name>" --badge "<short hook>" \
+  --bg <a strong 16:9 still from the video> --out $P/thumb.jpg
+python3 tools/cover.py --prepend $P/thumb.jpg --video $P/out/final_16x9.mp4 --out $P/final.mp4   # thumbnail = first frame (TikTok)
 ```
-Read `cover.jpg` and check the headline fits (≤ 4 short lines). `final.mp4` must be ≤ 90 s.
+Read `thumb.jpg`: headline must be readable at phone size.
 
-`$P/meta.json`:
+**SEO first:** run the `keyword-research` skill for the topic (Bangla + Banglish + English, Bangladesh) → primary keyword,
+secondary keywords, tags. Then write every platform's text by **`CAPTION_GUIDE.md`** (the owner's caption skill) — its rules,
+limits and hashtag counts win. `$P/meta.json`:
 ```json
-{"id": "<EP>", "script": "<NNN>", "slot": "<free slot, e.g. 2026-10-18T08:00:00+06:00>",
- "youtube":  {"title": "≤ 90 chars, Bangla, keyword first", "description": "2-4 lines + https://exportain.com + 3-5 hashtags", "tags": ["8-15 Bangla + English keywords"]},
- "facebook": {"title": "≤ 90 chars", "description": "hook line + value + https://exportain.com + 3-5 hashtags"},
- "tiktok":   {"caption": "hook + exportain.com + 3-6 hashtags"},
- "linkedin": {"text": "≤ 2900 chars, professional tone, value first, https://exportain.com, 3-5 hashtags"},
- "twitter":  {"text": "≤ 270 chars INCLUDING link and 1-2 hashtags"}}
+{"id": "<EP>", "script": "<NNN>", "slot": "<free slot>",
+ "youtube":  {"title": "≤ 100 chars, primary keyword first", "description": "summary, what you'll learn, CHAPTERS from the real
+              plan (0:00 first, ≥ 3 chapters, ≥ 10 s each, add 0.5 s for the cover frame), qualifications, exportain.com link with
+              UTM ?utm_source=youtube&utm_medium=video&utm_campaign=reels&utm_content=<NNN>, CTA, 3-5 hashtags",
+              "tags": ["≤ 500 chars total, Bangla + Banglish + English"]},
+ "facebook": {"title": "≤ 100 chars", "description": "hook, value, bullets, CTA, exactly 5 hashtags, no URL"},
+ "tiktok":   {"caption": "hook + value + CTA, 15-20 relevant hashtags incl. #FYP #ForYou, no URL"},
+ "linkedin": {"text": "≤ 2,900 chars, professional, 3-5 hashtags, no URL"},
+ "twitter":  {"text": "≤ 275 weighted chars, 0-2 hashtags, no URL (X gets a 2:15 teaser of the video)"}}
 ```
-SEO: research what Bangladeshi exporters / service providers search for the topic (Bangla and English terms).
+Never reuse identical text across platforms.
 
 ## 5. Deliver
 ```bash
 python3 tools/studio.py deliver <EP> $P --mode live
 ```
-It checks the files, puts them on the `media` branch (GitHub Pages serves them to Buffer), starts `publish.yml`, and prints
+It checks the files, makes the X teaser, puts them on the `media` branch (GitHub Pages serves them to Buffer), starts `publish.yml`, and prints
 what was scheduled on each platform. A platform error is recorded and retried automatically by the next deliver/publish
 run as long as the slot is still ≥ 15 min away; run `python3 tools/studio.py publish live` once more at the end of the run
 if any platform failed.
