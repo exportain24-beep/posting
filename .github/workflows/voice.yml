@@ -1,0 +1,42 @@
+name: Voice (ElevenLabs)
+
+# Started by Claude's daily task through the GitHub API. No timer, no pull_request trigger.
+on:
+  workflow_dispatch:
+    inputs:
+      episode:
+        description: "Episode name (folder in content/voice/)"
+        type: string
+        required: true
+      test_tone:
+        description: "Test: make silent tones instead of calling ElevenLabs (no credits)"
+        type: boolean
+        default: false
+
+permissions: {}
+
+concurrency:
+  group: voice
+  cancel-in-progress: false
+
+jobs:
+  voice:
+    if: github.repository_owner == 'exportain24-beep' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: production
+    permissions:
+      contents: write          # to save the audio on the 'audio' branch
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          fetch-depth: 1
+      - name: Install ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg > /dev/null
+      - name: Generate voice
+        env:
+          EPISODE: ${{ inputs.episode }}
+          TEST_TONE: ${{ inputs.test_tone && '1' || '0' }}
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}   # the only secret this job can see
+        run: python3 scripts/voice.py

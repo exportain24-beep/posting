@@ -9,7 +9,8 @@ Reads ELEVENLABS_API_KEY from the environment only. Never prints it.
 import os, sys, time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import pipeline as P
+import common as P
+import voice as V
 
 DEFAULT_TEXT = ("আসসালামু আলাইকুম। এক্সপোর্টেইনে আপনাকে স্বাগতম। "
                 "বাংলাদেশের পণ্য এখন পৌঁছে যাক বিশ্ববাজারে। এটি একটি ভয়েস পরীক্ষা।")
@@ -27,21 +28,21 @@ def main():
     text = arg("--text", "") or DEFAULT_TEXT
     model = arg("--model", "") or P.CFG["tts_model_id"]
     if not P.secret("ELEVENLABS_API_KEY"):
-        print("ELEVENLABS_API_KEY is not set (add it to the 'production' environment)."); return 1
+        P.note("error", "voice test: ELEVENLABS_API_KEY is not set in the production environment"); return 1
     if "/" in text:
         print("Text contains '/'. Write it out in Bangla (B/L -> বি এল)."); return 1
     os.makedirs(os.path.dirname(out) or ".", exist_ok=True)
     P.CFG["tts_model_id"] = model
     t = time.time()
     try:
-        P.tts(text, out)
+        V.tts(text, out)
     except Exception as e:
-        P.log("Voice test FAILED:", e)
+        P.note("error", f"voice test FAILED: {P.redact(e)}")
         P.summary(f"### Voice test failed\n`{P.redact(e)}`\n\nCheck the key, its Text to Speech permission, "
                   f"your credits, and that voice `{P.CFG['voice_id']}` is in your ElevenLabs library.")
         return 1
-    secs = P.duration(out)
-    P.log(f"OK: {out}  {secs:.1f}s audio  model={model}  voice={P.CFG['voice_id']}  ({time.time() - t:.1f}s)")
+    secs = V.duration(out)
+    P.note("notice", f"voice test OK: {out}  {secs:.1f}s audio  model={model}  voice={P.CFG['voice_id']}  ({time.time() - t:.1f}s)")
     P.summary(f"### Voice test passed ✅\nModel `{model}`, voice `{P.CFG['voice_id']}`, "
               f"{len(text)} characters → **{secs:.1f} s** of audio.\n\nDownload `voice-sample` below to listen.")
     return 0

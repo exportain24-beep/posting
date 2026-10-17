@@ -1,11 +1,7 @@
-# never commit secrets or local outputs
+.work/
+__pycache__/
 .env
 .env.*
-*.key
 *.pem
+*.key
 secrets*
-.work/
-preview/
-__pycache__/
-*.mp3
-*.wav
