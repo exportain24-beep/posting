@@ -1,0 +1,19 @@
+{
+ "posts": {
+  "059-market-research": {
+   "script": "059",
+   "slot": "2026-10-18T00:29+06:00",
+   "done": {
+    "youtube": "D7AemWjA28c",
+    "facebook": "2201923220754736",
+    "twitter": "6ad3b63cae173d6e00c9e82e"
+   },
+   "errors": {
+    "tiktok": "video not public yet at https://exportain24-beep.github.io/posting/v/059-market-research.mp4 (HTTP 404 HEAD https://exportain24-beep.github.io/posting/v/059-market-research.mp4: ) — is GitHub Pages on for the media branch?",
+    "linkedin": "video not public yet at https://exportain24-beep.github.io/posting/v/059-market-research.mp4 (HTTP 404 HEAD https://exportain24-beep.github.io/posting/v/059-market-research.mp4: ) — is GitHub Pages on for the media branch?"
+   },
+   "mode": "now",
+   "updated": "2026-10-17T17:32:02.516920+00:00"
+  }
+ }
+}
