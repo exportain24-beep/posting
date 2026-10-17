@@ -4,7 +4,7 @@
   studio.py status                         scripts left, next script number, free slots, pending videos
   studio.py add-scripts FILE...            put the user's numbered scripts into content/scripts/
   studio.py voice EP DIR [--test-tone]     push DIR/narration.json, run the Voice workflow, fetch DIR/vo + durations.json
-  studio.py deliver EP DIR [--mode M]      push DIR/final.mp4 + thumb.jpg + meta.json (+captions.srt) to media, run Publish
+  studio.py deliver EP DIR [--mode M] [--meta post.json]  push DIR/final.mp4 + thumb.jpg + meta.json (+captions.srt) to media, run Publish
   studio.py publish MODE                   run Publish only (check | private | live)
   studio.py pages                          make sure GitHub Pages serves the media branch
 
@@ -152,9 +152,9 @@ def make_teaser(src, out, seconds):
                            "-movflags", "+faststart", out])
 
 
-def cmd_deliver(ep, d, mode):
+def cmd_deliver(ep, d, mode, meta_name="meta.json"):
     """DIR must hold final.mp4 (16:9, 3-5 min), thumb.jpg (1280x720), meta.json, optional captions.srt."""
-    meta = json.load(open(os.path.join(d, "meta.json"), encoding="utf-8"))
+    meta = json.load(open(os.path.join(d, meta_name), encoding="utf-8"))
     meta["id"] = ep
     mp4, thumb = os.path.join(d, "final.mp4"), os.path.join(d, "thumb.jpg")
     errs = validate_meta(meta, f"{ep}.json") + validate_files(mp4, thumb)
@@ -212,7 +212,8 @@ def main():
         cmd_voice(a[1], a[2], "--test-tone" in a)
     elif c == "deliver":
         mode = a[a.index("--mode") + 1] if "--mode" in a else "live"
-        return cmd_deliver(a[1], a[2], mode)
+        meta = a[a.index("--meta") + 1] if "--meta" in a else "meta.json"
+        return cmd_deliver(a[1], a[2], mode, meta)
     elif c == "publish":
         ok, _ = run_workflow("publish.yml", {"mode": a[1]})
         return 0 if ok else 1

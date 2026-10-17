@@ -22,18 +22,18 @@ def data_uri(p, mime):
 
 LANDSCAPE_CSS = """
 body{{width:1280px;height:720px;overflow:hidden;font-family:B,P}}
-#c{{position:relative;width:1280px;height:720px;overflow:hidden;background:linear-gradient(120deg,#003C10,#005A1E 55%,#2E8B2E)}}
-.bgimg{{position:absolute;right:-40px;top:-40px;width:760px;height:800px;object-fit:cover;filter:blur(3px) brightness(.8);
+#c{{position:relative;width:1280px;height:720px;overflow:hidden;background:linear-gradient(120deg,#f3fcf4,#d8f1dc 55%,#b9e6c2)}}
+.bgimg{{position:absolute;right:-40px;top:-40px;width:760px;height:800px;object-fit:cover;filter:saturate(1.1);
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 45%);mask-image:linear-gradient(90deg,transparent,#000 45%)}}
-.shade{{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,40,10,.92) 0%,rgba(0,40,10,.75) 48%,rgba(0,40,10,.05) 80%)}}
-.ring{{position:absolute;border-radius:50%;border:34px solid rgba(92,191,20,.25)}}
-#logo{{position:absolute;left:56px;top:44px;background:#fff;border-radius:999px;padding:12px 30px;box-shadow:0 12px 34px rgba(0,0,0,.3)}}
-#logo img{{height:56px;display:block}}
+.shade{{position:absolute;inset:0;background:linear-gradient(90deg,rgba(243,252,244,.98) 0%,rgba(243,252,244,.9) 46%,rgba(243,252,244,0) 74%)}}
+.ring{{position:absolute;border-radius:50%;border:34px solid rgba(92,191,20,.18)}}
+#logo{{position:absolute;left:56px;top:40px}}
+#logo img{{height:78px;display:block;filter:drop-shadow(0 3px 8px rgba(0,60,16,.18))}}
 #chip{{position:absolute;left:60px;top:170px;background:#F2B705;color:#1b1400;font:800 40px B,P;padding:8px 28px;border-radius:999px}}
-#h{{position:absolute;left:60px;width:720px;top:250px;color:#fff;font:800 84px/1.18 B,P;text-shadow:0 6px 24px rgba(0,0,0,.45)}}
-#h em{{font-style:normal;color:#F2B705}}
-#sub{{position:absolute;left:60px;bottom:44px;color:#E8F7DD;font:800 40px P,B}}
-#n{{position:absolute;right:48px;bottom:36px;background:rgba(255,255,255,.95);color:#003C10;font:800 54px P,B;padding:6px 26px;border-radius:18px}}
+#h{{position:absolute;left:60px;width:720px;top:250px;color:#003C10;font:800 84px/1.2 B,P}}
+#h em{{font-style:normal;color:#005A1E;background:linear-gradient(transparent 70%,#F2B705 70%);padding:0 6px}}
+#sub{{position:absolute;left:60px;bottom:44px;color:#005A1E;font:800 40px P,B}}
+#n{{position:absolute;right:48px;bottom:36px;background:#005A1E;color:#fff;font:800 54px P,B;padding:6px 26px;border-radius:18px;box-shadow:0 10px 30px rgba(0,60,16,.3)}}
 """
 
 
@@ -48,16 +48,16 @@ def make_cover(a):
 @font-face{{font-family:P;src:url(file://{FONTS}/Poppins-ExtraBold.ttf);font-weight:800}}
 *{{margin:0;padding:0;box-sizing:border-box}}
 body{{width:1080px;height:1920px;overflow:hidden;font-family:B,P}}
-#c{{position:relative;width:1080px;height:1920px;overflow:hidden;background:linear-gradient(160deg,#003C10,#005A1E 50%,#2E8B2E)}}
-.bgimg{{position:absolute;inset:-40px;width:1160px;height:2000px;object-fit:cover;filter:blur(14px) brightness(.55) saturate(1.2)}}
-.shade{{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,40,10,.55),rgba(0,40,10,.15) 40%,rgba(0,40,10,.75))}}
+#c{{position:relative;width:1080px;height:1920px;overflow:hidden;background:linear-gradient(160deg,#f3fcf4,#d8f1dc 50%,#b9e6c2)}}
+.bgimg{{position:absolute;inset:-40px;width:1160px;height:2000px;object-fit:cover;filter:blur(14px) saturate(1.1);opacity:.35}}
+.shade{{position:absolute;inset:0;background:linear-gradient(180deg,rgba(243,252,244,.6),rgba(243,252,244,.2) 40%,rgba(243,252,244,.7))}}
 .ring{{position:absolute;border-radius:50%;border:46px solid rgba(92,191,20,.28)}}
-#logo{{position:absolute;left:50%;top:190px;transform:translateX(-50%);background:#fff;border-radius:999px;padding:22px 54px;box-shadow:0 16px 50px rgba(0,0,0,.3)}}
-#logo img{{height:100px;display:block}}
+#logo{{position:absolute;left:50%;top:190px;transform:translateX(-50%)}}
+#logo img{{height:120px;display:block;filter:drop-shadow(0 3px 8px rgba(0,60,16,.18))}}
 #chip{{position:absolute;left:90px;top:640px;background:#F2B705;color:#1b1400;font:800 56px B,P;padding:14px 40px;border-radius:999px}}
-#h{{position:absolute;left:90px;right:90px;top:780px;color:#fff;font:800 132px/1.2 B,P;text-shadow:0 8px 30px rgba(0,0,0,.45)}}
-#h em{{font-style:normal;color:#F2B705}}
-#sub{{position:absolute;left:0;right:0;bottom:300px;text-align:center;color:#E8F7DD;font:800 64px P,B}}
+#h{{position:absolute;left:90px;right:90px;top:780px;color:#003C10;font:800 132px/1.2 B,P}}
+#h em{{font-style:normal;color:#005A1E;background:linear-gradient(transparent 70%,#F2B705 70%);padding:0 6px}}
+#sub{{position:absolute;left:0;right:0;bottom:300px;text-align:center;color:#005A1E;font:800 64px P,B}}
 </style></head><body><div id=c>{bg}<div class=shade></div>
 <div class=ring style="width:700px;height:700px;right:-260px;top:-200px"></div>
 <div class=ring style="width:520px;height:520px;left:-220px;bottom:-160px"></div>

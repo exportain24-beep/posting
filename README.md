@@ -1,6 +1,6 @@
 # Exportain অটো রিল সিস্টেম
 
-প্রতিদিন সকাল ৮টা আর সন্ধ্যা ৬টায় একটা বাংলা রিল **YouTube Shorts, Facebook Reels আর TikTok**-এ যায়। কেউ হাত দেয় না।
+প্রতিদিন দুপুর ১২টা আর সন্ধ্যা ৬টায় একটা বাংলা রিল **YouTube Shorts, Facebook Reels আর TikTok**-এ যায়। কেউ হাত দেয় না।
 
 ```
 Claude (প্রতিদিনের শিডিউলড টাস্ক)                      GitHub Actions (Claude চালু করে)

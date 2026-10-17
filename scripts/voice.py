@@ -26,7 +26,7 @@ def check_lock():
             raise RuntimeError(f"LOCKED: config {k} must be {want} — refusing to generate")
 
 
-def tts(text, out):
+def tts(text, out, previous_text=None):
     check_lock()
     if not is_bangla(text):
         raise RuntimeError("LOCKED: text is not Bangla — refusing to generate")
@@ -35,7 +35,10 @@ def tts(text, out):
         raise RuntimeError("ELEVENLABS_API_KEY is not set in the 'production' environment")
     url = (f"https://api.elevenlabs.io/v1/text-to-speech/{LOCKED_VOICE_ID}"
            f"?output_format={urllib.parse.quote(CFG['tts_output_format'])}")
-    body = {"text": text, "model_id": LOCKED_MODEL_ID, "language_code": LOCKED_LANGUAGE}
+    body = {"text": text, "model_id": LOCKED_MODEL_ID, "language_code": LOCKED_LANGUAGE,
+            "voice_settings": CFG.get("voice_settings", {"stability": 0.5, "similarity_boost": 0.75, "speed": 1.0})}
+    if previous_text:
+        body["previous_text"] = previous_text[-300:]   # smoother flow between scenes (as in the studio skill)
     audio = http("POST", url, {"xi-api-key": key, "Accept": "audio/mpeg"}, body, timeout=180)
     if len(audio) < 2000:
         raise RuntimeError("ElevenLabs returned an empty audio file")
@@ -99,7 +102,11 @@ def main():
             reused += 1
         else:
             try:
-                (tone if test else tts)(text, out)
+                if test:
+                    tone(text, out)
+                else:
+                    i = next(k for k, x in enumerate(nar) if x["id"] == tid)
+                    tts(text, out, nar[i - 1]["text"] if i else None)
             except Exception as e:
                 note("error", f"voice {ep} take {tid}: {redact(e)}")
                 push_partial(audio, d, man, durs, nar, ep)  # keep paid takes even if a later one fails
