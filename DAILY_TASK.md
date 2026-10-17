@@ -2,7 +2,7 @@
 
 Goal: keep every 08:00 and 18:00 (Bangladesh) slot in the next ~2.5 days filled with a finished
 Exportain reel built from the user's numbered scripts. YouTube + Facebook are posted by the
-`publish.yml` workflow with the platforms' own APIs, TikTok through Buffer. Claude never sees a key.
+`publish.yml` workflow with the platforms' own APIs; TikTok, LinkedIn and X (Twitter) through Buffer. Claude never sees a key.
 
 **LOCKED by the owner (never change, never ask):** voice = Debashish `3XjJ1C8taYP9CHnHKmK5`,
 model = `eleven_v4_turbo`, language = Bangla (`bn`) only. These are hard-coded in `scripts/voice.py`; the
@@ -64,7 +64,9 @@ Read `cover.jpg` and check the headline fits (≤ 4 short lines). `final.mp4` mu
 {"id": "<EP>", "script": "<NNN>", "slot": "<free slot, e.g. 2026-10-18T08:00:00+06:00>",
  "youtube":  {"title": "≤ 90 chars, Bangla, keyword first", "description": "2-4 lines + https://exportain.com + 3-5 hashtags", "tags": ["8-15 Bangla + English keywords"]},
  "facebook": {"title": "≤ 90 chars", "description": "hook line + value + https://exportain.com + 3-5 hashtags"},
- "tiktok":   {"caption": "hook + exportain.com + 3-6 hashtags"}}
+ "tiktok":   {"caption": "hook + exportain.com + 3-6 hashtags"},
+ "linkedin": {"text": "≤ 2900 chars, professional tone, value first, https://exportain.com, 3-5 hashtags"},
+ "twitter":  {"text": "≤ 270 chars INCLUDING link and 1-2 hashtags"}}
 ```
 SEO: research what Bangladeshi exporters / service providers search for the topic (Bangla and English terms).
 

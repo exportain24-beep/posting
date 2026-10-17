@@ -169,17 +169,34 @@ def buffer(query):
     return r["data"]
 
 
-def buffer_tiktok():
-    for o in buffer("query { account { organizations { id name } } }")["account"]["organizations"]:
-        for c in buffer("query { channels(input: {organizationId: %s}) { id name service } }" % json.dumps(o["id"]))["channels"]:
-            if str(c.get("service", "")).lower() == "tiktok":
-                return c["id"], c.get("name")
-    raise RuntimeError("no TikTok channel connected in Buffer")
+BUFFER_TEXT = {"tiktok": ("tiktok", "caption"), "linkedin": ("linkedin", "text"), "twitter": ("twitter", "text")}
+BUFFER_ALIASES = {"tiktok": {"tiktok"}, "linkedin": {"linkedin"}, "twitter": {"twitter", "x"}}
+_chans = None
+
+
+def buffer_channels():
+    """{'tiktok': (id, name), 'linkedin': ..., 'twitter': ...} for every channel connected in Buffer."""
+    global _chans
+    if _chans is None:
+        _chans = {}
+        for o in buffer("query { account { organizations { id name } } }")["account"]["organizations"]:
+            for c in buffer("query { channels(input: {organizationId: %s}) { id name service } }" % json.dumps(o["id"]))["channels"]:
+                svc = str(c.get("service", "")).lower()
+                for key, names in BUFFER_ALIASES.items():
+                    if svc in names and key not in _chans:
+                        _chans[key] = (c["id"], c.get("name"))
+    return _chans
 
 
 def buffer_check():
-    cid, name = buffer_tiktok()
-    return f"TikTok channel OK: {name}"
+    ch = buffer_channels()
+    out = []
+    for key, conf in PL["buffer"].items():
+        if conf.get("enabled"):
+            out.append(f"{key}: {ch[key][1]}" if key in ch else f"{key}: NOT CONNECTED")
+    if any("NOT CONNECTED" in x for x in out):
+        raise RuntimeError("Buffer channels — " + "; ".join(out))
+    return "Buffer channels OK — " + "; ".join(out)
 
 
 def wait_public(url, size, minutes=8):
@@ -200,15 +217,24 @@ def wait_public(url, size, minutes=8):
     raise RuntimeError(f"video not public yet at {url} ({last}) — is GitHub Pages on for the media branch?")
 
 
-def tiktok_publish(meta, mp4, slot, mode):
+_public_ok = set()
+
+
+def buffer_publish(platform, meta, mp4, slot, mode):
     if mode != "live":
         return None, "skipped in private mode"
     url = f"{CFG['pages_base_url']}/v/{meta['id']}.mp4"
-    wait_public(url, os.path.getsize(mp4))
-    cid, _ = buffer_tiktok()
-    inp = {"text": meta["tiktok"]["caption"], "channelId": cid, "schedulingType": "automatic",
-           "mode": "customScheduled", "dueAt": utc(slot),
-           "assets": [{"video": {"url": url, "metadata": {"thumbnailOffset": PL["tiktok_via_buffer"]["thumbnail_offset_ms"]}}}]}
+    if url not in _public_ok:
+        wait_public(url, os.path.getsize(mp4)); _public_ok.add(url)
+    ch = buffer_channels()
+    if platform not in ch:
+        raise RuntimeError(f"no {platform} channel connected in Buffer")
+    sec, field = BUFFER_TEXT[platform]
+    video = {"url": url}
+    if platform == "tiktok":
+        video["metadata"] = {"thumbnailOffset": PL["buffer"]["tiktok"].get("thumbnail_offset_ms", 0)}
+    inp = {"text": meta[sec][field], "channelId": ch[platform][0], "schedulingType": "automatic",
+           "mode": "customScheduled", "dueAt": utc(slot), "assets": [{"video": video}]}
     q = ("mutation { createPost(input: %s) { ... on PostActionSuccess { post { id dueAt } } "
          "... on MutationError { message } } }") % gql_literal(inp, enums={"schedulingType", "mode"})
     r = buffer(q)["createPost"]
@@ -227,12 +253,12 @@ def main():
     sp = os.path.join(state_d, "posts.json")
     state = json.load(open(sp, encoding="utf-8")) if os.path.isfile(sp) else {"posts": {}}
     active = {"youtube": PL["youtube"]["enabled"], "facebook": PL["facebook"]["enabled"],
-              "tiktok": PL["tiktok_via_buffer"]["enabled"]}
+              **{k: bool(v.get("enabled")) for k, v in PL["buffer"].items()}}
     bad = 0
 
     if mode == "check":
-        for name, fn in (("youtube", yt_check), ("facebook", fb_check), ("tiktok", buffer_check)):
-            if not active[name]:
+        for name, fn in (("youtube", yt_check), ("facebook", fb_check), ("buffer", buffer_check)):
+            if name != "buffer" and not active[name]:
                 continue
             try:
                 note("notice", f"check {name}: {fn()}")
@@ -271,9 +297,9 @@ def main():
                 elif p == "facebook":
                     pid, info = fb_publish(meta, mp4, jpg, slot, mode)
                 else:
-                    pid, info = tiktok_publish(meta, mp4, slot, mode)
+                    pid, info = buffer_publish(p, meta, mp4, slot, mode)
                     if pid is None:
-                        note("notice", f"{ep} tiktok: {info}"); continue
+                        note("notice", f"{ep} {p}: {info}"); continue
                 rec["done"][p] = pid
                 rec["errors"].pop(p, None)
                 note("notice", f"{ep} {p}: OK {info}")

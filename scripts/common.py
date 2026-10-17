@@ -205,6 +205,11 @@ def validate_meta(meta, name):
     _txt(fb, "title", 1, 100, errs, "facebook")
     _txt(fb, "description", 1, 2000, errs, "facebook")
     _txt(tt, "caption", 1, 2000, errs, "tiktok")
+    buf = CFG["platforms"].get("buffer", {})
+    if buf.get("linkedin", {}).get("enabled"):
+        _txt(meta.get("linkedin") or {}, "text", 1, 2900, errs, "linkedin")
+    if buf.get("twitter", {}).get("enabled"):
+        _txt(meta.get("twitter") or {}, "text", 1, 270, errs, "twitter")
     return errs
 
 

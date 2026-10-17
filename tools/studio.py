@@ -157,7 +157,8 @@ def cmd_deliver(ep, d, mode):
     # keep only videos that still matter: not fully posted, or slot within the last day (Buffer reads the URL)
     for m in pending_media(md).values():
         rec = state["posts"].get(m["id"], {})
-        posted_all = len(rec.get("done", {})) >= 3 or rec.get("mode") == "private"
+        want = 2 + sum(1 for v in CFG["platforms"]["buffer"].values() if v.get("enabled"))
+        posted_all = len(rec.get("done", {})) >= want or rec.get("mode") == "private"
         if posted_all and parse_slot(m["slot"]) < now - timedelta(hours=24):
             for ext in ("mp4", "jpg", "json"):
                 p = os.path.join(md, "v", f"{m['id']}.{ext}")
