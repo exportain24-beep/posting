@@ -13,6 +13,20 @@
    "errors": {},
    "mode": "now",
    "updated": "2026-10-17T17:55:08.521421+00:00"
+  },
+  "060-product-qualification": {
+   "script": "060",
+   "slot": "2026-10-18T12:30:00+06:00",
+   "done": {
+    "youtube": "O1hU3Kca5YQ",
+    "facebook": "1146411231659915",
+    "tiktok": "6ad3d0b70a208cb323363dc9",
+    "linkedin": "6ad3d0b8769b457934913fe3",
+    "twitter": "6ad3d0b9e272c4918f9c8b17"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-10-17T19:46:36.093878+00:00"
   }
  }
 }
