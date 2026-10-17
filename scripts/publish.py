@@ -50,16 +50,17 @@ def yt_check():
     info = jhttp("POST", "https://oauth2.googleapis.com/tokeninfo",
                  {"Content-Type": "application/x-www-form-urlencoded"}, urllib.parse.urlencode({"access_token": tok}).encode())
     scopes = info.get("scope", "")
-    extra = [s for s in scopes.split() if not s.endswith("youtube.upload")]
-    return f"login OK, scopes: {scopes.replace('https://www.googleapis.com/auth/', '')}" + \
-           (" (more than upload — consider upload-only)" if extra else "")
+    full = any(x in scopes for x in ("youtube.force-ssl", "auth/youtube ", "youtubepartner")) or scopes.endswith("auth/youtube")
+    return (f"login OK, scopes: {scopes.replace('https://www.googleapis.com/auth/', '')} — "
+            + ("upload, thumbnail, subtitles and playlist all available" if full
+               else "upload + thumbnail only (subtitles and playlist need the youtube.force-ssl scope)"))
 
 
 def yt_publish(meta, mp4, jpg, slot, mode):
     tok = yt_token()
     auth = {"Authorization": f"Bearer {tok}"}
     y = meta["youtube"]
-    title = y["title"] if "#shorts" in y["title"].lower() else (y["title"] + " #Shorts")[:100]
+    title = y["title"][:100]                       # 3-5 min 16:9 = regular video, not a Short
     status = {"privacyStatus": "private", "selfDeclaredMadeForKids": False,
               "containsSyntheticMedia": PL["youtube"]["contains_synthetic_media"]}
     if mode == "live":
@@ -74,13 +75,34 @@ def yt_publish(meta, mp4, jpg, slot, mode):
     loc = hdr.get("Location") or hdr.get("location")
     vid = json.loads(http("PUT", loc, {**auth, "Content-Type": "video/mp4", "Content-Length": str(size)},
                           open(mp4, "rb").read(), timeout=1200))["id"]
-    thumb = "set"
+    extras = []
     try:
         http("POST", f"https://www.googleapis.com/upload/youtube/v3/thumbnails/set?videoId={vid}",
              {**auth, "Content-Type": "image/jpeg"}, open(jpg, "rb").read())
+        extras.append("thumbnail set")
     except Exception as e:
-        thumb = f"not set ({redact(e)[:160]})"
-    return vid, f"thumbnail {thumb}"
+        extras.append(f"thumbnail NOT set ({redact(e)[:140]})")
+    srt = mp4[:-4] + ".srt"
+    if PL["youtube"].get("upload_captions") and os.path.isfile(srt):
+        try:   # Bangla subtitles: indexed by YouTube search (needs youtube.force-ssl scope)
+            meta_json = json.dumps({"snippet": {"videoId": vid, "language": "bn", "name": "বাংলা", "isDraft": False}})
+            b = uuid.uuid4().hex
+            data = (f"--{b}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n{meta_json}\r\n"
+                    f"--{b}\r\nContent-Type: application/octet-stream\r\n\r\n").encode() + open(srt, "rb").read() + f"\r\n--{b}--\r\n".encode()
+            http("POST", "https://www.googleapis.com/upload/youtube/v3/captions?uploadType=multipart&part=snippet",
+                 {**auth, "Content-Type": f"multipart/related; boundary={b}"}, data)
+            extras.append("Bangla subtitles added")
+        except Exception as e:
+            extras.append(f"subtitles NOT added ({redact(e)[:140]})")
+    pl = PL["youtube"].get("playlist_id") or y.get("playlist_id", "")
+    if pl:
+        try:
+            jhttp("POST", "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet", auth,
+                  {"snippet": {"playlistId": pl, "resourceId": {"kind": "youtube#video", "videoId": vid}}})
+            extras.append("added to playlist")
+        except Exception as e:
+            extras.append(f"playlist NOT added ({redact(e)[:140]})")
+    return vid, ", ".join(extras)
 
 
 # ------------------------------------------------------------------ Facebook (direct API)
@@ -111,33 +133,39 @@ def fb_check():
 
 
 def fb_publish(meta, mp4, jpg, slot, mode):
+    """3-5 min 16:9 video -> regular Page video (Reels are limited to 90 s), with title, description,
+    custom thumbnail (thumb), scheduled publish, and Bangla subtitles when allowed."""
     page, auth, proof, g = fb_auth()
-    form = lambda d: urllib.parse.urlencode({**d, **proof}).encode()
-    hf = {**auth, "Content-Type": "application/x-www-form-urlencoded"}
-    vid = jhttp("POST", f"{g}/{page}/video_reels", hf, form({"upload_phase": "start"}))["video_id"]
-    size = os.path.getsize(mp4)
-    http("POST", f"https://rupload.facebook.com/video-upload/{PL['facebook']['graph_version']}/{vid}",
-         {**auth, "offset": "0", "file_size": str(size), "Content-Type": "application/octet-stream"},
-         open(mp4, "rb").read(), timeout=1200)
     f = meta["facebook"]
-    params = {"upload_phase": "finish", "video_id": vid, "title": f["title"], "description": f["description"]}
+    fields = {"title": f["title"], "description": f["description"], **proof}
     lead = (slot - datetime.now(timezone.utc)).total_seconds()
     if mode == "private":
-        params["video_state"] = "DRAFT"
-    elif 11 * 60 < lead < 28 * 86400:
-        params.update({"video_state": "SCHEDULED", "scheduled_publish_time": str(int(slot.timestamp()))})
+        fields["published"] = "false"                       # unpublished: visible only in Meta Business Suite
+        state = "unpublished draft"
+    elif 11 * 60 < lead < 180 * 86400:
+        fields.update({"published": "false", "scheduled_publish_time": str(int(slot.timestamp()))})
+        state = "scheduled"
     else:
-        params["video_state"] = "PUBLISHED"
-    res = jhttp("POST", f"{g}/{page}/video_reels", hf, form(params))
-    if res.get("success") is False:
-        raise RuntimeError(f"finish failed: {res}")
-    thumb = "set"
-    try:
-        body, ctype = multipart({"is_preferred": "true", **proof}, {"source": ("cover.jpg", open(jpg, "rb").read(), "image/jpeg")})
-        http("POST", f"{g}/{vid}/thumbnails", {**auth, "Content-Type": ctype}, body)
-    except Exception as e:
-        thumb = f"not set ({redact(e)[:160]})"
-    return vid, f"{params['video_state'].lower()}, thumbnail {thumb}"
+        state = "published"
+    body, ctype = multipart(fields, {"source": (os.path.basename(mp4), open(mp4, "rb").read(), "video/mp4"),
+                                     "thumb": ("thumb.jpg", open(jpg, "rb").read(), "image/jpeg")})
+    gv = PL["facebook"]["graph_version"]
+    res = jhttp("POST", f"https://graph-video.facebook.com/{gv}/{page}/videos", {**auth, "Content-Type": ctype}, body,
+                timeout=1800)
+    vid = res.get("id")
+    if not vid:
+        raise RuntimeError(f"upload failed: {res}")
+    extras = [state, "thumbnail set"]
+    srt = mp4[:-4] + ".srt"
+    if PL["facebook"].get("upload_captions") and os.path.isfile(srt):
+        try:
+            b2, c2 = multipart({"default_locale": "bn_IN", **proof},
+                               {"captions_file": (f"{meta['id']}.bn_IN.srt", open(srt, "rb").read(), "application/octet-stream")})
+            jhttp("POST", f"{g}/{vid}/captions", {**auth, "Content-Type": c2}, b2)
+            extras.append("Bangla subtitles added")
+        except Exception as e:
+            extras.append(f"subtitles NOT added ({redact(e)[:140]})")
+    return vid, ", ".join(extras)
 
 
 # ------------------------------------------------------------------ TikTok via Buffer
@@ -223,7 +251,11 @@ _public_ok = set()
 def buffer_publish(platform, meta, mp4, slot, mode):
     if mode != "live":
         return None, "skipped in private mode"
-    url = f"{CFG['pages_base_url']}/v/{meta['id']}.mp4"
+    if platform == "twitter":                     # free X accounts accept max 140 s -> teaser cut
+        mp4 = mp4[:-4] + "_x.mp4"
+        if not os.path.isfile(mp4):
+            raise RuntimeError("X teaser file missing")
+    url = f"{CFG['pages_base_url']}/v/{os.path.basename(mp4)}"
     if url not in _public_ok:
         wait_public(url, os.path.getsize(mp4)); _public_ok.add(url)
     ch = buffer_channels()

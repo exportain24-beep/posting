@@ -20,6 +20,23 @@ def data_uri(p, mime):
     return f"data:{mime};base64," + base64.b64encode(open(p, "rb").read()).decode()
 
 
+LANDSCAPE_CSS = """
+body{{width:1280px;height:720px;overflow:hidden;font-family:B,P}}
+#c{{position:relative;width:1280px;height:720px;overflow:hidden;background:linear-gradient(120deg,#003C10,#005A1E 55%,#2E8B2E)}}
+.bgimg{{position:absolute;right:-40px;top:-40px;width:760px;height:800px;object-fit:cover;filter:blur(3px) brightness(.8);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 45%);mask-image:linear-gradient(90deg,transparent,#000 45%)}}
+.shade{{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,40,10,.92) 0%,rgba(0,40,10,.75) 48%,rgba(0,40,10,.05) 80%)}}
+.ring{{position:absolute;border-radius:50%;border:34px solid rgba(92,191,20,.25)}}
+#logo{{position:absolute;left:56px;top:44px;background:#fff;border-radius:999px;padding:12px 30px;box-shadow:0 12px 34px rgba(0,0,0,.3)}}
+#logo img{{height:56px;display:block}}
+#chip{{position:absolute;left:60px;top:170px;background:#F2B705;color:#1b1400;font:800 40px B,P;padding:8px 28px;border-radius:999px}}
+#h{{position:absolute;left:60px;width:720px;top:250px;color:#fff;font:800 84px/1.18 B,P;text-shadow:0 6px 24px rgba(0,0,0,.45)}}
+#h em{{font-style:normal;color:#F2B705}}
+#sub{{position:absolute;left:60px;bottom:44px;color:#E8F7DD;font:800 40px P,B}}
+#n{{position:absolute;right:48px;bottom:36px;background:rgba(255,255,255,.95);color:#003C10;font:800 54px P,B;padding:6px 26px;border-radius:18px}}
+"""
+
+
 def make_cover(a):
     from playwright.sync_api import sync_playwright
     h = html.escape(a.headline)
@@ -47,10 +64,16 @@ body{{width:1080px;height:1920px;overflow:hidden;font-family:B,P}}
 <div id=logo><img src="{data_uri(LOGO, 'image/png')}"></div>
 {f"<div id=chip>{html.escape(a.chip)}</div>" if a.chip else ""}
 <div id=h>{h}</div><div id=sub>{html.escape(a.sub)}</div></div></body></html>"""
+    if a.size == "1280x720":
+        page = re.sub(r"\*\{margin:0.*?</style>", lambda m: "*{margin:0;padding:0;box-sizing:border-box}" + LANDSCAPE_CSS.format() + "</style>",
+                      page, count=1, flags=re.S)
+        if a.badge:
+            page = page.replace("</div></body>", f"<div id=n>{html.escape(a.badge)}</div></div></body>")
+    W, H = map(int, a.size.split("x"))
     tmp = tempfile.mkdtemp()
     p = os.path.join(tmp, "c.html"); open(p, "w", encoding="utf-8").write(page)
     with sync_playwright() as pw:
-        b = pw.chromium.launch(); pg = b.new_page(viewport={"width": 1080, "height": 1920})
+        b = pw.chromium.launch(); pg = b.new_page(viewport={"width": W, "height": H})
         pg.goto("file://" + p); pg.evaluate("document.fonts.ready"); pg.wait_for_timeout(300)
         pg.screenshot(path=a.out, type="jpeg", quality=88); b.close()
     # if the headline overflows, the text runs off the canvas; warn the caller
@@ -60,12 +83,14 @@ body{{width:1080px;height:1920px;overflow:hidden;font-family:B,P}}
 def prepend(a):
     """cover still for --hold seconds, then the video. Audio is delayed by the same amount."""
     hold = a.hold
+    wh = subprocess.check_output(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height",
+                                  "-of", "csv=p=0:s=:", a.video]).decode().strip()
     total = hold + float(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration",
                                                    "-of", "default=nw=1:nk=1", a.video]).decode())
     subprocess.check_call([
         "ffmpeg", "-y", "-loglevel", "error", "-loop", "1", "-t", str(hold), "-framerate", "30", "-i", a.prepend,
         "-i", a.video, "-filter_complex",
-        f"[0:v]scale=1080:1920,setsar=1,format=yuv420p[c];[1:v]scale=1080:1920,setsar=1,format=yuv420p[v];"
+        f"[0:v]scale={wh},setsar=1,format=yuv420p[c];[1:v]scale={wh},setsar=1,format=yuv420p[v];"
         f"[c][v]concat=n=2:v=1:a=0[vo];[1:a]adelay={int(hold*1000)}|{int(hold*1000)},apad=whole_dur={total:.3f}[ao]",
         "-map", "[vo]", "-map", "[ao]", "-t", f"{total:.3f}", "-c:v", "libx264", "-crf", "20", "-preset", "medium",
         "-r", "30", "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-movflags", "+faststart", a.out])
@@ -76,6 +101,7 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--headline"); ap.add_argument("--chip", default=""); ap.add_argument("--sub", default="exportain.com")
     ap.add_argument("--bg"); ap.add_argument("--out", required=True)
+    ap.add_argument("--size", default="1080x1920", choices=["1080x1920", "1280x720"]); ap.add_argument("--badge", default="")
     ap.add_argument("--prepend"); ap.add_argument("--video"); ap.add_argument("--hold", type=float, default=0.5)
     a = ap.parse_args()
     prepend(a) if a.prepend else make_cover(a)

@@ -11,24 +11,29 @@
   "tts_model_id": "eleven_v4_turbo",
   "tts_language_code": "bn",
   "tts_output_format": "mp3_44100_128",
-  "max_voice_chars_per_episode": 1000,
+  "max_voice_chars_per_episode": 3600,
   "keep_audio_days": 7,
   "video_limits": {
-    "min_seconds": 3,
-    "max_seconds": 90,
-    "max_mb": 200,
-    "cover_max_mb": 2
+    "aspect": "16:9",
+    "min_seconds": 170,
+    "max_seconds": 310,
+    "max_mb": 900,
+    "thumb_max_mb": 2,
+    "x_teaser_seconds": 135
   },
   "pages_base_url": "https://exportain24-beep.github.io/posting",
   "platforms": {
     "youtube": {
       "enabled": true,
-      "category_id": "22",
-      "contains_synthetic_media": false
+      "category_id": "27",
+      "contains_synthetic_media": false,
+      "playlist_id": "",
+      "upload_captions": true
     },
     "facebook": {
       "enabled": true,
-      "graph_version": "v23.0"
+      "graph_version": "v23.0",
+      "upload_captions": true
     },
     "buffer": {
       "tiktok": {

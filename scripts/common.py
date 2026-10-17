@@ -145,8 +145,8 @@ def text_hash(s):
 def validate_narration(nar):
     """narration.json = [{"id": "00_hook", "text": "..."}] in the skill's format."""
     errs = []
-    if not isinstance(nar, list) or not 2 <= len(nar) <= 16:
-        return ["narration must be a list of 2-16 takes"]
+    if not isinstance(nar, list) or not 2 <= len(nar) <= 45:
+        return ["narration must be a list of 2-45 takes"]
     seen, total = set(), 0
     for i, t in enumerate(nar):
         if not isinstance(t, dict):
@@ -174,6 +174,16 @@ def _txt(d, key, lo, hi, errs, where, no_angle=False):
         errs.append(f"{where}.{key}: {lo}-{hi} characters")
     elif no_angle and re.search(r"[<>]", v):
         errs.append(f"{where}.{key}: no < or >")
+
+
+def x_weighted_len(text):
+    """X (Twitter) weighted length: most scripts incl. Bangla count 1, others (emoji, CJK) 2, URLs 23."""
+    text = re.sub(r"https?://\S+", "x" * 23, text)
+    n = 0
+    for ch in text:
+        o = ord(ch)
+        n += 1 if (o <= 4351 or 8192 <= o <= 8205 or 8208 <= o <= 8223 or 8242 <= o <= 8247) else 2
+    return n
 
 
 def parse_slot(s):
@@ -209,7 +219,9 @@ def validate_meta(meta, name):
     if buf.get("linkedin", {}).get("enabled"):
         _txt(meta.get("linkedin") or {}, "text", 1, 2900, errs, "linkedin")
     if buf.get("twitter", {}).get("enabled"):
-        _txt(meta.get("twitter") or {}, "text", 1, 270, errs, "twitter")
+        t = (meta.get("twitter") or {}).get("text", "")
+        if not isinstance(t, str) or not 1 <= x_weighted_len(t) <= 275:
+            errs.append("twitter.text: 1-275 weighted characters (X counts emoji and some scripts double)")
     return errs
 
 
@@ -226,22 +238,23 @@ def validate_files(mp4, jpg):
         return [f"video missing: {os.path.basename(mp4)}"]
     if os.path.getsize(mp4) > lim["max_mb"] * 1e6:
         errs.append("video too large")
+    want = 16 / 9 if lim.get("aspect", "16:9") == "16:9" else 9 / 16
     try:
         p = probe(mp4)
         v = next(s for s in p["streams"] if s["codec_type"] == "video")
         dur = float(p["format"]["duration"])
         if v["codec_name"] not in ("h264", "hevc"):
             errs.append(f"video codec {v['codec_name']} (need h264)")
-        if abs(v["width"] / v["height"] - 9 / 16) > 0.01 or v["width"] < 540:
-            errs.append(f"video is {v['width']}x{v['height']} (need 9:16, 1080x1920)")
+        if abs(v["width"] / v["height"] - want) > 0.01 or min(v["width"], v["height"]) < 720:
+            errs.append(f"video is {v['width']}x{v['height']} (need {lim.get('aspect')}, e.g. 1920x1080)")
         if not lim["min_seconds"] <= dur <= lim["max_seconds"]:
-            errs.append(f"video is {dur:.1f}s (need {lim['min_seconds']}-{lim['max_seconds']}s for Reels)")
+            errs.append(f"video is {dur:.0f}s (need {lim['min_seconds']}-{lim['max_seconds']}s, i.e. 3-5 minutes)")
         if not any(s["codec_type"] == "audio" for s in p["streams"]):
             errs.append("video has no audio")
     except Exception as e:
         errs.append(f"cannot read video: {e}")
     if not os.path.isfile(jpg):
-        errs.append(f"cover missing: {os.path.basename(jpg)}")
-    elif os.path.getsize(jpg) > lim["cover_max_mb"] * 1e6:
-        errs.append("cover image larger than 2 MB")
+        errs.append(f"thumbnail missing: {os.path.basename(jpg)}")
+    elif os.path.getsize(jpg) > lim["thumb_max_mb"] * 1e6:
+        errs.append("thumbnail larger than 2 MB")
     return errs

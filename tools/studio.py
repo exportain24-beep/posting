@@ -4,7 +4,7 @@
   studio.py status                         scripts left, next script number, free slots, pending videos
   studio.py add-scripts FILE...            put the user's numbered scripts into content/scripts/
   studio.py voice EP DIR [--test-tone]     push DIR/narration.json, run the Voice workflow, fetch DIR/vo + durations.json
-  studio.py deliver EP DIR [--mode M]      push DIR/final.mp4 + cover.jpg + meta.json to the media branch, run Publish
+  studio.py deliver EP DIR [--mode M]      push DIR/final.mp4 + thumb.jpg + meta.json (+captions.srt) to media, run Publish
   studio.py publish MODE                   run Publish only (check | private | live)
   studio.py pages                          make sure GitHub Pages serves the media branch
 
@@ -142,10 +142,21 @@ def cmd_voice(ep, d, test):
     print(f"audio ready in {d}/vo ({len(nar)} takes)")
 
 
+def make_teaser(src, out, seconds):
+    """First N seconds for X (free accounts: max 140 s), with a short fade out."""
+    fade = max(0.0, seconds - 1.5)
+    subprocess.check_call(["ffmpeg", "-y", "-loglevel", "error", "-i", src, "-t", str(seconds),
+                           "-vf", f"fade=t=out:st={fade}:d=1.5", "-af", f"afade=t=out:st={fade}:d=1.5",
+                           "-c:v", "libx264", "-crf", "21", "-preset", "medium", "-c:a", "aac", "-b:a", "160k",
+                           "-movflags", "+faststart", out])
+
+
 def cmd_deliver(ep, d, mode):
+    """DIR must hold final.mp4 (16:9, 3-5 min), thumb.jpg (1280x720), meta.json, optional captions.srt."""
     meta = json.load(open(os.path.join(d, "meta.json"), encoding="utf-8"))
     meta["id"] = ep
-    errs = validate_meta(meta, f"{ep}.json") + validate_files(os.path.join(d, "final.mp4"), os.path.join(d, "cover.jpg"))
+    mp4, thumb = os.path.join(d, "final.mp4"), os.path.join(d, "thumb.jpg")
+    errs = validate_meta(meta, f"{ep}.json") + validate_files(mp4, thumb)
     if parse_slot(meta["slot"]) < datetime.now(timezone.utc) + timedelta(minutes=20):
         errs.append("slot is less than 20 minutes away")
     if errs:
@@ -154,19 +165,22 @@ def cmd_deliver(ep, d, mode):
     state, md = load_state(), branch_dir("media")
     os.makedirs(os.path.join(md, "v"), exist_ok=True)
     open(os.path.join(md, ".nojekyll"), "w").close()
-    # keep only videos that still matter: not fully posted, or slot within the last day (Buffer reads the URL)
-    for m in pending_media(md).values():
+    want = 2 + sum(1 for v in CFG["platforms"]["buffer"].values() if v.get("enabled"))
+    for m in pending_media(md).values():   # keep what is not fully posted yet (Buffer reads the URLs)
         rec = state["posts"].get(m["id"], {})
-        want = 2 + sum(1 for v in CFG["platforms"]["buffer"].values() if v.get("enabled"))
         posted_all = len(rec.get("done", {})) >= want or rec.get("mode") == "private"
         if posted_all and parse_slot(m["slot"]) < now - timedelta(hours=24):
-            for ext in ("mp4", "jpg", "json"):
-                p = os.path.join(md, "v", f"{m['id']}.{ext}")
-                if os.path.exists(p):
-                    os.remove(p)
-    shutil.copy(os.path.join(d, "final.mp4"), os.path.join(md, "v", f"{ep}.mp4"))
-    shutil.copy(os.path.join(d, "cover.jpg"), os.path.join(md, "v", f"{ep}.jpg"))
-    json.dump(meta, open(os.path.join(md, "v", f"{ep}.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+            for f in glob.glob(os.path.join(md, "v", f"{m['id']}*")):
+                os.remove(f)
+    v = os.path.join(md, "v", ep)
+    shutil.copy(mp4, v + ".mp4")
+    shutil.copy(thumb, v + ".jpg")
+    srt = os.path.join(d, "captions.srt")
+    if os.path.isfile(srt):
+        shutil.copy(srt, v + ".srt")
+    if CFG["platforms"]["buffer"].get("twitter", {}).get("enabled"):
+        make_teaser(mp4, v + "_x.mp4", CFG["video_limits"]["x_teaser_seconds"])
+    json.dump(meta, open(v + ".json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     push_branch(md, "media", f"video {ep}", squash=True)
     print("media pushed")
     ok, _ = run_workflow("publish.yml", {"mode": mode})
