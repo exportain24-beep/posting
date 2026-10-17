@@ -4,6 +4,7 @@
 MODE=check    read-only: verifies every platform login and the media files, posts nothing
 MODE=private  YouTube private, Facebook draft, TikTok skipped (safe first test)
 MODE=live     schedules each video at its slot on all three platforms
+MODE=retry    repairs failed platforms: future slot -> schedule again; slot passed < 12 h ago -> post now
 MODE=now      publishes the waiting video(s) immediately on every platform (owner-requested test posts)
 
 Results go to state:posts.json and to GitHub annotations (Claude reads both).
@@ -287,9 +288,24 @@ def buffer_publish(platform, meta, mp4, slot, mode):
 
 
 # ------------------------------------------------------------------ main
+TRANSIENT = ("HTTP 500", "HTTP 502", "HTTP 503", "HTTP 504", "HTTP 429", "network error", "timed out", "temporarily")
+
+
+def attempt(fn, *args):
+    """Retry transient platform errors (5xx, 429, network) up to 3 times with backoff."""
+    for i in range(3):
+        try:
+            return fn(*args)
+        except Exception as e:
+            if i == 2 or not any(t in str(e) for t in TRANSIENT):
+                raise
+            note("warning", f"{fn.__name__}: transient error, retrying in {60 * (i + 1)} s: {redact(e)[:160]}")
+            time.sleep(60 * (i + 1))
+
+
 def main():
     mode = os.environ.get("MODE", "check")
-    if mode not in ("check", "private", "live", "now"):
+    if mode not in ("check", "private", "live", "now", "retry"):
         note("error", f"publish: unknown mode {mode}"); return 1
     now = datetime.now(timezone.utc)
     media, state_d, content = branch_dir("media"), branch_dir("state"), branch_dir("content")
@@ -325,22 +341,34 @@ def main():
         if mode == "check":
             note("notice", f"{ep}: files OK, slot {slot.astimezone(TZ):%d %b %H:%M}, posted on: {', '.join(rec['done']) or 'none'}")
             continue
-        if rec.get("mode") and rec["mode"] != mode:
+        m = mode
+        if mode == "retry":
+            if rec.get("mode") not in ("live", "now") or not rec.get("errors"):
+                continue
+            if slot >= now + timedelta(minutes=15):
+                m = "live"
+            elif slot >= now - timedelta(hours=12):
+                m = "now"
+            else:
+                continue
+            note("notice", f"{ep}: retrying {', '.join(rec['errors'])} ({'scheduled' if m == 'live' else 'posting now, slot was missed'})")
+        elif rec.get("mode") and rec["mode"] != mode:
             note("warning", f"{ep}: already handled in {rec['mode']} mode, skipped"); continue
         todo = [p for p in active if active[p] and p not in rec["done"]]
         if not todo:
             continue
-        if mode == "live" and slot < now + timedelta(minutes=15):
+        if m == "live" and slot < now + timedelta(minutes=15):
             bad += 1; note("error", f"{ep}: slot {meta['slot']} is too close or past; not posted on {', '.join(todo)}"); continue
-        rec["mode"] = mode
+        if mode != "retry":
+            rec["mode"] = mode
         for p in todo:
             try:
                 if p == "youtube":
-                    pid, info = yt_publish(meta, mp4, jpg, slot, mode)
+                    pid, info = attempt(yt_publish, meta, mp4, jpg, slot, m)
                 elif p == "facebook":
-                    pid, info = fb_publish(meta, mp4, jpg, slot, mode)
+                    pid, info = attempt(fb_publish, meta, mp4, jpg, slot, m)
                 else:
-                    pid, info = buffer_publish(p, meta, mp4, slot, mode)
+                    pid, info = attempt(buffer_publish, p, meta, mp4, slot, m)
                     if pid is None:
                         note("notice", f"{ep} {p}: {info}"); continue
                 rec["done"][p] = pid

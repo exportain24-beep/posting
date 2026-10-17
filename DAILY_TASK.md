@@ -30,6 +30,21 @@ Read the skill's `SKILL.md`, `references/exportain-brand.md`, `references/writin
 Then, every run, first: `python3 tools/studio.py ig slots` (starts the Instagram job that posts any already-delivered
 video due in the next ~5 h at its exact slot; returns immediately).
 
+## Self-repair (owner's standing order: fix problems yourself, never wait for the owner)
+At the start of every run, after `ig slots`: run `python3 tools/studio.py status`. If `recent_errors` lists any
+platform, run `python3 tools/studio.py publish retry` (future slot → scheduled again; slot missed by < 12 h → posted
+now). Read its notes. During the run, when any step fails:
+- Read the error, find the cause, fix it, and try again (up to 3 attempts per step). Examples: JS/board errors → fix
+  the scene code; frozen frames → add motion and re-render; length outside 180–300 s → adjust narration (only changed
+  scenes are re-voiced); a GitHub workflow hiccup → run it again; a platform 5xx/timeout → `publish retry` later in
+  the run.
+- A bug in the repo's tools may be fixed and pushed to `main` (clear commit message, mention it in the report). Never
+  touch the locks (voice/model/language in scripts/voice.py), secrets handling, workflow permissions or the
+  environment; never weaken security to make something pass.
+- Things only the owner can fix (expired/revoked token, ElevenLabs balance, Buffer channel disconnected, a platform
+  policy block): finish everything else, keep the video delivered for the platforms that work, and put the exact fix
+  steps at the top of the report.
+
 `status` prints `next_script`, `scripts_left`, `free_slots`, `pending_videos`, `recent_errors`.
 - No free slots → nothing to build; go to step 6.
 - **Exactly one video per run, for the earliest free slot** (`free_slots[0]`), with `next_script`. Two runs a day
