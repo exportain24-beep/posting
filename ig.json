@@ -1,6 +1,8 @@
 {
  "059-market-research": {
   "slot": "2026-10-18T00:29+06:00",
-  "error": "HTTP 400 POST https://rupload.facebook.com/ig-api-upload/v23.0/18110566643073666: {\"debug_info\":{\"retriable\":false,\"type\":\"ProcessingFailedError\",\"message\":\"Request processing failed\"}}"
+  "media_id": "18390755290228321",
+  "permalink": "https://www.instagram.com/reel/DemvvTclNF3/",
+  "posted": "2026-10-17T18:26:09.470587+00:00"
  }
 }
