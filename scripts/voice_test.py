@@ -23,12 +23,37 @@ def arg(name, default):
     return default
 
 
+def check_only():
+    """Validate the key without generating audio (costs nothing): read the locked voice's info."""
+    import urllib.error, urllib.request
+    req = urllib.request.Request(f"https://api.elevenlabs.io/v1/voices/{V.LOCKED_VOICE_ID}",
+                                 headers={"xi-api-key": P.secret("ELEVENLABS_API_KEY")})
+    try:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            name = __import__("json").loads(r.read()).get("name", "?")
+        P.note("notice", f"key check OK: key is valid, voice {V.LOCKED_VOICE_ID} = {name}. No audio made, no credits used.")
+        return 0
+    except urllib.error.HTTPError as e:
+        body = e.read()[:300].decode("utf-8", "replace")
+        if e.code == 401 and "missing_permissions" not in body and "permission" not in body.lower():
+            P.note("error", f"key check FAILED: ElevenLabs rejected the key (401). Is it copied correctly? {P.redact(body)}")
+            return 1
+        if e.code in (401, 403):
+            P.note("notice", "key check OK: key is valid and correctly restricted (it may not read voice info, "
+                             "Text to Speech is what matters). No audio made, no credits used.")
+            return 0
+        P.note("error", f"key check: unexpected HTTP {e.code}: {P.redact(body)}")
+        return 1
+
+
 def main():
     out = next((a for a in sys.argv[1:] if a.endswith(".mp3")), "voice-test/sample.mp3")
     text = arg("--text", "") or DEFAULT_TEXT
     model = V.LOCKED_MODEL_ID
     if not P.secret("ELEVENLABS_API_KEY"):
         P.note("error", "voice test: ELEVENLABS_API_KEY is not set in the production environment"); return 1
+    if "--check-only" in sys.argv:
+        return check_only()
     if "/" in text:
         print("Text contains '/'. Write it out in Bangla (B/L -> বি এল)."); return 1
     os.makedirs(os.path.dirname(out) or ".", exist_ok=True)

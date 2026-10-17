@@ -5,6 +5,10 @@ name: Test ElevenLabs voice
 on:
   workflow_dispatch:
     inputs:
+      check_only:
+        description: "Only check the key (no audio, no credits)"
+        type: boolean
+        default: true
       text:
         description: "Bangla text to speak (leave empty for the default test line)"
         type: string
@@ -33,9 +37,11 @@ jobs:
         env:
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
           TEXT: ${{ inputs.text }}
-        run: python3 scripts/voice_test.py voice-test/sample.mp3 --text "$TEXT"
+          CHECK: ${{ inputs.check_only && '--check-only' || '' }}
+        run: python3 scripts/voice_test.py voice-test/sample.mp3 --text "$TEXT" $CHECK
 
-      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+      - if: ${{ !inputs.check_only }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: voice-sample
           path: voice-test/sample.mp3
