@@ -84,12 +84,23 @@ def yt_publish(meta, mp4, jpg, slot, mode):
 
 
 # ------------------------------------------------------------------ Facebook (direct API)
+def _proof(app_secret, tok):
+    return {"appsecret_proof": hmac.new(app_secret.encode(), tok.encode(), hashlib.sha256).hexdigest()} if app_secret else {}
+
+
 def fb_auth():
+    """FB_PAGE_TOKEN may be the System User token (recommended) or a Page token.
+    Either way the Page token is fetched fresh from it, so the user never handles a Page token."""
     page, tok, app_secret = secret("FB_PAGE_ID"), secret("FB_PAGE_TOKEN"), secret("FB_APP_SECRET")
     if not (page and tok):
         raise RuntimeError("Facebook secrets missing")
-    proof = {"appsecret_proof": hmac.new(app_secret.encode(), tok.encode(), hashlib.sha256).hexdigest()} if app_secret else {}
-    return page, {"Authorization": f"OAuth {tok}"}, proof, f"https://graph.facebook.com/{PL['facebook']['graph_version']}"
+    g = f"https://graph.facebook.com/{PL['facebook']['graph_version']}"
+    q = urllib.parse.urlencode({"fields": "access_token", **_proof(app_secret, tok)})
+    page_tok = jhttp("GET", f"{g}/{page}?{q}", {"Authorization": f"OAuth {tok}"}).get("access_token")
+    if not page_tok:
+        raise RuntimeError("could not get the Page token — does the system user have full control of the Page?")
+    mask(page_tok)
+    return page, {"Authorization": f"OAuth {page_tok}"}, _proof(app_secret, page_tok), g
 
 
 def fb_check():
