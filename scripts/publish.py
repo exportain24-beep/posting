@@ -249,6 +249,7 @@ def wait_public(url, size, minutes=8):
 
 
 _public_ok = set()
+_public_bad = []
 
 
 def buffer_publish(platform, meta, mp4, slot, mode):
@@ -259,8 +260,13 @@ def buffer_publish(platform, meta, mp4, slot, mode):
         if not os.path.isfile(mp4):
             raise RuntimeError("X teaser file missing")
     url = f"{CFG['pages_base_url']}/v/{os.path.basename(mp4)}"
+    if _public_bad:
+        raise RuntimeError(_public_bad[0])
     if url not in _public_ok:
-        wait_public(url, os.path.getsize(mp4)); _public_ok.add(url)
+        try:
+            wait_public(url, os.path.getsize(mp4)); _public_ok.add(url)
+        except RuntimeError as e:
+            _public_bad.append(str(e)); raise
     ch = buffer_channels()
     if platform not in ch:
         raise RuntimeError(f"no {platform} channel connected in Buffer")
