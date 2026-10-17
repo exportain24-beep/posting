@@ -1,87 +1,102 @@
 # Exportain অটো রিল সিস্টেম
 
-প্রতিদিন সকাল ৮টা আর সন্ধ্যা ৬টায় একটা করে বাংলা রিল **YouTube Shorts, Facebook Reels আর TikTok**-এ নিজে থেকে পোস্ট হয়।
+প্রতিদিন সকাল ৮টা আর সন্ধ্যা ৬টায় একটা বাংলা রিল **YouTube Shorts, Facebook Reels আর TikTok**-এ যায়। কেউ হাত দেয় না।
 
 ```
-Claude (প্রতি ২ দিন)        GitHub Actions (প্রতিদিন ০৬:১৭)                  প্ল্যাটফর্ম
- রিসার্চ + স্ক্রিপ্ট  ──►  content ব্রাঞ্চ ──► ElevenLabs ভয়েস ──► ভিডিও ──►  YouTube (নির্ধারিত সময়ে)
- (শুধু JSON ডেটা)                        ৯:১৬ রেন্ডার + থাম্বনেইল       Facebook (নির্ধারিত সময়ে)
-                                                                         TikTok (Buffer, নির্ধারিত সময়ে)
+Claude (প্রতিদিনের শিডিউলড টাস্ক)                      GitHub Actions (Claude চালু করে)
+ ১. পরের নম্বরের স্ক্রিপ্ট নেয় (content/scripts/007.txt)
+ ২. যাচাই করে ভয়েস-স্ক্রিপ্ট বানায়  ──────────────►  voice.yml: ElevenLabs v4 Turbo (Debashish) → audio ব্রাঞ্চ
+ ৩. অডিও নিয়ে স্কিল দিয়ে ভিডিও বানায়  ◄─────────────┘
+ ৪. কভার, টাইটেল, ডেসক্রিপশন, ট্যাগ  ──────────────►  publish.yml: YouTube API (থাম্বনেইল সহ)
+                                                         Facebook API (title, description, থাম্বনেইল)
+                                                         Buffer → TikTok
 ```
+Claude কখনো কোনো কী দেখে না। কী শুধু GitHub-এর `production` Environment-এ থাকে, আর শুধু `main` ব্রাঞ্চের ওয়ার্কফ্লো সেটা পড়তে পারে।
 
-- প্রতিদিন পরের ~৩ দিনের ফাঁকা স্লট (সর্বোচ্চ ৪টা) ভরে রাখে, তাই একদিন কিছু ব্যর্থ হলেও পোস্ট বন্ধ হয় না।
-- কোনো রান ব্যর্থ হলে GitHub আপনাকে ইমেইল পাঠায়। রানের পাতায় বাংলায় সারাংশ থাকে।
-
-## ব্রাঞ্চগুলো
+## ব্রাঞ্চ
 | ব্রাঞ্চ | কী থাকে | কে লেখে |
 |---|---|---|
 | `main` | কোড আর ওয়ার্কফ্লো (লক করা) | শুধু আপনি |
-| `content` | `queue/*.json` এপিসোড স্ক্রিপ্ট | Claude |
-| `state` | কোন স্লটে কী পোস্ট হলো | ওয়ার্কফ্লো |
-| `media` | আসন্ন পোস্টের ভিডিও (পুরনো নিজে মুছে যায়) | ওয়ার্কফ্লো |
+| `content` | `scripts/001.txt…` আপনার স্ক্রিপ্ট, `voice/<এপিসোড>/narration.json` | আপনি + Claude |
+| `audio` | ElevenLabs-এর অডিও (৭ দিন পর মুছে যায়) | voice.yml |
+| `media` | তৈরি ভিডিও, কভার, টেক্সট (GitHub Pages থেকে Buffer-এ যায়) | Claude |
+| `state` | কোন ভিডিও কোথায় পোস্ট হলো | publish.yml |
+
+## স্ক্রিপ্ট দেওয়া
+`content` ব্রাঞ্চে `scripts` ফোল্ডারে `001.txt`, `002.txt` … নামে বাংলায় স্ক্রিপ্ট রাখুন (GitHub-এ **Add file → Create new file**, ব্রাঞ্চ `content`)। অথবা Claude-কে চ্যাটে দিন, সে রেখে দেবে। প্রতিটা প্রায় ৯০০ অক্ষরের মধ্যে (৯০ সেকেন্ড)। Claude নম্বর অনুযায়ী একটা একটা করে নেয়।
 
 ---
 
-## 🔒 নিরাপত্তা সেটআপ (একবারই, খুব জরুরি)
+## 🔒 একবারের সেটআপ (ক্রম অনুযায়ী)
 
-### ১. Secrets রাখবেন শুধু `production` Environment-এ
-**Settings → Environments → New environment → `production`**
-- **Deployment branches and tags → Selected branches → `main`** যোগ করুন। এতে অন্য কোনো ব্রাঞ্চের কোড Secrets পড়তে পারবে না।
-- এই Environment-এর ভেতরে **Add environment secret** দিয়ে নিচের ৮টা Secret রাখুন।
-- ⚠️ **Repository secrets-এ কিছু রাখবেন না।** ওগুলো যেকোনো ব্রাঞ্চ থেকে পড়া যায়।
+### ১. `production` Environment আর Secrets
+**Settings → Environments → `production`** (না থাকলে New environment)
+- **Deployment branches and tags → Selected branches and tags → Add rule → `main`**
+- এখানে **Add environment secret** দিয়ে রাখুন:
 
 | Secret | কোথা থেকে |
 |---|---|
-| `ELEVENLABS_API_KEY` | ElevenLabs → Developers → API keys। নতুন কী বানান: শুধু **Text to Speech** অনুমতি + মাসিক **character limit** দিন |
-| `YT_CLIENT_ID`, `YT_CLIENT_SECRET`, `YT_REFRESH_TOKEN` | Google Cloud + OAuth Playground (নিচে) |
-| `FB_PAGE_ID`, `FB_PAGE_TOKEN`, `FB_APP_SECRET` | Meta Business System User টোকেন + অ্যাপের App Secret |
+| `ELEVENLABS_API_KEY` | ElevenLabs → Developers → API keys → নতুন কী: শুধু **Text to Speech** অনুমতি + মাসিক **credit limit** |
+| `YT_CLIENT_ID`, `YT_CLIENT_SECRET`, `YT_REFRESH_TOKEN` | নিচের YouTube ধাপ |
+| `FB_PAGE_ID`, `FB_PAGE_TOKEN`, `FB_APP_SECRET` | নিচের Facebook ধাপ |
 | `BUFFER_API_KEY` | Buffer → Settings → API |
 
-### ২. `main` ব্রাঞ্চ লক করুন
-**Settings → Rules → Rulesets → New branch ruleset**
-- Target: `main`, Enforcement: **Active**
-- টিক দিন: **Restrict updates**, **Restrict deletions**, **Block force pushes**, **Require a pull request before merging**
-- **Bypass list**-এ শুধু নিজেকে (Repository admin) রাখুন।
+⚠️ **Repository secrets-এ কিছু রাখবেন না।** ওগুলো যেকোনো ব্রাঞ্চ পড়তে পারে।
 
-ফলে Claude বা অন্য কেউ ওয়ার্কফ্লো কোড বদলাতে পারবে না, পারবে শুধু `content` ব্রাঞ্চে স্ক্রিপ্ট রাখতে।
+### ২. GitHub Pages (Buffer ভিডিও এখান থেকে নেয়)
+**Settings → Pages → Build and deployment → Source: Deploy from a branch → `media` / `(root)` → Save**
 
-### ৩. GitHub-এর সুরক্ষা চালু রাখুন
-- **Settings → Code security → Secret Protection + Push protection: Enable** (কেউ ভুলে কী কমিট করলে আটকে দেয়)
-- **Settings → Actions → General → Fork pull request workflows: Require approval for all external contributors**
-- আপনার GitHub অ্যাকাউন্টে **Two-factor authentication** চালু করুন।
-- Claude GitHub App-কে শুধু এই একটা রিপোর অ্যাক্সেস দিন (All repositories না)।
+### ৩. Actions-এর ডিফল্ট অনুমতি কমান
+**Settings → Actions → General**
+- **Workflow permissions: Read repository contents and packages permissions**
+- **Fork pull request workflows: Require approval for all external contributors**
 
-### ৪. একটা কী ফাঁস হলেও যেন পোস্ট করা না যায়
-- **Facebook:** developers.facebook.com → আপনার অ্যাপ → **App settings → Advanced → Require app secret: ON**। এখন শুধু টোকেন দিয়ে কিছু করা যায় না, App Secret-ও লাগে (কোড দুটোই আলাদা Secret থেকে নেয়)।
-- **YouTube:** Refresh token একা কাজ করে না, Client Secret-ও লাগে। আর অনুমতি শুধু **`youtube.upload`** নিন, এতে ভিডিও মোছা বা চ্যানেল বদলানো যায় না।
-- **ElevenLabs:** শুধু TTS অনুমতি আর character limit, তাই কী ফাঁস হলেও শুধু ঐ লিমিট পর্যন্ত ক্রেডিট খরচ হতে পারে; কোথাও পোস্ট করা যায় না।
-- **সন্দেহ হলে সাথে সাথে বাতিল করুন:** Google → myaccount.google.com/permissions · Facebook → System user টোকেন Revoke · Buffer → API key delete · ElevenLabs → key delete। তারপর নতুন কী Secret-এ বসান।
+### ৪. `main` লক করুন (সবশেষে, Claude-এর সেটআপ শেষ হলে)
+**Settings → Rules → Rulesets → New branch ruleset**: Target `main` · Enforcement **Active** ·
+**Restrict updates**, **Restrict deletions**, **Block force pushes**, **Require a pull request before merging (1 approval)** ·
+**Bypass list খালি রাখুন।** এরপর কেউ (Claude-ও) ওয়ার্কফ্লো কোড বদলাতে পারবে না; নিজে বদলাতে চাইলে Ruleset সাময়িক বন্ধ করবেন।
+
+### ৫. অ্যাকাউন্ট সুরক্ষা
+- GitHub, Google, Facebook, Buffer, ElevenLabs — সবগুলোতে **Two-factor authentication**।
+- **Settings → Code security → Secret Protection + Push protection: Enable**।
+- Claude GitHub App-কে শুধু `posting` রিপোর অ্যাক্সেস দিন।
 
 ---
 
-## প্ল্যাটফর্ম কানেকশন
+## প্ল্যাটফর্ম কী নেওয়া
 
-### YouTube
+### YouTube (শুধু আপলোডের অনুমতি)
 1. console.cloud.google.com → নতুন প্রজেক্ট → **YouTube Data API v3** Enable
-2. Google Auth Platform → Branding (নাম, ইমেইল) → Audience: **External** → **Publish app (In production)**
-3. Clients → **Web application** → Redirect URI: `https://developers.google.com/oauthplayground`
-4. developers.google.com/oauthplayground → ⚙️ **Use your own OAuth credentials** → শুধু `https://www.googleapis.com/auth/youtube.upload` সিলেক্ট → Authorize → **Exchange** → Refresh token
-5. কাস্টম থাম্বনেইলের জন্য youtube.com/verify-এ চ্যানেল ভেরিফাই
+2. Google Auth Platform → Branding → Audience: **External** → **Publish app (In production)** (Testing-এ রাখলে ৭ দিনে কানেকশন বাতিল)
+3. Clients → **Web application** → Redirect URI `https://developers.google.com/oauthplayground`
+4. developers.google.com/oauthplayground → ⚙️ **Use your own OAuth credentials** → **শুধু** `https://www.googleapis.com/auth/youtube.upload` → Authorize → Exchange → **Refresh token**
+5. থাম্বনেইলের জন্য youtube.com/verify-এ চ্যানেল ভেরিফাই
 
 ### Facebook Page
-1. developers.facebook.com → Create App → use case **"Manage everything on your Page"**
-2. business.facebook.com → Settings → **System users** → Admin system user → Assign assets: Exportain Page
-3. **Generate token** → অ্যাপ বেছে নিন → `pages_show_list`, `pages_read_engagement`, `pages_manage_posts` → Expiry: **Never**
-4. App settings → Basic → **App secret** কপি করে `FB_APP_SECRET`-এ রাখুন
+1. developers.facebook.com → Create App → **Manage everything on your Page**
+2. **App settings → Advanced → Require app secret: ON** (টোকেন ফাঁস হলেও App Secret ছাড়া কাজ করবে না)
+3. business.facebook.com → Settings → **System users** → Admin → Assign assets: আপনার Page
+4. **Generate token** → Expiry **Never** → অনুমতি: `pages_show_list`, `pages_read_engagement`, `pages_manage_posts`, আর থাম্বনেইলের জন্য `pages_read_user_content`, `pages_manage_engagement`
+5. App settings → Basic → **App secret** → `FB_APP_SECRET`
 
-### TikTok (Buffer দিয়ে)
-Buffer-এ TikTok (Business/Creator অ্যাকাউন্ট) কানেক্ট করুন। আলাদা কোনো সেটিং লাগবে না।
+### TikTok
+Buffer-এ TikTok (Business/Creator) কানেক্ট করুন। Buffer-এ কাস্টম থাম্বনেইল হয় না, তাই ভিডিওর প্রথম ফ্রেমটাই কভার।
 
 ---
 
-## চালানো ও পরীক্ষা
-- **Actions → Produce and schedule reels → Run workflow → Dry run ✅**: শুধু ভিডিও বানায়, কিছু পোস্ট করে না। ভিডিওটা রানের নিচে `preview` হিসেবে ডাউনলোড করা যায়।
-- Dry run ছাড়া চালালে আসল পোস্ট শিডিউল হয়।
-- সেটিং বদলাতে `config.json` দেখুন (পোস্টের সময়, ভয়েস, মডেল ইত্যাদি)।
+## কী ফাঁস হলে কী হয়, কী করবেন
+| কী | একা ফাঁস হলে | বাতিল করুন |
+|---|---|---|
+| ElevenLabs | শুধু আপনার দেওয়া credit limit পর্যন্ত TTS; কোথাও পোস্ট করা যায় না | ElevenLabs → API keys → Delete |
+| YouTube refresh token | Client Secret ছাড়া অকেজো; থাকলেও শুধু আপলোড, মোছা যায় না | myaccount.google.com/permissions |
+| Facebook page token | App Secret ছাড়া অকেজো (Require app secret ON) | System user → Revoke tokens |
+| Buffer | Buffer-এ পোস্ট করা যায় | Buffer → API → Delete key |
 
-স্ক্রিপ্ট লেখার নিয়ম: [`CONTENT_GUIDE.md`](CONTENT_GUIDE.md)
+নতুন কী বানিয়ে একই নামে Secret আপডেট করলেই সিস্টেম আবার চলবে।
+
+## পরীক্ষা (Claude চালায়)
+- `publish.yml` **check**: শুধু লগইনগুলো আর ভিডিও ফাইল যাচাই, কিছু পোস্ট হয় না
+- `publish.yml` **private**: YouTube private + Facebook draft (প্রথম আসল পরীক্ষা)
+- `voice.yml` **test_tone**: ElevenLabs ছাড়া পুরো পথ পরীক্ষা, ক্রেডিট খরচ নেই
+
+Claude-এর প্রতিদিনের কাজের নিয়ম: [`DAILY_TASK.md`](DAILY_TASK.md)
