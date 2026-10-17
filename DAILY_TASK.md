@@ -27,6 +27,9 @@ cd /home/claude/posting && python3 tools/studio.py status
 Read the skill's `SKILL.md`, `references/exportain-brand.md`, `references/writing-rules.md`,
 `references/scene-engine-16x9.md` (and `helpers-api.md` for lookups); study `examples/prod/js` (closest reference).
 
+Then, every run, first: `python3 tools/studio.py ig slots` (starts the Instagram job that posts any already-delivered
+video due in the next ~5 h at its exact slot; returns immediately).
+
 `status` prints `next_script`, `scripts_left`, `free_slots`, `pending_videos`, `recent_errors`.
 - No free slots → nothing to build; go to step 6.
 - **Exactly one video per run, for the earliest free slot** (`free_slots[0]`), with `next_script`. Two runs a day
@@ -107,7 +110,8 @@ own meta.json separate, e.g. save this one as `$P/post.json` and pass it as belo
  "facebook": {"title": "≤ 100 chars", "description": "hook, value, bullets, CTA, exactly 5 hashtags, no URL"},
  "tiktok":   {"caption": "hook + value + CTA, 15-20 relevant hashtags incl. #FYP #ForYou, no URL"},
  "linkedin": {"text": "ENGLISH, ≤ 2,900 chars, professional, 3-5 hashtags, no URL"},
- "twitter":  {"text": "ENGLISH, ≤ 275 weighted chars, 0-2 hashtags, no URL (X gets a 2:15 teaser)"}}
+ "twitter":  {"text": "ENGLISH, ≤ 275 weighted chars, 0-2 hashtags, no URL (X gets a 2:15 teaser)"},
+ "instagram": {"caption": "Bangla, hook first line, value bullets, CTA, exactly 5 hashtags, no URL, ≤ 2,200 chars (Reel)"}}
 ```
 Never reuse identical text across platforms.
 
@@ -115,6 +119,7 @@ Never reuse identical text across platforms.
 ```bash
 python3 tools/studio.py deliver <EP> $P --mode live --meta post.json
 ```
+Instagram: deliver also makes the 9:16 cover and starts the Instagram job, which posts the Reel at the slot.
 It checks the files (16:9, 180–300 s, thumbnail ≤ 2 MB, texts within limits), makes the X teaser, puts everything on the
 `media` branch (GitHub Pages serves it to Buffer), runs `publish.yml` and prints what was scheduled on each platform.
 A platform error is retried by the next deliver/publish while the slot is ≥ 15 min away; run

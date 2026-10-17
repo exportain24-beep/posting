@@ -119,7 +119,14 @@ def push_branch(d, branch, message, squash=False):
         git("push", "--force", "origin", f"{commit}:refs/heads/{branch}", cwd=d)
     else:
         git(*ident, "commit", "-q", "-m", message, cwd=d)
-        git("push", "origin", f"HEAD:refs/heads/{branch}", cwd=d)
+        for i in range(5):           # another job may have pushed meanwhile (different files): rebase and retry
+            if subprocess.run(["git", "push", "origin", f"HEAD:refs/heads/{branch}"], cwd=d,
+                              capture_output=True).returncode == 0:
+                break
+            git("fetch", "-q", "origin", branch, cwd=d)
+            git(*ident, "rebase", "-q", f"origin/{branch}", cwd=d)
+        else:
+            raise RuntimeError(f"push to {branch} failed after retries")
     return True
 
 

@@ -7,6 +7,7 @@
   studio.py deliver EP DIR [--mode M] [--meta post.json]  push DIR/final.mp4 + thumb.jpg + meta.json (+captions.srt) to media, run Publish
   studio.py publish MODE                   run Publish only (check | private | live)
   studio.py pages                          make sure GitHub Pages serves the media branch
+  studio.py ig MODE [EP]                   Instagram job: check | slots (fire and forget) | now EP (waits)
   studio.py styles                         last 12 entries of the visual style log (read before designing)
   studio.py log-style EP "TEXT"            append what this video looked like + lessons learned
 
@@ -28,6 +29,23 @@ def gh(*args, check=True):
     if check and r.returncode:
         raise SystemExit(f"gh api {args[0]} failed: {(r.stderr or r.stdout).strip()[:400]}")
     return json.loads(r.stdout) if r.stdout.strip().startswith(("{", "[")) else r.stdout
+
+
+def dispatch(wf, inputs):
+    """Start a workflow and return at once (Instagram waits on the runner until the slot)."""
+    args = ["-X", "POST", f"repos/{REPO}/actions/workflows/{wf}/dispatches", "-f", "ref=main"]
+    for k, v in inputs.items():
+        args += ["-f", f"inputs[{k}]={v}"]
+    gh(*args)
+    print(f"{wf}: started {inputs}")
+
+
+def ig_cover(thumb, out):
+    """9:16 cover for Instagram: the 16:9 thumbnail centred on a blurred copy of itself."""
+    subprocess.check_call(["ffmpeg", "-y", "-loglevel", "error", "-i", thumb, "-filter_complex",
+                           "[0]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=30:3,"
+                           "eq=brightness=0.06[bg];[0]scale=1080:-2[fg];[bg][fg]overlay=0:(H-h)/2",
+                           "-frames:v", "1", "-q:v", "3", out])
 
 
 def run_workflow(wf, inputs, timeout_min=40):
@@ -183,12 +201,19 @@ def cmd_deliver(ep, d, mode, meta_name="meta.json"):
     srt = os.path.join(d, "captions.srt")
     if os.path.isfile(srt):
         shutil.copy(srt, v + ".srt")
+    if CFG["platforms"].get("instagram", {}).get("enabled"):
+        ig_cover(thumb, v + "_ig.jpg")
     if CFG["platforms"]["buffer"].get("twitter", {}).get("enabled"):
         make_teaser(mp4, v + "_x.mp4", CFG["video_limits"]["x_teaser_seconds"])
     json.dump(meta, open(v + ".json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     push_branch(md, "media", f"video {ep}", squash=True)
     print("media pushed")
     ok, _ = run_workflow("publish.yml", {"mode": mode})
+    if CFG["platforms"].get("instagram", {}).get("enabled"):
+        if mode == "now":
+            ok = run_workflow("ig.yml", {"mode": "now", "episode": ep}, timeout_min=45)[0] and ok
+        elif mode == "live":
+            dispatch("ig.yml", {"mode": "slots"})
     st = load_state()["posts"].get(ep)
     print(json.dumps(st, ensure_ascii=False, indent=1) if st else "(no state record)")
     return 0 if ok else 1
@@ -238,6 +263,12 @@ def main():
         return 0 if ok else 1
     elif c == "pages":
         cmd_pages()
+    elif c == "ig":
+        if a[1] == "slots":
+            dispatch("ig.yml", {"mode": "slots"})
+        else:
+            ok, _ = run_workflow("ig.yml", {"mode": a[1], "episode": a[2] if len(a) > 2 else ""}, timeout_min=45)
+            return 0 if ok else 1
     elif c == "styles":
         cmd_styles()
     elif c == "log-style":

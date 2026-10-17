@@ -1,0 +1,46 @@
+name: Instagram (Reels at slot time)
+
+# Started by Claude (studio.py ig / deliver) through the GitHub API. No timer, no pull_request trigger.
+# Instagram's API cannot schedule, so this job waits on the runner and publishes at the exact slot.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "check = find the account only, slots = post every video due in the next ~5 h 45 min at its slot, now = post EPISODE immediately"
+        type: choice
+        options: [check, slots, now]
+        default: check
+      episode:
+        description: "episode id (mode now only)"
+        type: string
+        default: ""
+
+permissions: {}
+
+concurrency:
+  group: instagram
+  cancel-in-progress: false
+
+jobs:
+  instagram:
+    if: github.repository_owner == 'exportain24-beep' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 355
+    environment: production
+    permissions:
+      contents: write          # to record results on the 'state' branch
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          fetch-depth: 1
+      - name: Install ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg > /dev/null
+      - name: Instagram
+        env:
+          MODE: ${{ inputs.mode }}
+          EPISODE: ${{ inputs.episode }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          FB_APP_SECRET: ${{ secrets.FB_APP_SECRET }}
+        run: python3 scripts/instagram.py
