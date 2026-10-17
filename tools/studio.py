@@ -7,6 +7,8 @@
   studio.py deliver EP DIR [--mode M] [--meta post.json]  push DIR/final.mp4 + thumb.jpg + meta.json (+captions.srt) to media, run Publish
   studio.py publish MODE                   run Publish only (check | private | live)
   studio.py pages                          make sure GitHub Pages serves the media branch
+  studio.py styles                         last 12 entries of the visual style log (read before designing)
+  studio.py log-style EP "TEXT"            append what this video looked like + lessons learned
 
 Results of every GitHub run are read back from the run's annotations.
 """
@@ -201,6 +203,21 @@ def cmd_pages():
     print("enable Pages:", (r.stdout or r.stderr).strip()[:300])
 
 
+def cmd_styles():
+    p = os.path.join(branch_dir("content"), "style_log.md")
+    lines = open(p, encoding="utf-8").read().strip().split("\n## ") if os.path.isfile(p) else []
+    print(("## " + "\n## ".join(lines[-12:])) if lines else "(no style log yet)")
+
+
+def cmd_log_style(ep, text):
+    cd = branch_dir("content")
+    p = os.path.join(cd, "style_log.md")
+    with open(p, "a", encoding="utf-8") as f:
+        f.write(f"\n## {ep} ({datetime.now(TZ):%Y-%m-%d %H:%M})\n{text.strip()}\n")
+    push_branch(cd, "content", f"style log {ep}")
+    print("style logged")
+
+
 def main():
     a = sys.argv[1:]
     if not a:
@@ -221,6 +238,10 @@ def main():
         return 0 if ok else 1
     elif c == "pages":
         cmd_pages()
+    elif c == "styles":
+        cmd_styles()
+    elif c == "log-style":
+        cmd_log_style(a[1], a[2])
     else:
         print(__doc__); return 2
     return 0

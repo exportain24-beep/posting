@@ -60,6 +60,22 @@ Never re-run for unchanged text (charges again). If it fails, read the notes; fi
 Check the real total: sum(durations) + gaps + 2.5 s end card + 0.5 s cover frame must land in 180–300 s; if not,
 trim/extend the narration (changed scenes only are re-voiced).
 
+## 2b. Design brief — make every video different and better (owner's standing order)
+Before drawing anything: `python3 tools/studio.py styles` (what the last videos looked like + lessons). Then decide a
+**fresh visual concept that comes from THIS script's subject** and write it down (3–5 lines) before the scenes:
+- **Metaphor / world** taken from the topic (e.g. packaging → a factory line with boxes moving; payment → money
+  travelling bank to bank on a map; documents → a desk with papers flying into folders; pricing → a scale/calculator;
+  buyers → a world map with routes and chat bubbles). Never reuse the previous video's main metaphor.
+- **Layout recipe mix**: vary card grids, full-width diagrams, maps, timelines, split-screen before/after, flow
+  charts, phone/browser mockups, stacked counters, character close-ups — at least 6 different recipes per video and
+  never the same opening layout two videos in a row.
+- **Rotate** the background order, the accent colour emphasis (within brand colours), the character (person kinds
+  `s g n a`, woman2, new ones in `2e_extra.js`), and the motion style (slide, orbit, draw-on lines, counters, zooms).
+- **New art every video**: at least 3 new drawings in `js/2e_extra.js` that belong to this topic.
+- Keep all fixed brand rules (logo badge, road-map, title cards, Exportain scene, CTA, end card, colours, QA gates).
+After delivering, log it: `python3 tools/studio.py log-style <EP> "concept: …; recipes: …; new art: …; what looked
+best / what to improve next time: …"` — honest lessons, so the next run improves on it.
+
 ## 3. Video (skill TURN 2) — 16:9, illustrated, the owner's house style
 ```bash
 bash $S/tools/new_project.sh $P <pfx> "লেবেল১|লেবেল২|লেবেল৩|লেবেল৪|লেবেল৫"    # in the same $P (keeps narration/vo)
@@ -103,6 +119,12 @@ It checks the files (16:9, 180–300 s, thumbnail ≤ 2 MB, texts within limits)
 `media` branch (GitHub Pages serves it to Buffer), runs `publish.yml` and prints what was scheduled on each platform.
 A platform error is retried by the next deliver/publish while the slot is ≥ 15 min away; run
 `python3 tools/studio.py publish live` once more at the end if anything failed.
+
+## 5b. On time, every time
+The slot is fixed. Budget: research+narration ≤ 25 min, voice ≤ 10 min, scenes+QA ≤ 45 min, render ≈ 25 min,
+deliver ≈ 10 min. Start the render the moment QA is clean; while it renders write post.json and the thumbnail
+plan. Never skip QA gates or length rules to save time — if it truly cannot make the slot, schedule it for the next
+free slot (the series stays in order and nothing is posted late).
 
 ## 6. Report (final message)
 Short Bangla summary: videos scheduled (slot, title, length, platforms), scripts left, failures with reason and what the
