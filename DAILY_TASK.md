@@ -106,11 +106,18 @@ Gates from the skill: 0 frozen > 2.5 s, ≈ −13.5…−14 LUFS, peak ≤ −1.
 road-map, title cards, "কাল্পনিক চরিত্র" pill, "উদাহরণ" on invented data, brand colours only, varied style per video.
 Never caption/text slides. Output: `$P/out/<Name_16x9>.mp4` + `.srt`.
 
-## 4. Thumbnail, final file, captions/SEO
+## 4. Thumbnails (one per platform), final file, captions/SEO
+**Owner's standing order (Oct 2026):** thumbnails must be HEAVILY colourful and eye-catching (orange, red, pink,
+blue, green, purple… vivid gradients, big bold headline with one highlighted word, a real frame from the video in a
+white-bordered card), every platform a different colour, colours different from the last video. Logo always the
+branded way — the green "e" icon + white EXPORTAIN wordmark, **never on a white box/pill**. Formats: **YouTube and
+LinkedIn 16:9**; **Facebook, Instagram, TikTok and X 9:16** (deliver makes the 9:16 video copies for them).
+Write `$P/thumbs.json` (format in the header of `tools/thumbs.py`: Bangla headlines for yt/fb/tt, ENGLISH for li,
+"|" = line break, `*word*` = highlight, `t` = second of the video for the picture, `v.title` = short title on the
+9:16 frame), then:
 ```bash
-ffmpeg -y -ss <strong moment> -i $P/out/<Name_16x9>.mp4 -frames:v 1 $P/still.jpg
-python3 tools/cover.py --size 1280x720 --headline "<4-6 words, one *highlight*>" --chip "<series>" --badge "<short hook>" \
-  --bg $P/still.jpg --out $P/thumb.jpg                                   # read it: readable at phone size
+python3 tools/thumbs.py <EP> $P --video $P/out/<Name_16x9>.mp4   # thumb.jpg, thumb_li.jpg, thumb_fb.jpg, thumb_tt.jpg, vframe.jpg
+# Read every one: readable at phone size, headline not clipped, picture shows the topic; fix thumbs.json and re-run
 python3 tools/cover.py --prepend $P/thumb.jpg --video $P/out/<Name_16x9>.mp4 --out $P/final.mp4 --hold 0.5
 ```
 **SEO first:** `keyword-research` skill for the topic (Bangla + Banglish + English, Bangladesh). Then write every
@@ -134,7 +141,9 @@ Never reuse identical text across platforms.
 ```bash
 python3 tools/studio.py deliver <EP> $P --mode live --meta post.json
 ```
-Instagram: deliver also makes the 9:16 cover and starts the Instagram job, which posts the Reel at the slot.
+With the thumbs.py files present, deliver also makes the platform copies (≈ 8 min): 9:16 Facebook/Instagram copy
+(Facebook cover first), 9:16 TikTok copy (TikTok cover first — Buffer uses the first frame), 16:9 LinkedIn copy
+(LinkedIn cover first) and the X teaser from the 9:16 copy; then it starts the Instagram job, which posts the Reel at the slot.
 It checks the files (16:9, 180–300 s, thumbnail ≤ 2 MB, texts within limits), makes the X teaser, puts everything on the
 `media` branch (GitHub Pages serves it to Buffer), runs `publish.yml` and prints what was scheduled on each platform.
 A platform error is retried by the next deliver/publish while the slot is ≥ 15 min away; run

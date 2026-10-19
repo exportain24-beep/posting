@@ -54,6 +54,33 @@ def ig_mp4(src, out):
                            "-ar", "48000", "-ac", "2", "-movflags", "+faststart", out])
 
 
+COVER_HOLD = 0.5   # seconds of cover at the start of final.mp4 (cover.py --prepend --hold 0.5)
+
+
+def vertical(src, cover, vframe, out, hold=COVER_HOLD):
+    """9:16 copy for Facebook / Instagram / TikTok / X: the 16:9 video (its own cover cut off) in the middle of the
+    colourful vframe.jpg, with the platform's 9:16 cover as the first frames (TikTok/Buffer takes the first frame)."""
+    subprocess.check_call([
+        "ffmpeg", "-y", "-loglevel", "error", "-loop", "1", "-t", str(hold), "-framerate", "30", "-i", cover,
+        "-loop", "1", "-framerate", "30", "-i", vframe, "-ss", str(hold), "-i", src, "-filter_complex",
+        "[2:v]scale=1080:608,setsar=1[v];[1:v]scale=1080:1920,setsar=1[bg];[bg][v]overlay=0:656:shortest=1,"
+        "format=yuv420p[m];[0:v]scale=1080:1920,setsar=1,format=yuv420p[c];[c][m]concat=n=2:v=1:a=0[vo];"
+        f"[2:a]adelay={int(hold*1000)}|{int(hold*1000)}[ao]",
+        "-map", "[vo]", "-map", "[ao]", "-c:v", "libx264", "-crf", "21", "-preset", "veryfast", "-r", "30",
+        "-c:a", "aac", "-b:a", "128k", "-ar", "48000", "-ac", "2", "-movflags", "+faststart", out])
+
+
+def recover(src, cover, out, hold=COVER_HOLD):
+    """Same 16:9 video with a different cover in the first frames (LinkedIn copy)."""
+    subprocess.check_call([
+        "ffmpeg", "-y", "-loglevel", "error", "-loop", "1", "-t", str(hold), "-framerate", "30", "-i", cover,
+        "-ss", str(hold), "-i", src, "-filter_complex",
+        "[0:v]scale=1920:1080,setsar=1,format=yuv420p[c];[1:v]scale=1920:1080,setsar=1,format=yuv420p[v];"
+        f"[c][v]concat=n=2:v=1:a=0[vo];[1:a]adelay={int(hold*1000)}|{int(hold*1000)}[ao]",
+        "-map", "[vo]", "-map", "[ao]", "-c:v", "libx264", "-crf", "21", "-preset", "veryfast", "-r", "30",
+        "-c:a", "aac", "-b:a", "160k", "-ar", "48000", "-movflags", "+faststart", out])
+
+
 def run_workflow(wf, inputs, timeout_min=40):
     t0 = datetime.now(timezone.utc) - timedelta(seconds=15)
     args = ["-X", "POST", f"repos/{REPO}/actions/workflows/{wf}/dispatches", "-f", "ref=main"]
@@ -184,6 +211,10 @@ def cmd_deliver(ep, d, mode, meta_name="meta.json"):
     meta["id"] = ep
     mp4, thumb = os.path.join(d, "final.mp4"), os.path.join(d, "thumb.jpg")
     errs = validate_meta(meta, f"{ep}.json") + validate_files(mp4, thumb)
+    for f in ("thumb_li.jpg", "thumb_fb.jpg", "thumb_tt.jpg"):
+        p = os.path.join(d, f)
+        if os.path.isfile(p) and os.path.getsize(p) > CFG["video_limits"]["thumb_max_mb"] * 1e6:
+            errs.append(f"{f} larger than 2 MB")
     if mode == "now":
         meta["slot"] = (datetime.now(timezone.utc) + timedelta(hours=1)).astimezone(TZ).isoformat(timespec="minutes")
     if parse_slot(meta["slot"]) < datetime.now(timezone.utc) + timedelta(minutes=20):
@@ -207,11 +238,22 @@ def cmd_deliver(ep, d, mode, meta_name="meta.json"):
     srt = os.path.join(d, "captions.srt")
     if os.path.isfile(srt):
         shutil.copy(srt, v + ".srt")
-    if CFG["platforms"].get("instagram", {}).get("enabled"):
-        ig_cover(thumb, v + "_ig.jpg")
-        ig_mp4(mp4, v + "_ig.mp4")
+    th = {k: os.path.join(d, f) for k, f in (("li", "thumb_li.jpg"), ("fb", "thumb_fb.jpg"), ("tt", "thumb_tt.jpg"),
+                                             ("vf", "vframe.jpg"))}
+    if all(os.path.isfile(p) for p in th.values()):   # per-platform covers (tools/thumbs.py): 9:16 for FB/IG/TikTok/X
+        print("making platform copies: 9:16 (Facebook/Instagram, TikTok, X) + 16:9 LinkedIn …")
+        vertical(mp4, th["fb"], th["vf"], v + "_ig.mp4")          # Facebook + Instagram
+        vertical(mp4, th["tt"], th["vf"], v + "_tt.mp4")          # TikTok
+        recover(mp4, th["li"], v + "_li.mp4")                     # LinkedIn
+        shutil.copy(th["fb"], v + "_fb.jpg"); shutil.copy(th["fb"], v + "_ig.jpg")
+        x_src = v + "_ig.mp4"
+    else:
+        if CFG["platforms"].get("instagram", {}).get("enabled"):
+            ig_cover(thumb, v + "_ig.jpg")
+            ig_mp4(mp4, v + "_ig.mp4")
+        x_src = mp4
     if CFG["platforms"]["buffer"].get("twitter", {}).get("enabled"):
-        make_teaser(mp4, v + "_x.mp4", CFG["video_limits"]["x_teaser_seconds"])
+        make_teaser(x_src, v + "_x.mp4", CFG["video_limits"]["x_teaser_seconds"])
     json.dump(meta, open(v + ".json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     push_branch(md, "media", f"video {ep}", squash=True)
     print("media pushed")

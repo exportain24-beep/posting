@@ -137,7 +137,7 @@ def fb_check():
 
 
 def fb_publish(meta, mp4, jpg, slot, mode):
-    """3-5 min 16:9 video -> regular Page video (Reels are limited to 90 s), with title, description,
+    """3-5 min video (9:16 copy when present, else 16:9) -> regular Page video (Reels are limited to 90 s), with title, description,
     custom thumbnail (thumb), scheduled publish, and Bangla subtitles when allowed."""
     page, auth, proof, g = fb_auth()
     f = meta["facebook"]
@@ -260,6 +260,10 @@ def buffer_publish(platform, meta, mp4, slot, mode):
         mp4 = mp4[:-4] + "_x.mp4"
         if not os.path.isfile(mp4):
             raise RuntimeError("X teaser file missing")
+    elif platform in ("tiktok", "linkedin"):      # own copy whose first frame is that platform's cover
+        own = mp4[:-4] + ("_tt.mp4" if platform == "tiktok" else "_li.mp4")
+        if os.path.isfile(own):
+            mp4 = own
     url = f"{CFG['pages_base_url']}/v/{os.path.basename(mp4)}"
     if _public_bad:
         raise RuntimeError(_public_bad[0])
@@ -365,8 +369,11 @@ def main():
             try:
                 if p == "youtube":
                     pid, info = attempt(yt_publish, meta, mp4, jpg, slot, m)
-                elif p == "facebook":
-                    pid, info = attempt(fb_publish, meta, mp4, jpg, slot, m)
+                elif p == "facebook":                       # 9:16 copy + 9:16 cover when tools/thumbs.py made them
+                    fv, fj = mp4[:-4] + "_ig.mp4", mp4[:-4] + "_fb.jpg"
+                    vert = os.path.isfile(fv) and os.path.isfile(fj)
+                    pid, info = attempt(fb_publish, meta, fv if vert else mp4, fj if vert else jpg, slot, m)
+                    info += ", 9:16" if vert else ""
                 else:
                     pid, info = attempt(buffer_publish, p, meta, mp4, slot, m)
                     if pid is None:
