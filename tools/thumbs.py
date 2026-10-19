@@ -16,6 +16,11 @@ thumbs.json (all keys optional except headlines; "|" = line break, *word* = high
  "fb": {"headline": "টুপির আয়|সাইকেলের|*৩ গুণ!*", "chip": "বিস্ময়কর রপ্তানি পণ্য", "t": 66.5},
  "tt": {"headline": "টুপি vs সাইকেল|*কে জিতল?*", "chip": "আয় প্রায় ৩ গুণ!", "t": 76},
  "v":  {"title": "টুপি রপ্তানি সাইকেলের ৩ গুণ!", "sub": "বিস্ময়কর রপ্তানি পণ্য তালিকা"}}
+Optional per platform (yt/li/fb/tt): "size" (headline px; defaults yt 100, li 74, fb/tt 140), "pal" (palette index),
+"stickers": [{"t": 31, "crop": [620,330,330,330], "x": 900, "y": 60, "w": 260, "r": -6, "round": 200}]  (a crop of a
+video frame in 1920x1080 coords, e.g. the story character's face — round 200 = circle), "bursts": [{"text": "৩×",
+"x": 980, "y": 420, "d": 230, "bg": "#ffe600", "fg": "#d00", "size": 90, "r": -10}] (starburst), "art": "<raw HTML/SVG>"
+(own drawing for the topic, absolutely positioned).
 Each platform gets a different vivid palette; the palette set rotates with the episode number,
 so consecutive videos never share colours. Read every output (Read tool) before delivering.
 """
@@ -70,10 +75,15 @@ def css(p):
 .logo .wd{{height:.38em;filter:drop-shadow(0 4px 10px rgba(0,0,0,.35))}}
 .frame{{position:absolute;overflow:hidden;border:10px solid #fff;box-shadow:0 18px 50px rgba(0,0,0,.35)}}
 .frame img{{width:100%;height:100%;object-fit:cover;display:block}}
-.h{{position:absolute;color:#fff;text-shadow:0 6px 0 {sh}}}
+.h{{position:absolute;color:#fff;text-shadow:0 7px 0 {sh},0 0 26px rgba(0,0,0,.28);letter-spacing:-.5px}}
 .hl{{background:{hb};color:{hf};padding:0 14px;border-radius:14px;white-space:nowrap;text-shadow:none;display:inline-block}}
 .chip{{position:absolute;background:{cb};color:{cf};border-radius:999px;white-space:nowrap}}
-.blob{{position:absolute;border-radius:50%;background:rgba(255,255,255,.17)}}"""
+.blob{{position:absolute;border-radius:50%;background:rgba(255,255,255,.17)}}
+.burst{{position:absolute;display:flex;align-items:center;justify-content:center;text-align:center;background:#fff;color:#111;
+  clip-path:polygon(50% 0,61% 13%,77% 6%,80% 22%,96% 24%,89% 39%,100% 50%,89% 61%,96% 76%,80% 78%,77% 94%,61% 87%,50% 100%,39% 87%,23% 94%,20% 78%,4% 76%,11% 61%,0 50%,11% 39%,4% 24%,20% 22%,23% 6%,39% 13%)}}
+.stk{{position:absolute;overflow:hidden;border:9px solid #fff;box-shadow:0 14px 40px rgba(0,0,0,.4)}}
+.stk img{{position:absolute;display:block}}
+.spark{{position:absolute;color:#fff;font:800 60px P;text-shadow:0 0 18px rgba(255,255,255,.8)}}"""
 
 
 def page(w, h, p, body):
@@ -89,29 +99,49 @@ def build(ep, d, video, spec):
     tmp = tempfile.mkdtemp()
     img = lambda k, dflt: frame_at(video, spec.get(k, {}).get("t", dflt), os.path.join(tmp, f"{k}.jpg"))
     yt, li, fb, tt, v = (spec.get(k, {}) for k in ("yt", "li", "fb", "tt", "v"))
+    for k, c in (("yt", yt), ("li", li), ("fb", fb), ("tt", tt)):
+        if "pal" in c:
+            pal[("yt", "li", "fb", "tt").index(k)] = PAL[int(c["pal"]) % len(PAL)]
+    fz = lambda c, dflt: c.get("size", dflt)
+
+    def extras(k):
+        """stickers (crops of video frames, e.g. a character's face) + free HTML/SVG art drawn for this topic"""
+        c, out = spec.get(k, {}), []
+        for i, st in enumerate(c.get("stickers", [])):
+            src = frame_at(video, st.get("t", 12), os.path.join(tmp, f"{k}_s{i}.jpg"))
+            cx, cy, cw, chh = st.get("crop", [0, 0, 1920, 1080]); w = st.get("w", 300); sc = w / cw; h = chh * sc
+            out.append(f'<div class=stk style="left:{st.get("x", 0)}px;top:{st.get("y", 0)}px;width:{w + 18}px;height:{h + 18:.0f}px;'
+                       f'border-radius:{st.get("round", 40)}px;transform:rotate({st.get("r", 0)}deg)"><img src="{src}" '
+                       f'style="left:{-cx * sc:.0f}px;top:{-cy * sc:.0f}px;width:{1920 * sc:.0f}px"></div>')
+        for b in c.get("bursts", []):
+            out.append(f'<div class=burst style="left:{b["x"]}px;top:{b["y"]}px;width:{b.get("d", 220)}px;height:{b.get("d", 220)}px;'
+                       f'background:{b.get("bg", "#fff")};color:{b.get("fg", "#111")};font:800 {b.get("size", 52)}px/1.05 P,B;'
+                       f'transform:rotate({b.get("r", -8)}deg)">{head(b["text"])}</div>')
+        out.append(c.get("art", ""))
+        return "\n".join(out)
     cards = {}
     cards["thumb.jpg"] = (1280, 720, pal[0], f"""<div class=blob style="width:900px;height:900px;right:-330px;top:-260px"></div>
 <div class=frame style="right:40px;top:120px;width:560px;height:480px;border-radius:36px;transform:rotate(3deg)"><img src="{img('yt', 12)}"></div>
 {logo('left:46px;top:36px', 87)}
-<div class=h style="left:50px;top:165px;width:670px;font:800 84px/1.2 B,P">{head(yt.get('headline', ''))}</div>
+<div class=h style="left:50px;top:165px;width:700px;font:800 {fz(yt, 100)}px/1.15 B,P">{head(yt.get('headline', ''))}</div>{extras('yt')}
 {f'<div class=chip style="left:50px;bottom:46px;font:800 40px B,P;padding:10px 28px">{html.escape(yt["chip"])}</div>' if yt.get('chip') else ''}
 {f'<div style="position:absolute;right:70px;bottom:40px;background:#fff;color:#111;font:800 56px P,B;padding:4px 26px;border-radius:20px;transform:rotate(-4deg);box-shadow:0 10px 26px rgba(0,0,0,.3)">{html.escape(yt["badge"])}</div>' if yt.get('badge') else ''}""")
     cards["thumb_li.jpg"] = (1280, 720, pal[1], f"""<div class=blob style="left:-160px;bottom:-240px;width:640px;height:640px"></div>
 <div class=frame style="right:46px;top:100px;width:600px;height:520px;border-radius:28px"><img src="{img('li', 12)}"></div>
 {logo('left:46px;top:36px', 81)}
-<div class=h style="left:52px;top:160px;width:570px;font:800 66px/1.18 P">{head(li.get('headline', ''))}</div>
+<div class=h style="left:52px;top:160px;width:590px;font:800 {fz(li, 74)}px/1.12 P">{head(li.get('headline', ''))}</div>{extras('li')}
 {f'<div class=h style="left:52px;top:440px;width:560px;font:800 32px/1.35 P;text-shadow:none;opacity:.92">{html.escape(li["sub"])}</div>' if li.get('sub') else ''}
 {f'<div class=chip style="left:52px;bottom:46px;font:800 32px P;padding:8px 24px;border-radius:12px">{html.escape(li["chip"])}</div>' if li.get('chip') else ''}""")
     cards["thumb_fb.jpg"] = (1080, 1920, pal[2], f"""<div class=blob style="width:1100px;height:1100px;left:-500px;top:-420px"></div>
 {logo('left:50%;top:120px;transform:translateX(-50%)', 144)}
-<div class=h style="left:70px;right:70px;top:330px;font:800 124px/1.2 B,P">{head(fb.get('headline', ''))}</div>
-<div class=frame style="left:70px;right:70px;top:1020px;height:560px;border-radius:44px;transform:rotate(-2deg)"><img src="{img('fb', 12)}"></div>
+<div class=h style="left:70px;right:70px;top:320px;font:800 {fz(fb, 140)}px/1.15 B,P">{head(fb.get('headline', ''))}</div>
+<div class=frame style="left:70px;right:70px;top:1020px;height:560px;border-radius:44px;transform:rotate(-2deg)"><img src="{img('fb', 12)}"></div>{extras('fb')}
 {f'<div style="position:absolute;left:0;right:0;bottom:140px;text-align:center"><span class=chip style="position:static;font:800 58px B,P;padding:16px 46px">{html.escape(fb["chip"])}</span></div>' if fb.get('chip') else ''}""")
     cards["thumb_tt.jpg"] = (1080, 1920, pal[3], f"""<div class=blob style="width:900px;height:900px;right:-420px;bottom:-300px"></div>
 {logo('left:70px;top:130px', 129)}
 <div class=frame style="left:60px;right:60px;top:330px;height:620px;border-radius:44px;transform:rotate(2deg)"><img src="{img('tt', 12)}"></div>
-<div class=h style="left:70px;right:70px;top:1030px;font:800 128px/1.18 B,P">{head(tt.get('headline', ''))}</div>
-{f'<div class=chip style="left:70px;bottom:330px;font:800 58px B,P;padding:14px 40px">{html.escape(tt["chip"])}</div>' if tt.get('chip') else ''}""")
+<div class=h style="left:70px;right:70px;top:1020px;font:800 {fz(tt, 140)}px/1.12 B,P">{head(tt.get('headline', ''))}</div>{extras('tt')}
+{f'<div class=chip style="left:70px;bottom:200px;font:800 58px B,P;padding:14px 40px">{html.escape(tt["chip"])}</div>' if tt.get('chip') else ''}""")
     # vertical video frame: video goes into the slot 0..1080 x 656..1264
     cards["vframe.jpg"] = (1080, 1920, pal[2], f"""<div class=blob style="width:1000px;height:1000px;left:-460px;top:-460px"></div>
 <div class=blob style="width:700px;height:700px;right:-300px;bottom:-260px"></div>

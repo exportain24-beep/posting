@@ -112,6 +112,12 @@ blue, green, purple… vivid gradients, big bold headline with one highlighted w
 white-bordered card), every platform a different colour, colours different from the last video. Logo always the
 branded way — the green "e" icon + white EXPORTAIN wordmark, **never on a white box/pill**. Formats: **YouTube and
 LinkedIn 16:9**; **Facebook, Instagram, TikTok and X 9:16** (deliver makes the 9:16 video copies for them).
+The owner does not review thumbnails — design them yourself, professionally, **new every day**: different layout,
+palette (`pal`), picture and hook style each video, tied to the topic. Headlines BIG and catchy (3–6 words, curiosity
+or a striking number, one highlighted word; never small text). Use objects from the topic, starbursts with the key
+number (`bursts`), the story character's face as a round sticker (`stickers`, crop from the story scene — a woman
+character's face when the story has one), or your own SVG drawing (`art`). Aim for "gorgeous" — something people
+want to click at phone size. Note what worked in `log-style`.
 Write `$P/thumbs.json` (format in the header of `tools/thumbs.py`: Bangla headlines for yt/fb/tt, ENGLISH for li,
 "|" = line break, `*word*` = highlight, `t` = second of the video for the picture, `v.title` = short title on the
 9:16 frame), then:
