@@ -97,6 +97,20 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-10-20T09:52:35.374577+00:00"
+  },
+  "067-gi-products": {
+   "script": "067",
+   "slot": "2026-10-23T20:00:00+06:00",
+   "done": {
+    "youtube": "1X5Kt5CXcf8",
+    "facebook": "1145737864564969",
+    "tiktok": "6adb4a414553446d6b7c0e22",
+    "linkedin": "6adb4a424553446d6b7c0e4f",
+    "twitter": "6adb4a43cc968328789ecc43"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-10-23T11:51:05.190213+00:00"
   }
  }
 }
