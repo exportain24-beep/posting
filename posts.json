@@ -125,6 +125,20 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-10-23T12:56:59.893578+00:00"
+  },
+  "068-perishable-products": {
+   "script": "068",
+   "slot": "2026-10-24T12:30:00+06:00",
+   "done": {
+    "youtube": "Sm04Y0LhJbU",
+    "facebook": "2106310073306201",
+    "tiktok": "6adc3ba98b3d437ddca0f517",
+    "linkedin": "6adc3bab6887a2efc19d4de0",
+    "twitter": "6adc3bac0b5343d070679633"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-10-24T05:00:34.812401+00:00"
   }
  }
 }
