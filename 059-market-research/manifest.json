@@ -1,0 +1,25 @@
+{
+ "takes": {
+  "00_hook": "9a2a4c8cb45f5805",
+  "01_story": "eb40ce5f36fcb063",
+  "02_demand": "a30f58268842dae1",
+  "03_rank": "14f7e067b6ec9bf5",
+  "04_trend": "6be053aff54449b7",
+  "05_trend2": "d355efe4cc5d75b3",
+  "06_comp": "193580a12fac8bf5",
+  "07_price": "f1f9d1ce3d3e1ede",
+  "08_gap": "d7ac754679282a1d",
+  "09_tools": "6f2ecd1f7c2d931f",
+  "10_trademap": "668dfedcd298e0df",
+  "11_macmap": "101c12e504697431",
+  "12_cbi": "977b6ac06a00e817",
+  "13_free": "97a399821899d050",
+  "14_onepage": "2cb52492a4633bd3",
+  "15_why": "b48a19563100cf94",
+  "16_story2": "c69a86a1dc3b409e",
+  "17_brand": "51fb74f6aada7eaa",
+  "18_advice": "98b46f8db7c21595",
+  "19_cta": "fcc44b7f9deeec06"
+ },
+ "updated": "2026-10-17T16:33:07.068020+00:00"
+}

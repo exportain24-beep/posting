@@ -1,0 +1,26 @@
+{
+ "takes": {
+  "00_hook": "c58aa2fa465654c4",
+  "01_story": "2fa09b0465e9b5df",
+  "02_both": "a2ff1ca3756045da",
+  "03_africa": "6d633be18f67c18f",
+  "04_spice": "c1c65abd48376587",
+  "05_value": "24cb33b072263d7b",
+  "06_yield": "583816ecc6561ae8",
+  "07_spiceproc": "1813d9168d203af5",
+  "08_irc": "fcaa5cc0be6a12be",
+  "09_office": "8faa70e2bc23c652",
+  "10_food": "9c2bad8a42003544",
+  "11_bond": "edf92e1a0cbf83d9",
+  "12_drawback": "c7f8a158b1166864",
+  "13_nbr": "95f15a1cfa03c6a5",
+  "14_rules": "ea857fbe39225473",
+  "15_thirty": "492cfc37bd4ef262",
+  "16_story2": "9e3f26b6f4ef4dba",
+  "17_recap": "68a5b667fce9d770",
+  "18_brand": "5381da280a982a9c",
+  "19_advice": "795342fe07de17ec",
+  "20_cta": "db7e4153e11cb5bb"
+ },
+ "updated": "2026-10-20T08:17:21.908622+00:00"
+}

@@ -1,0 +1,26 @@
+{
+ "takes": {
+  "00_hook": "7c7eb4bd25a4242d",
+  "01_story": "73b1531607620426",
+  "02_story_q": "732343b9113b416b",
+  "03_gi_meaning": "bb3ca0cf8ce8281b",
+  "04_gi_place": "1c117d2dede90297",
+  "05_gi_law": "7199c72c7a88731f",
+  "06_list_first": "486c54f925cf33e6",
+  "07_list_more": "eb7a9eb98fd07e05",
+  "08_list_count": "e00c4da4e39ec01b",
+  "09_trust": "1b21e48f2fe33852",
+  "10_trust_fake": "156747922a5a446f",
+  "11_premium": "7f45c3c340f01367",
+  "12_premium_story": "9d571dcb6a0fb20f",
+  "13_premium_push": "59ae23d628a648ba",
+  "14_care_source": "8f911066768af811",
+  "15_care_logo": "0113cdfa92c96616",
+  "16_care_rules": "290afcb7e255468e",
+  "17_story2": "526b8ea810bd10ee",
+  "18_brand": "7f1279fd7fc6f241",
+  "19_advice": "d113ae28e9d6b23c",
+  "20_cta": "db7e4153e11cb5bb"
+ },
+ "updated": "2026-10-23T10:31:26.944588+00:00"
+}

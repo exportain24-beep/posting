@@ -1,0 +1,26 @@
+{
+ "takes": {
+  "00_hook": "d75da99e55d75129",
+  "01_story": "66c626ca46ee2922",
+  "02_famous": "de723e9537a96f7d",
+  "03_mango": "f36ae243f092823f",
+  "04_textile": "ea3ea00dfee59d8e",
+  "05_diaspora": "bf48fdd1955811b9",
+  "06_shops": "9e3ac30efc92353c",
+  "07_proof": "4a6afc1d9519ac07",
+  "08_air": "5f11ecc08921f0c1",
+  "09_aircost": "23717a681cc35fde",
+  "10_mangoprep": "146a77d92876a818",
+  "11_shelf": "476c78d87f099b4a",
+  "12_pack": "2203c8a2da9a6127",
+  "13_health": "bd95c31b959ced82",
+  "14_fda": "6a4aec95dd15ea94",
+  "15_one": "3480d1881db51f2b",
+  "16_story2": "ec395704d15bbca8",
+  "17_story3": "f44df868138ace5c",
+  "18_brand": "1f8f295b56ecdc80",
+  "19_advice": "9bced6a47c5cf7ed",
+  "20_cta": "db7e4153e11cb5bb"
+ },
+ "updated": "2026-10-21T03:16:28.178365+00:00"
+}

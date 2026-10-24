@@ -1,0 +1,27 @@
+{
+ "takes": {
+  "00_hook": "477538ba96f33f08",
+  "01_story": "593013fd256aa55f",
+  "02_quality": "242896743484351a",
+  "03_limits": "6b8b7037fddaa67d",
+  "04_spec": "317e853e01e279f1",
+  "05_supply": "5be6348edeecad3a",
+  "06_container": "5a75a3dad2d4c440",
+  "07_trace": "e58c016cbf749645",
+  "08_price": "785739282b3abe3a",
+  "09_cost": "9b4b6d2cdb284a2b",
+  "10_compare": "0394b7cf98d9a795",
+  "11_pack": "9c3da942ee714adb",
+  "12_bags": "ee72b381b6065b5f",
+  "13_label": "f757e395acaeb557",
+  "14_cert": "fd84e08c1c908d95",
+  "15_phyto": "0b23879c3e12afe7",
+  "16_story2": "f60f1e360772f66f",
+  "17_story3": "9c8f74ade17b2b43",
+  "18_tip": "307c14681a8eb65e",
+  "19_brand": "b802f53d869af9dc",
+  "20_advice": "fb1e8e75571f5d40",
+  "21_cta": "db7e4153e11cb5bb"
+ },
+ "updated": "2026-10-17T18:06:43.905532+00:00"
+}

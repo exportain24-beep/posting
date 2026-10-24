@@ -1,0 +1,26 @@
+{
+ "takes": {
+  "00_hook": "4590bf1cb6a87b84",
+  "01_story": "f53dac7f09dd2e8d",
+  "02_what": "a22435106dc8080b",
+  "03_shelf": "ecec49f5f6b748b8",
+  "04_demand": "ed1afebda9be93f0",
+  "05_diaspora": "84868989ee884907",
+  "06_numbers": "48d8bde0e4b2be5e",
+  "07_spoil": "eae7884b364ed664",
+  "08_aircost": "31660e90af46754c",
+  "09_coldchain": "7bee84d5920c8114",
+  "10_pack": "e5b1afba17951791",
+  "11_temp": "3b81295beaa5d164",
+  "12_time": "b14787fcd9f39e1a",
+  "13_insure": "b7ba3969668c07da",
+  "14_contract": "4c125d88b59ab1b3",
+  "15_payment": "09e7488b9631ab58",
+  "16_story2": "1a3a078994818f7e",
+  "17_recap": "104d206b641f6c6a",
+  "18_brand": "912e25bdba12e2dd",
+  "19_advice": "c6a884b71ce90b66",
+  "20_cta": "db7e4153e11cb5bb"
+ },
+ "updated": "2026-10-24T03:16:13.975134+00:00"
+}

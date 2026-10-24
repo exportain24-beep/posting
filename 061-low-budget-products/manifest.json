@@ -1,0 +1,26 @@
+{
+ "takes": {
+  "00_hook": "73e36c629c98ed24",
+  "01_story": "f469927d35db1f30",
+  "02_niche": "d3209a3efd7316e9",
+  "03_niche2": "e4be5a219f6cf085",
+  "04_list": "7fe018744ca43289",
+  "05_list2": "ebec4551dd72bdf7",
+  "06_market": "d3d54be04de7948d",
+  "07_raw": "5888913b4b999e4c",
+  "08_raw2": "b9b49a90fb8ce92a",
+  "09_raw3": "d7deb4961e86ce0e",
+  "10_air": "d023b99108e9b34b",
+  "11_air2": "d3770d3abcf0e64a",
+  "12_air3": "8b3ad5a98b26b74a",
+  "13_demand": "4c8db4f390d3e160",
+  "14_cbi": "c92811939e2eff9f",
+  "15_season": "ddf114f9bc854524",
+  "16_story2": "e3e8e5ff024763b4",
+  "17_tip": "d33c21b941018ffe",
+  "18_brand": "781ca436f2388d5e",
+  "19_advice": "659cf54d48fb20be",
+  "20_cta": "db7e4153e11cb5bb"
+ },
+ "updated": "2026-10-18T03:21:54.122403+00:00"
+}

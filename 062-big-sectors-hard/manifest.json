@@ -1,0 +1,24 @@
+{
+ "takes": {
+  "00_hook": "dd40d41f2f40f224",
+  "01_story": "57b9f9f0610b999b",
+  "02_big": "8f1c076f519f60c4",
+  "03_big2": "789c1fb4906c7658",
+  "04_comp": "8bd8c3882ffd9919",
+  "05_audit": "cd926152467ad43e",
+  "06_leather": "f9f4d58046520053",
+  "07_price": "f760186a8fc7e39d",
+  "08_price2": "29acce4671140e8d",
+  "09_niche": "9d5fe1dd17584d8a",
+  "10_niche2": "8de95be68ad599b5",
+  "11_sub": "e9b0b7c8f73853ef",
+  "12_sub2": "5234cc504e0e0e23",
+  "13_stock": "0c20b65b810cb4a2",
+  "14_stock2": "e7937db57d404341",
+  "15_story2": "9a93cb12de27bf88",
+  "16_brand": "d2c24faf02952c5c",
+  "17_advice": "968653aada854866",
+  "18_cta": "db7e4153e11cb5bb"
+ },
+ "updated": "2026-10-18T08:22:48.536374+00:00"
+}
