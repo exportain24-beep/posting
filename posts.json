@@ -139,6 +139,20 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-10-24T05:00:34.812401+00:00"
+  },
+  "069-food-shelf-life": {
+   "script": "069",
+   "slot": "2026-10-24T18:00:00+06:00",
+   "done": {
+    "youtube": "1YIHF8u6jW4",
+    "facebook": "1054950180921799",
+    "tiktok": "6adc768b3d5b27036b76deba",
+    "linkedin": "6adc768d0b5343d07074ccff",
+    "twitter": "6adc768e3d5b27036b76df35"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-10-24T09:11:09.870878+00:00"
   }
  }
 }
