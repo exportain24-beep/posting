@@ -181,6 +181,20 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-10-25T09:52:30.564190+00:00"
+  },
+  "072-epb-data-demand": {
+   "script": "072",
+   "slot": "2026-10-26T12:30:00+06:00",
+   "done": {
+    "youtube": "1iMGWzCG5bs",
+    "facebook": "4183320611972540",
+    "tiktok": "6aded6e30b5343d0700cb494",
+    "linkedin": "6aded6e53d5b27036b0d7f92",
+    "twitter": "6aded6e5bd33ce99c3ab7ec0"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-10-26T04:27:10.570003+00:00"
   }
  }
 }
