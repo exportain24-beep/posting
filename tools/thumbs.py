@@ -41,8 +41,8 @@ PAL = [
     ("linear-gradient(135deg,#0a2a66 0%,#0b6fb8 55%,#16c2c2 100%)", "#5cbf14", "#05220c", "#f2b705", "#1b1400", "rgba(0,10,40,.35)"),
     ("linear-gradient(150deg,#ff0844 0%,#ff5e3a 50%,#ffb199 100%)", "#ffffff", "#c2002f", "#1d2bff", "#fff", "rgba(110,0,20,.35)"),
     ("linear-gradient(160deg,#00b09b 0%,#5cbf14 55%,#d4fc79 100%)", "#ff3d77", "#fff", "#0b3b5c", "#fff", "rgba(0,60,30,.35)"),
-    ("linear-gradient(140deg,#f7971e 0%,#ffd200 100%)", "#d93636", "#fff", "#005a1e", "#fff", "rgba(120,60,0,.3)"),
-    ("linear-gradient(150deg,#4facfe 0%,#00f2fe 50%,#43e97b 100%)", "#7b2ff7", "#fff", "#ff3d77", "#fff", "rgba(0,50,90,.3)"),
+    ("linear-gradient(140deg,#c62828 0%,#ef6c00 55%,#ffb300 100%)", "#d93636", "#fff", "#005a1e", "#fff", "rgba(120,60,0,.3)"),
+    ("linear-gradient(150deg,#0039cb 0%,#0091c2 50%,#00a86b 100%)", "#7b2ff7", "#fff", "#ff3d77", "#fff", "rgba(0,50,90,.3)"),
 ]
 
 
@@ -75,8 +75,9 @@ def css(p):
 .logo .wd{{height:.38em;filter:drop-shadow(0 4px 10px rgba(0,0,0,.35))}}
 .frame{{position:absolute;overflow:hidden;border:10px solid #fff;box-shadow:0 18px 50px rgba(0,0,0,.35)}}
 .frame img{{width:100%;height:100%;object-fit:cover;display:block}}
-.h{{position:absolute;color:#fff;text-shadow:0 7px 0 {sh},0 0 26px rgba(0,0,0,.28);letter-spacing:-.5px}}
-.hl{{background:{hb};color:{hf};padding:0 14px;border-radius:14px;white-space:nowrap;text-shadow:none;display:inline-block}}
+.h{{position:absolute;color:#fff;letter-spacing:-.5px;text-shadow:3px 3px 0 rgba(0,0,0,.62),-3px 3px 0 rgba(0,0,0,.62),3px -3px 0 rgba(0,0,0,.62),-3px -3px 0 rgba(0,0,0,.62),0 9px 0 {sh},0 0 34px rgba(0,0,0,.5)}}   /* high contrast (owner, 26 Oct 2026) */
+#c::before{{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 62% 48%,rgba(0,0,0,0) 38%,rgba(0,0,0,.34) 100%)}}
+.hl{{background:{hb};color:{hf};padding:0 14px;border-radius:14px;white-space:nowrap;text-shadow:none;display:inline-block;border:5px solid rgba(0,0,0,.8);box-shadow:0 8px 0 rgba(0,0,0,.4)}}
 .chip{{position:absolute;background:{cb};color:{cf};border-radius:999px;white-space:nowrap}}
 .blob{{position:absolute;border-radius:50%;background:rgba(255,255,255,.17)}}
 .burst{{position:absolute;display:flex;align-items:center;justify-content:center;text-align:center;background:#fff;color:#111;

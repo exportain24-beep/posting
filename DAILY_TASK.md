@@ -15,6 +15,30 @@ updated it, the new version applies automatically. Only the differences listed i
 Nobody is watching: never stop to ask. If something blocks, finish what can be finished and report it in the final
 message (that message is what the owner is notified about).
 
+## Owner's standing order — quality upgrade (26 Oct 2026, applies to every video from 074 on)
+1. **Explain, don't just list.** Every point gets: what it is (plain Bangla meaning) → why it matters to a beginner →
+   how to do it (concrete steps / where to click / what to look at) → a small example from the story character.
+   A viewer who has never heard of the topic must understand it after one watch. No jargon without a one-line meaning.
+2. **More script, same length.** Voice speed 1.2 (config.json `voice_settings.speed`; ElevenLabs maximum) lets
+   3,200–3,500 characters fit in 4:00–4:30. Use the extra room for explanation and useful information, never
+   filler. Never exceed 5:00.
+3. **More frames / more motion.** 24–28 scenes, 5–7 board keys per scene (one visual event per key, so something
+   new appears every 1.5–2.5 s), and inside long scenes a second "beat" (layout change, zoom-in, a panel replacing
+   another). Mix more recipes (≥ 8 per video): diagrams, flows, maps, counters, mockups, timelines, before/after,
+   character close-ups. Continuous motion everywhere (flowing dots, floating cards, drawing lines).
+4. **Stronger story visuals.** The fictional character appears in at least 4 scenes (intro, inside 2+ points doing
+   the step, outcome) in a real environment, with informative props (the actual document/screen/number she uses),
+   not just a portrait card.
+5. **High-contrast thumbnails.** Big bold headline (white or yellow on a dark/saturated band, thick dark text
+   shadow/outline), one highlight word in a contrasting box, a bright subject on a darker background (or the
+   reverse), no low-contrast pastel-on-pastel. Check each at phone size: headline readable in 1 second.
+6. **More SEO at upload.** YouTube: primary keyword in the first 40 characters of the title; first two description
+   lines contain the primary + one secondary keyword in Bangla and English; "এই ভিডিওতে যা শিখবেন" bullets with
+   keywords; chapters for every point; a short FAQ (2–3 questions people search) at the end of the description;
+   source links; 3–5 hashtags; tags filled to ≈ 400–450 characters (Bangla + Banglish + English variants, the
+   validator caps at 450). Facebook/Instagram: keyword in the first line, exactly 5 hashtags. TikTok: keyword-rich
+   first line, 15–20 hashtags. LinkedIn/X: English keywords naturally in the first sentence.
+
 ## 0. Setup (every run — fresh machine)
 ```bash
 git clone --depth 1 https://github.com/exportain24-beep/posting /home/claude/posting
@@ -51,7 +75,7 @@ now). Read its notes. During the run, when any step fails:
   (≈ 09:00 for the 12:30 slot, ≈ 14:15 for the 18:00 slot) give the ~3 h needed for research, voice, scenes, render
   and upload. The video is uploaded as soon as it is ready and **scheduled** for its slot (`--mode live`), so it
   goes public exactly at 12:30 / 18:00 on every platform. If a run fails, the next run takes the earliest free slot.
-- Work fast: research ≤ 15 min, keep QA fixes to the scenes that need them, start the render as early as possible.
+- Work fast: research ≤ 20 min, keep QA fixes to the scenes that need them, start the render as early as possible.
 - If less than 50 min is left before the slot when the video is ready, deliver to the next free slot instead
   (edit `slot` in post.json); never post late or out of order.
 - No unused scripts → build nothing; report "scripts finished".
@@ -65,8 +89,12 @@ order) and references as the topic brief the skill expects.
   the **exact CTA**, nothing after it), voice-text rules (Bangla script only, no slash, acronyms in Bangla).
 - **Overrides of the prompt file:** ignore its ending instructions ("পরের পর্বের নাম", "Exportain — বাংলাদেশের পণ্য…" line):
   never mention a previous/next episode; the skill's CTA + silent end card are the ending.
-- **Length: final video must be 3:00–5:00 (180–300 s), target ≈ 3:45–4:15** → 2,500–3,000 narration characters (tags
-  excluded), 18–24 scenes. `publish` refuses anything outside 180–300 s.
+- **Length: final video must be 3:00–5:00 (180–300 s), target ≈ 4:00–4:30.** Voice speed is 1.2 (owner, 26 Oct 2026),
+  ≈ 14 spoken characters per second → **3,200–3,500 narration characters** (tags excluded; hard cap 3,600 in
+  config.json), **24–28 scenes**. `make_scripts.py` still estimates at speed 1.0 (it will print ≈ 4:40–5:00 for this
+  range) — trust the real `durations.json` after voicing: sum + ≈ 0.7 s per scene gap + 3 s must be 225–285 s; if
+  over, trim sentences in the longest scenes (only changed scenes are re-voiced). `publish` refuses anything outside
+  180–300 s.
 - Write `narration.json` + `meta.json`, run `python3 $S/tools/make_scripts.py $P` (asserts no slash/Latin, prints length).
   Keep `<prefix>_script.md` (verified facts + sources) in `$P`.
 
