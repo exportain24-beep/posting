@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """Shorts pacing: trims each voice take's lead/tail silence and shortens long internal pauses (jump-cut style),
 then rewrites durations.json. Keeps the original takes in vo_raw/ (never re-voice to fix pacing).
-  python3 tighten.py <project_dir> [--pause 0.16] [--thresh -38]
+  python3 tighten.py <project_dir> [--pause 0.16] [--thresh -32] [--tempo 1.08]
+--tempo speeds speech up without changing pitch (ffmpeg atempo); keep it 1.0-1.12 so the voice stays natural.
 """
 import json, os, re, shutil, subprocess, sys
 
 P = sys.argv[1]
 PAUSE = float(sys.argv[sys.argv.index("--pause") + 1]) if "--pause" in sys.argv else 0.16
-TH = sys.argv[sys.argv.index("--thresh") + 1] if "--thresh" in sys.argv else "-38"
+TH = sys.argv[sys.argv.index("--thresh") + 1] if "--thresh" in sys.argv else "-32"
+TEMPO = min(1.12, max(1.0, float(sys.argv[sys.argv.index("--tempo") + 1]) if "--tempo" in sys.argv else 1.0))
 vo, raw = os.path.join(P, "vo"), os.path.join(P, "vo_raw")
 if not os.path.isdir(raw):
     shutil.copytree(vo, raw)
@@ -45,7 +47,7 @@ for name in sorted(os.listdir(raw)):
     if cur is not None:
         keep.append((cur, d))
     parts = "".join(f"[0:a]atrim={a:.3f}:{b:.3f},asetpts=PTS-STARTPTS[p{i}];" for i, (a, b) in enumerate(keep))
-    fc = parts + "".join(f"[p{i}]" for i in range(len(keep))) + f"concat=n={len(keep)}:v=0:a=1[o]"
+    fc = parts + "".join(f"[p{i}]" for i in range(len(keep))) + f"concat=n={len(keep)}:v=0:a=1,atempo={TEMPO:.3f}[o]"
     out = os.path.join(vo, name)
     subprocess.check_call(["ffmpeg", "-y", "-loglevel", "error", "-i", src, "-filter_complex", fc, "-map", "[o]",
                            "-c:a", "libmp3lame", "-b:a", "192k", out])
