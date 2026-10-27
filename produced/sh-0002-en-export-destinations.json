@@ -1,0 +1,20 @@
+{
+ "title": "Export Business: Top 5 Markets for Bangladesh (FY26) #Shorts",
+ "subtopic": "Top export destinations",
+ "hook": "'Export business in Bangladesh? Save these five markets' — save-this list + quiz cards flipping",
+ "visual": "3D globe (studio night, routes from Bangladesh to US/DE/UK/ES/NL, rot0 -3.4, slow push) for the hook; quiz flip card #1 USA + $9.05B counter (e_sky); two flip cards DE/UK + bar chart (e_gold); 3D port at dusk (flyby cam) behind #4 Spain/#5 Netherlands cards + ≈51% ring; kit CTA.",
+ "script": [
+  "Export business in Bangladesh? Save these five markets.",
+  "One: the USA, about nine billion dollars last year.",
+  "Two and three: Germany and the UK, nearly four point seven billion each.",
+  "Then Spain and the Netherlands. Five markets, about half of all exports.",
+  "Pick one, then list your products on Exportain, and let buyers there find you."
+ ],
+ "sources": [
+  "https://www.thedailystar.net/business/economy/news/fy26-exports-slip-despite-42-billion-june-rebound-4214456",
+  "https://www.tbsnews.net/node/1478001"
+ ],
+ "lessons": "Globe needed rot0 (new r3d option) to face Bangladesh; lookY 2.5 + z 78->60 frames it under the headline. Render 3D at 1080x1920 takes ~20 min on 2 CPUs; never run stills while rendering (screenshot timeouts) — setup now sets 180 s page timeout.",
+ "id": "sh-0002-en-export-destinations",
+ "logged": "2026-10-27T23:21+06:00"
+}
