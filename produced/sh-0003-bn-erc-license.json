@@ -1,0 +1,20 @@
+{
+ "title": "আমদানি রপ্তানি লাইসেন্স কিভাবে করতে হয়? ইআরসি কী, কার লাগে #Shorts",
+ "subtopic": "ইআরসি কী, কার লাগে",
+ "hook": "keyword question 'আমদানি রপ্তানি লাইসেন্স কিভাবে করতে হয়?' + 'একদম শুরু থেকে বলি' (beginner framing)",
+ "visual": "3D warehouse of export cartons (studio, crane cam, fov 44) for the hook; 3D docs desk (fov 64) with Trade Licence/e-TIN/Bank/Chamber/ERC papers behind ইআরসি name card; factory→plane→globe + ERC certificate + IRC card (e_mint); 4-document checklist with ticks + olm.ccie.gov.bd browser with filling bar and submit button (e_gold); kit CTA bn.",
+ "script": [
+  "আমদানি রপ্তানি লাইসেন্স কিভাবে করতে হয়? একদম শুরু থেকে বলি।",
+  "রপ্তানির লাইসেন্সের নাম ইআরসি, মানে এক্সপোর্ট রেজিস্ট্রেশন সার্টিফিকেট।",
+  "নিজের নামে পণ্য বিদেশে পাঠাবেন? তাহলে ইআরসি লাগবেই। আমদানিতে লাগে আইআরসি।",
+  "লাগবে ট্রেড লাইসেন্স, ই-টিআইএন, ব্যাংক সনদ আর চেম্বারের সদস্যপদ। আবেদন অনলাইনে।",
+  "ইআরসি হাতে পেলে এক্সপোর্টেইনে পণ্য তুলুন, বিদেশি ক্রেতারা আপনাকে খুঁজে নেবে।"
+ ],
+ "sources": [
+  "https://tnp.legal/blogs/export-registration-certificate-obtaining-erc-in-bangladesh-2026-guide",
+  "https://www.tbsnews.net/economy/import-export-licence-validity-increased-5-years-538082"
+ ],
+ "lessons": "Bangla at tempo 1.08 ≈ 14 chars/s spoken after tighten; 359 chars -> 25.7 s, fits. docs world needs fov ~64 in 9:16 or papers fall off-frame; warehouse push cam at r30 is a wall of boxes — crane r52 h16 reads well.",
+ "id": "sh-0003-bn-erc-license",
+ "logged": "2026-10-27T23:45+06:00"
+}
