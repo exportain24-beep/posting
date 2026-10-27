@@ -1,0 +1,40 @@
+name: Shorts Publish (YouTube only)
+
+# YouTube Shorts lane only. Started by Claude's Shorts task through the GitHub API. No timer, no pull_request trigger.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "check = test login only, private = private test upload, live = schedule at slot, now = public now, retry = repair failed"
+        type: choice
+        options: [check, private, live, now, retry]
+        default: check
+
+permissions: {}
+
+concurrency:
+  group: shorts-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository_owner == 'exportain24-beep' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    environment: production
+    permissions:
+      contents: write          # to record results on the 'shorts-state' branch
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          fetch-depth: 1
+      - name: Install ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg > /dev/null
+      - name: Publish
+        env:
+          MODE: ${{ inputs.mode }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}          # only the YouTube secrets: this lane posts nowhere else
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+        run: python3 scripts/shorts_publish.py
