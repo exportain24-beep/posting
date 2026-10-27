@@ -15,7 +15,8 @@ p=f"{sk}/scripts/render.py"; s=open(p).read()
 s=s.replace('args=["--force-color-profile=srgb", "--disable-gpu"]',
  'args=["--force-color-profile=srgb", "--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist", "--allow-file-access-from-files"]')
 s=s.replace('pg.goto("file://" + html)','pg.goto("file://" + html)\n    pg.wait_for_function("!window.R3_WANT || window.R3_READY===true", timeout=90000)')
-assert "swiftshader" in s and "R3_WANT" in s; open(p,"w").write(s)
+s=s.replace('pg = b.new_page(viewport={"width": w, "height": h})','pg = b.new_page(viewport={"width": w, "height": h}); pg.set_default_timeout(180000)')
+assert "swiftshader" in s and "R3_WANT" in s and "180000" in s; open(p,"w").write(s)
 p=f"{sk}/scripts/topic_build.py"; s=open(p).read()
 s=s.replace("LEAD, GAP, TAIL = 0.6, 0.7, 0.6","LEAD, GAP, TAIL = 0.15, 0.25, 0.3"); assert "0.15, 0.25" in s; open(p,"w").write(s)
 PY

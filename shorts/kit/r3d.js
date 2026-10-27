@@ -178,7 +178,7 @@ const W3 = {
       return { geo, n: geo.index.count, i };
     });
     return { ...B, update(lt, d, t) {
-      earth.rotation.y = -1.9 + lt * (o.spin ?? .12);
+      earth.rotation.y = (o.rot0 ?? -1.9) + lt * (o.spin ?? .12);
       arcs.forEach(a => a.geo.setDrawRange(0, Math.floor(a.n * cl((lt - .4 - a.i * .35) / 1.2))));
       const z = lerp(o.z0 ?? 52, o.z1 ?? 40, ease(cl(lt / d))); B.cam.position.set(Math.sin(lt * .1) * 2, 4 + Math.sin(lt * .3), z); B.cam.lookAt(0, o.lookY ?? -1.5, 0);
     } };
