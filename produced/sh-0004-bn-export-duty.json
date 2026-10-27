@@ -1,0 +1,20 @@
+{
+ "title": "রপ্তানি শুল্ক কি? ৩ ধাপে সহজে বুঝুন #Shorts",
+ "subtopic": "রপ্তানি শুল্ক",
+ "hook": "'রপ্তানি শুল্ক কি? তিন ধাপে বুঝে নিন' + 3 step tiles",
+ "visual": "3D port by day (orbit cam r150, a0 1.2) for the hook; customs gate + carton sliding + Export Duty card + 0% badge (e_sky); export income 100 taka example → bank 1% source tax counter → 99 taka (e_gold); 3D ship at dusk (push cam, 5-high stacks) behind bond / drawback cards + 'নিয়ম বদলায়' warning; kit CTA bn.",
+ "script": [
+  "রপ্তানি শুল্ক কি? তিন ধাপে বুঝে নিন।",
+  "এক, এটা পণ্য দেশ ছাড়ার সময়ের কর, তবে বেশিরভাগ পণ্যে এই শুল্ক নেই।",
+  "দুই, রপ্তানি আয় এলে ব্যাংক সাধারণত এক শতাংশ উৎসে কর কাটে।",
+  "তিন, কাঁচামালের আমদানি শুল্ক বন্ড বা ড্রব্যাকে বাঁচে। নিয়ম বদলায়, ব্যাংকে জেনে নিন।",
+  "হিসাব পরিষ্কার হলে এক্সপোর্টেইনে পণ্য তুলুন, ক্রেতারাই আপনাকে খুঁজে নেবে।"
+ ],
+ "sources": [
+  "https://lightcastlepartners.com/insights/2026/06/bangladesh-budget-fy2026-27-rmg-sector-impact/",
+  "https://www.textiletoday.com.bd/budget-2026-27-may-reduce-withholding-taxes-for-garment-exporters-packaging-and-industrial-sectors"
+ ],
+ "lessons": "Angle: no single official list of export-duty items found, so stated 'most goods have none' with an HS-code check and hedge. Port crane cam at r110 is inside the stacks — orbit r150 h48 frames cranes + ship. Voice workflow once timed out installing ffmpeg; a plain re-run worked.",
+ "id": "sh-0004-bn-export-duty",
+ "logged": "2026-10-28T00:09+06:00"
+}
