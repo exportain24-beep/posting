@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Claude's side of the YouTube Shorts lane (runs in Claude's workspace, never sees a secret).
+"""Claude's side of the Shorts lane (YouTube + TikTok) (runs in Claude's workspace, never sees a secret).
 Separate from tools/studio.py and the 3-5 min reel system: own branches, own workflows, own state.
 
   shorts.py status                      free Short slots (06:00, 15:00, 20:00 BD), next plan items, pending, errors
@@ -125,7 +125,7 @@ def cmd_status():
             "free_slots": free_slots(taken, now),
             "next_items": [{"n": f"{p['n']:04d}", "lang": p["lang"], "keyword": p["keyword"], "subtopic": p["subtopic"]}
                            for p in unused[:4]],
-            "pending": {k: {"slot": v["slot"], "youtube": state["posts"].get(k, {}).get("done", {}).get("youtube")}
+            "pending": {k: {"slot": v["slot"], "posted": state["posts"].get(k, {}).get("done", {})}
                         for k, v in media.items()},
             "recent_errors": {k: v["errors"] for k, v in state["posts"].items() if v.get("errors")}}
     print(json.dumps(info, ensure_ascii=False, indent=1))
@@ -178,11 +178,15 @@ def cmd_voice(ep, d, test):
 
 
 def cmd_deliver(ep, d, mode):
-    """DIR must hold final.mp4 (9:16, <= 30 s), thumb.jpg (1080x1920 or 1280x720, <= 2 MB) and post.json."""
+    """DIR must hold final.mp4 (9:16, <= 30 s), thumb.jpg (<= 2 MB) and post.json (youtube + tiktok texts)."""
     meta = json.load(open(os.path.join(d, "post.json"), encoding="utf-8"))
     meta["id"] = ep
     mp4, thumb = os.path.join(d, "final.mp4"), os.path.join(d, "thumb.jpg")
     errs = validate_meta(meta, f"{ep}.json") + validate_files(mp4, thumb if os.path.isfile(thumb) else None)
+    if SCFG.get("tiktok", {}).get("enabled"):
+        cap = (meta.get("tiktok") or {}).get("caption", "")
+        if not isinstance(cap, str) or not 10 <= len(cap) <= 2200:
+            errs.append("tiktok.caption: 10-2200 characters")
     if mode == "now":
         meta["slot"] = (datetime.now(timezone.utc) + timedelta(minutes=30)).astimezone(STZ).isoformat(timespec="minutes")
     elif datetime.fromisoformat(meta["slot"]) < datetime.now(timezone.utc) + timedelta(minutes=SCFG["min_lead_minutes"]):
@@ -201,7 +205,8 @@ def cmd_deliver(ep, d, mode):
     ok, _ = run_workflow("shorts-publish.yml", {"mode": mode})
     st = load(BR["state"], "posts.json", {"posts": {}})["posts"].get(ep)
     print(json.dumps(st, ensure_ascii=False, indent=1) if st else "(no state record)")
-    return 0 if ok and st and "youtube" in st.get("done", {}) else 1
+    want = ["youtube"] + (["tiktok"] if SCFG.get("tiktok", {}).get("enabled") else [])
+    return 0 if ok and st and all(p in st.get("done", {}) for p in want) else 1
 
 
 def cmd_log(ep, d):

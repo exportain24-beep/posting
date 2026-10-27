@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
-"""Shorts publish job (GitHub Actions): shorts-media:s/<id>.{mp4,jpg,json}  ->  YouTube only (as a Short).
+"""Shorts publish job (GitHub Actions): shorts-media:s/<id>.{mp4,jpg,json}  ->  YouTube (direct API) + TikTok (Buffer).
 
-MODE=check    read-only: YouTube login + every waiting file, posts nothing
-MODE=private  upload as private (test)
-MODE=live     upload now, scheduled to go public at its slot (publishAt)
-MODE=retry    re-try failed uploads: slot >= 15 min away -> scheduled; slot passed < 6 h ago -> public now
-MODE=now      upload and publish immediately
+MODE=check    read-only: YouTube login, Buffer TikTok channel and every waiting file; posts nothing
+MODE=private  YouTube private upload only (test); TikTok skipped
+MODE=live     YouTube scheduled (publishAt) + TikTok scheduled in Buffer, both at the slot
+MODE=retry    repairs failed platforms: slot >= 15 min away -> scheduled again; slot passed < 6 h ago -> post now
+MODE=now      publish immediately on both
 
-Results go to shorts-state:posts.json and to GitHub annotations. Reads only the three YouTube secrets.
+The TikTok copy is served to Buffer as a GitHub Release asset of this public repo (release tag "shorts-media-files"),
+so the reel system's GitHub Pages / media branch are never touched. Results: shorts-state:posts.json + annotations.
 """
 import glob, json, os, sys, time, urllib.parse
 from datetime import datetime, timedelta, timezone
@@ -17,12 +18,17 @@ from common import branch_dir, http, jhttp, mask, note, push_branch, redact, sec
 from shorts_common import BR, SCFG, STZ, validate_files, validate_meta
 
 YT = SCFG["youtube"]
+TT = SCFG.get("tiktok", {"enabled": False})
+PLATFORMS = ["youtube"] + (["tiktok"] if TT.get("enabled") else [])
+REPO = os.environ.get("GITHUB_REPOSITORY", "exportain24-beep/posting")
+RELEASE_TAG = "shorts-media-files"
 
 
 def utc(t):
     return t.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.000Z")
 
 
+# ------------------------------------------------------------------ YouTube
 def yt_token():
     cid, cs, rt = secret("YT_CLIENT_ID"), secret("YT_CLIENT_SECRET"), secret("YT_REFRESH_TOKEN")
     if not (cid and cs and rt):
@@ -64,7 +70,7 @@ def yt_publish(meta, mp4, jpg, slot, mode):
                           open(mp4, "rb").read(), timeout=900))["id"]
     extras = []
     if YT.get("set_thumbnail") and jpg and os.path.isfile(jpg):
-        try:   # used in search/channel pages; the Shorts feed shows the video's own first frames
+        try:
             http("POST", f"https://www.googleapis.com/upload/youtube/v3/thumbnails/set?videoId={vid}",
                  {**auth, "Content-Type": "image/jpeg"}, open(jpg, "rb").read())
             extras.append("thumbnail set")
@@ -78,7 +84,133 @@ def yt_publish(meta, mp4, jpg, slot, mode):
             extras.append("added to playlist")
         except Exception as e:
             extras.append(f"playlist not added ({redact(e)[:120]})")
-    return vid, ", ".join(extras) or "uploaded"
+    where = f"https://youtube.com/shorts/{vid}"
+    return vid, f"{where} — " + (f"scheduled {slot.astimezone(STZ):%d %b %H:%M}" if mode == "live" else mode) + \
+        ("; " + ", ".join(extras) if extras else "")
+
+
+# ------------------------------------------------------------------ public file for Buffer: GitHub Release asset
+def gh_api(method, url, data=None, ctype=None, timeout=300):
+    tok = secret("GITHUB_TOKEN")
+    if not tok:
+        raise RuntimeError("GITHUB_TOKEN missing")
+    h = {"Authorization": f"Bearer {tok}", "Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"}
+    if ctype:
+        h["Content-Type"] = ctype
+    body = http(method, url, h, data, timeout=timeout)
+    return json.loads(body) if body and body[:1] in (b"{", b"[") else {}
+
+
+def release():
+    try:
+        return gh_api("GET", f"https://api.github.com/repos/{REPO}/releases/tags/{RELEASE_TAG}")
+    except RuntimeError as e:
+        if "HTTP 404" not in str(e):
+            raise
+        return gh_api("POST", f"https://api.github.com/repos/{REPO}/releases",
+                      {"tag_name": RELEASE_TAG, "target_commitish": "main", "name": "Shorts media files (temporary)",
+                       "body": "Temporary public copies of Exportain Shorts for TikTok (Buffer) uploads. Cleaned automatically.",
+                       "prerelease": True})
+
+
+def public_url(mp4, name):
+    rel = release()
+    for a in rel.get("assets", []):
+        if a["name"] == name:
+            if a["size"] == os.path.getsize(mp4):
+                return a["browser_download_url"]
+            gh_api("DELETE", f"https://api.github.com/repos/{REPO}/releases/assets/{a['id']}")
+    up = rel["upload_url"].split("{")[0] + "?" + urllib.parse.urlencode({"name": name})
+    a = gh_api("POST", up, open(mp4, "rb").read(), ctype="video/mp4", timeout=900)
+    url = a["browser_download_url"]
+    for _ in range(12):                      # make sure the file is publicly downloadable before Buffer fetches it
+        try:
+            _, h = http("HEAD", url, want_headers=True, timeout=60)
+            if int(h.get("Content-Length") or h.get("content-length") or 0) == os.path.getsize(mp4):
+                return url
+        except Exception:
+            pass
+        time.sleep(10)
+    return url
+
+
+def cleanup_release(keep_days=4):
+    try:
+        rel = release()
+    except Exception:
+        return 0
+    n, cut = 0, datetime.now(timezone.utc) - timedelta(days=keep_days)
+    for a in rel.get("assets", []):
+        if datetime.fromisoformat(a["created_at"].replace("Z", "+00:00")) < cut:
+            try:
+                gh_api("DELETE", f"https://api.github.com/repos/{REPO}/releases/assets/{a['id']}"); n += 1
+            except Exception:
+                pass
+    return n
+
+
+# ------------------------------------------------------------------ TikTok via Buffer
+def gql_literal(v, enums=(), key=None):
+    import re
+    if isinstance(v, dict):
+        return "{" + " ".join(f"{k}: {gql_literal(x, enums, k)}" for k, x in v.items()) + "}"
+    if isinstance(v, list):
+        return "[" + " ".join(gql_literal(x, enums) for x in v) + "]"
+    if isinstance(v, bool):
+        return "true" if v else "false"
+    if isinstance(v, (int, float)):
+        return str(v)
+    if key in enums:
+        if not re.fullmatch(r"[A-Za-z_]+", str(v)):
+            raise ValueError("bad enum value")
+        return str(v)
+    return json.dumps(str(v), ensure_ascii=False)
+
+
+def buffer(query):
+    key = secret("BUFFER_API_KEY")
+    if not key:
+        raise RuntimeError("BUFFER_API_KEY missing")
+    r = jhttp("POST", "https://api.buffer.com", {"Authorization": f"Bearer {key}"}, {"query": query})
+    if r.get("errors"):
+        raise RuntimeError(f"Buffer: {r['errors']}")
+    return r["data"]
+
+
+_tt = None
+
+
+def tiktok_channel():
+    global _tt
+    if _tt is None:
+        for o in buffer("query { account { organizations { id name } } }")["account"]["organizations"]:
+            for c in buffer("query { channels(input: {organizationId: %s}) { id name service } }" % json.dumps(o["id"]))["channels"]:
+                if str(c.get("service", "")).lower() == "tiktok":
+                    _tt = (c["id"], c.get("name")); break
+            if _tt:
+                break
+    if not _tt:
+        raise RuntimeError("no TikTok channel connected in Buffer")
+    return _tt
+
+
+def tt_publish(meta, mp4, slot, mode):
+    if mode not in ("live", "now"):
+        return None, "skipped in private mode"
+    url = public_url(mp4, os.path.basename(mp4))
+    ch = tiktok_channel()
+    t = meta.get("tiktok") or {}
+    video = {"url": url, "metadata": {"thumbnailOffset": int(t.get("cover_ms", 0))}}
+    inp = {"text": t["caption"], "channelId": ch[0], "schedulingType": "automatic", "mode": "customScheduled",
+           "dueAt": utc(slot), "assets": [{"video": video}]}
+    if mode == "now":
+        inp["mode"] = "shareNow"; inp.pop("dueAt")
+    q = ("mutation { createPost(input: %s) { ... on PostActionSuccess { post { id dueAt } } "
+         "... on MutationError { message } } }") % gql_literal(inp, enums={"schedulingType", "mode"})
+    r = buffer(q)["createPost"]
+    if "post" not in r:
+        raise RuntimeError(f"createPost: {r.get('message')}")
+    return r["post"]["id"], ("sent now" if mode == "now" else f"scheduled in Buffer {slot.astimezone(STZ):%d %b %H:%M}")
 
 
 TRANSIENT = ("HTTP 500", "HTTP 502", "HTTP 503", "HTTP 504", "HTTP 429", "network error", "timed out", "temporarily")
@@ -109,6 +241,12 @@ def main():
             note("notice", f"check youtube: {yt_check()}")
         except Exception as e:
             bad += 1; note("error", f"check youtube: {redact(e)}")
+        if "tiktok" in PLATFORMS:
+            try:
+                note("notice", f"check tiktok: Buffer channel OK — {tiktok_channel()[1]}")
+                note("notice", f"check release storage: {release().get('html_url', 'ok')}")
+            except Exception as e:
+                bad += 1; note("error", f"check tiktok: {redact(e)}")
 
     metas = sorted(glob.glob(os.path.join(media, "s", "*.json")))
     for mf in metas:
@@ -119,14 +257,16 @@ def main():
             bad += 1; note("error", f"{name}: invalid JSON ({e})"); continue
         mp4, jpg = mf[:-5] + ".mp4", mf[:-5] + ".jpg"
         errs = validate_meta(meta, name) + validate_files(mp4, jpg)
+        if "tiktok" in PLATFORMS:
+            cap = (meta.get("tiktok") or {}).get("caption", "")
+            if not isinstance(cap, str) or not 10 <= len(cap) <= 2200:
+                errs.append("tiktok.caption: 10-2200 characters")
         if errs:
             bad += 1; note("error", f"{name}: " + "; ".join(errs)); continue
         ep, slot = meta["id"], datetime.fromisoformat(meta["slot"])
         rec = state["posts"].setdefault(ep, {"n": meta["n"], "slot": meta["slot"], "done": {}, "errors": {}})
         if mode == "check":
-            note("notice", f"{ep}: files OK, slot {slot.astimezone(STZ):%d %b %H:%M}, youtube: {rec['done'].get('youtube', 'not yet')}")
-            continue
-        if "youtube" in rec["done"]:
+            note("notice", f"{ep}: files OK, slot {slot.astimezone(STZ):%d %b %H:%M}, posted on: {', '.join(rec['done']) or 'none'}")
             continue
         m = mode
         if mode == "retry":
@@ -140,41 +280,51 @@ def main():
                 continue
         elif rec.get("mode") and rec["mode"] != mode and not rec.get("errors"):
             note("warning", f"{ep}: already handled in {rec['mode']} mode, skipped"); continue
+        todo = [p for p in PLATFORMS if p not in rec["done"]]
+        if not todo:
+            continue
         if m == "live" and slot < now + timedelta(minutes=15):
-            bad += 1; rec["errors"]["youtube"] = "slot too close or past"
-            note("error", f"{ep}: slot {meta['slot']} is too close or past; not uploaded"); continue
-        rec["mode"] = m if mode != "retry" else rec.get("mode", m)
-        try:
-            vid, info = attempt(yt_publish, meta, mp4, jpg, slot, m)
-            rec["done"]["youtube"] = vid
-            rec["errors"].pop("youtube", None)
-            note("notice", f"{ep} youtube: OK https://youtube.com/shorts/{vid} — "
-                           f"{'scheduled ' + slot.astimezone(STZ).strftime('%d %b %H:%M') if m == 'live' else m}; {info}")
-        except Exception as e:
             bad += 1
-            rec["errors"]["youtube"] = redact(e)[:400]
-            note("error", f"{ep} youtube: {redact(e)}")
+            for p in todo:
+                rec["errors"][p] = "slot too close or past"
+            note("error", f"{ep}: slot {meta['slot']} is too close or past; not posted on {', '.join(todo)}"); continue
+        if mode != "retry":
+            rec["mode"] = m
+        for p in todo:
+            try:
+                if p == "youtube":
+                    pid, info = attempt(yt_publish, meta, mp4, jpg, slot, m)
+                else:
+                    tmp4 = mf[:-5] + "_tt.mp4"
+                    pid, info = attempt(tt_publish, meta, tmp4 if os.path.isfile(tmp4) else mp4, slot, m)
+                    if pid is None:
+                        note("notice", f"{ep} {p}: {info}"); continue
+                rec["done"][p] = pid
+                rec["errors"].pop(p, None)
+                note("notice", f"{ep} {p}: OK {info}")
+            except Exception as e:
+                bad += 1
+                rec["errors"][p] = redact(e)[:400]
+                note("error", f"{ep} {p}: {redact(e)}")
         rec["updated"] = now.isoformat()
 
     if mode != "check":
         cutoff = now - timedelta(days=90)
-        state["posts"] = {k: v for k, v in state["posts"].items()
-                          if datetime.fromisoformat(v["slot"]) > cutoff}
+        state["posts"] = {k: v for k, v in state["posts"].items() if datetime.fromisoformat(v["slot"]) > cutoff}
         json.dump(state, open(sp, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
         push_branch(state_d, BR["state"], f"shorts publish ({mode})")
-        # uploaded files are no longer needed on the media branch: keep it small
         removed = 0
-        for mf in metas:
+        for mf in metas:          # posted everywhere (or private test) -> files no longer needed on the media branch
             ep = os.path.basename(mf)[:-5]
             rec = state["posts"].get(ep, {})
-            if "youtube" in rec.get("done", {}):
-                for ext in (".mp4", ".jpg", ".json"):
-                    p = mf[:-5] + ext
-                    if os.path.isfile(p):
-                        os.remove(p); removed += 1
+            if all(p in rec.get("done", {}) for p in PLATFORMS) or rec.get("mode") == "private":
+                for f in glob.glob(mf[:-5] + "*"):
+                    os.remove(f); removed += 1
         if removed:
             push_branch(media, BR["media"], f"shorts media cleanup ({mode})", squash=True)
-    summary(f"### Shorts publish ({mode})\nfiles: {len(metas)}, problems: {bad}")
+        if "tiktok" in PLATFORMS:
+            cleanup_release()
+    summary(f"### Shorts publish ({mode})\nfiles: {len(metas)}, platforms: {', '.join(PLATFORMS)}, problems: {bad}")
     return 1 if bad else 0
 
 

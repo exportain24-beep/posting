@@ -1,7 +1,7 @@
-# YouTube Shorts run — what Claude does (unattended)
+# Shorts run (YouTube + TikTok) — what Claude does (unattended)
 
 Goal: every day **06:00, 15:00 and 20:00 (Bangladesh)** one finished **≤ 30-second 9:16 YouTube Short** goes public,
-in plan order (1 → 1000), **on YouTube only**. Nobody is watching: never stop to ask; decide, finish, report.
+in plan order (1 → 1000), on **YouTube (Shorts) and TikTok** — nowhere else. Nobody is watching: never stop to ask; decide, finish, report.
 
 **Hands off the reel system.** The 3–5 min reel pipeline (DAILY_TASK.md, tools/studio.py, scripts/voice.py,
 scripts/publish.py, config.json, their workflows and the content/audio/media/state branches, the two existing
@@ -92,7 +92,8 @@ bash shorts/kit/new_short.sh $P <2-letter prefix> <bn|en>
 ## 5. SEO for Shorts — `$P/post.json`
 ```json
 {"id": "<EP>", "n": "<NNNN>", "slot": "<free slot ISO, +06:00>", "cluster": "<plan cluster>",
- "youtube": {"title": "…", "description": "…", "tags": ["…"], "language": "bn|en"}}
+ "youtube": {"title": "…", "description": "…", "tags": ["…"], "language": "bn|en"},
+ "tiktok":  {"caption": "…", "cover_ms": 1800}}
 ```
 - **Title** (≤ 70 chars, best 40–60): primary keyword first (plan `seo_keyword`, natural form), then the hook/benefit,
   then ` #Shorts`. Bangla Short → Bangla title (one key English term allowed); English Short → English title.
@@ -104,12 +105,19 @@ bash shorts/kit/new_short.sh $P <2-letter prefix> <bn|en>
   first, then plan hashtags (the first 3 show above the title).
 - **Tags**: 300–450 characters total: keyword + its English/Bangla/Banglish variants + subtopic terms + brand.
 - Spoken keyword in the first 2 s and on screen in the first frame (YouTube reads both). One clear topic per Short.
+- **TikTok caption** (same language as the Short; never copy the YouTube description): line 1 = keyword-rich hook
+  (TikTok search reads captions), 2–3 short value lines (emoji allowed, sparingly), CTA "আরও জানতে ফলো করুন ·
+  Exportain.com" / "Follow for more · Exportain.com" (no clickable links), then 6–10 hashtags: 2–3 niche keyword
+  tags, #fyp #foryou, 1–2 Bangladesh tags, #Exportain. ≤ 600 characters. `cover_ms` = the millisecond of the hook
+  frame TikTok uses as the cover (headline + 3D world visible).
 
 ## 6. Deliver, log, next
 ```bash
-python3 tools/shorts.py deliver <EP> $P --mode live     # validates (9:16, ≤ 30 s, texts), uploads, schedules publishAt
+python3 tools/shorts.py deliver <EP> $P --mode live     # validates, YouTube upload (publishAt) + TikTok via Buffer at the slot
 ```
-Prints `youtube: OK https://youtube.com/shorts/<id> — scheduled …`. If it failed, read the notes, fix, run
+Prints `youtube: OK https://youtube.com/shorts/<id> — scheduled …` and `tiktok: OK scheduled in Buffer …`. TikTok's
+file is served to Buffer as a temporary asset of the GitHub release `shorts-media-files` (cleaned after 4 days); the
+reel system's Pages/media branch are not used. A Buffer "queue full" error is retried by the next run's `publish retry`. If it failed, read the notes, fix, run
 `python3 tools/shorts.py publish retry`. Then write `$P/log.json`
 `{"title","subtopic","hook","visual":"world/time/cam/palette/layout recipes","script":[take texts],"sources":[urls],
  "lessons":"what looked best / improve next time"}` and `python3 tools/shorts.py log <EP> $P`.
@@ -123,4 +131,4 @@ message, mention it in the report). Never touch the reel system, secrets, workfl
 Owner-only problems (revoked YouTube token, ElevenLabs balance, quota): finish what works, put exact fix steps first.
 
 ## Report (final message, short Bangla)
-Per Short: number, slot, title, length, YouTube link/status. Shorts left. Failures + what the owner must do.
+Per Short: number, slot, title, length, YouTube link/status, TikTok status. Shorts left. Failures + what the owner must do.

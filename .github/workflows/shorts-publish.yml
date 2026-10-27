@@ -1,4 +1,4 @@
-name: Shorts Publish (YouTube only)
+name: Shorts Publish (YouTube + TikTok)
 
 # YouTube Shorts lane only. Started by Claude's Shorts task through the GitHub API. No timer, no pull_request trigger.
 on:
@@ -23,7 +23,7 @@ jobs:
     timeout-minutes: 30
     environment: production
     permissions:
-      contents: write          # to record results on the 'shorts-state' branch
+      contents: write          # results on shorts-state + temporary release asset for TikTok
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -40,7 +40,9 @@ jobs:
       - name: Publish
         env:
           MODE: ${{ inputs.mode }}
-          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}          # only the YouTube secrets: this lane posts nowhere else
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}          # YouTube (direct API) + Buffer (TikTok) only
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          GITHUB_TOKEN: ${{ github.token }}                   # this run's token: temporary release asset for Buffer
         run: python3 scripts/shorts_publish.py

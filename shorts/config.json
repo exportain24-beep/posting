@@ -1,5 +1,5 @@
 {
- "_note": "Exportain YouTube Shorts lane. Completely separate from the 3-5 min reel system (config.json, voice.py, publish.py and their branches are never touched by this lane).",
+ "_note": "Exportain Shorts lane (YouTube + TikTok). Completely separate from the 3-5 min reel system (config.json, voice.py, publish.py and their branches are never touched by this lane).",
  "timezone_offset_hours": 6,
  "slots_local": ["06:00", "15:00", "20:00"],
  "plan_ahead_hours": 40,
@@ -14,5 +14,6 @@
  "keep_audio_days": 5,
  "video_limits": {"aspect": "9:16", "min_seconds": 12, "max_seconds": 30.0, "max_mb": 120, "thumb_max_mb": 2},
  "branches": {"content": "shorts-content", "audio": "shorts-audio", "media": "shorts-media", "state": "shorts-state"},
+ "tiktok": {"enabled": true},
  "youtube": {"category_id": "27", "contains_synthetic_media": false, "playlist_ids": {}, "set_thumbnail": true}
 }
