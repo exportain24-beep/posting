@@ -1,0 +1,20 @@
+{
+ "title": "How to Export Garments from Bangladesh: 3 Steps #Shorts",
+ "subtopic": "How to start exporting garments",
+ "hook": "big number counter ($38.7B, EPB FY26) + 'Want your share? Three steps'",
+ "visual": "3D ship world (golden hour, orbit cam, 5-high container stacks with EXPORTAIN labels) for the hook; motion-graphics doc stack with ticks (e_sky); 3D fabric/garment-floor world (dolly) behind BGMEA/BKMEA cards + UD stamp; checklist board + sample carton + LC shield + ship card (e_gold); kit CTA (dark, white logo).",
+ "script": [
+  "Garments earned Bangladesh 38.7 billion dollars last year. Want your share? Three steps.",
+  "One: register. Trade licence, e-TIN, BIN, then your ERC.",
+  "Two: join BGMEA for woven, or BKMEA for knit, for the UD on bonded fabric.",
+  "Three: pass the buyer's audit, then win orders with samples and a safe LC.",
+  "Then list your factory on Exportain, and let buyers find you."
+ ],
+ "sources": [
+  "https://www.tbsnews.net/node/1478001",
+  "https://thefinancialexpress.com.bd/trade/bgmea-makes-unit-price-declaration-mandatory-for-ud-certificates"
+ ],
+ "lessons": "First Short. Debashish speaks ~11-12 chars/s even at speed 1.2: keep scripts 280-360 chars and tighten with --tempo 1.08. Ship camera needs r>=100 and low fog. Next time try globe or port for the hook.",
+ "id": "sh-0001-en-export-garments",
+ "logged": "2026-10-27T22:31+06:00"
+}
