@@ -1,0 +1,21 @@
+{
+ "title": "কৃষি পণ্য রপ্তানি দাম: নতুনদের বড় ভুল আর খরচের হিসাব #Shorts",
+ "subtopic": "প্রথম চালানের খরচের হিসাব",
+ "hook": "mistake hook: 'নতুনরা একটা বড় ভুল করে: শুধু মালের দাম ধরে' — red mistake bar + price tag with a slammed cross",
+ "visual": "3D farm world at golden hour (crane r30 h12, orange produce crates) for the hook; 3D warehouse of cartons (studio, dolly r40, fov 50) behind cost cards 1-2; air freight scene: plane on dashed route + cost-share bars where freight is longest ('উদাহরণ') on e_sky; cost stack of 6 coloured rows building up + price tag + FOB/CFR cards + 'হিসাব করে দাম দিন' on e_gold; kit CTA bn.",
+ "thumb": "card / pal by --n 6 (blue) / 'রপ্তানি দামে|নতুনদের *বড় ভুল*' + burst '৪ খরচ' / hero 3D farm crates crane",
+ "script": [
+  "কৃষি পণ্য রপ্তানি দামে নতুনরা একটা বড় ভুল করে: শুধু মালের দাম ধরে।",
+  "প্রথম, প্যাকিং আর কার্টন। দ্বিতীয়, ফাইটোস্যানিটারি সনদ আর ল্যাব টেস্ট।",
+  "তৃতীয়, বিমানভাড়া। তাজা সবজিতে অনেক সময় এটাই সবচেয়ে বড় খরচ।",
+  "চতুর্থ, সিএন্ডএফ আর ব্যাংক চার্জ। সব যোগ করে, এফওবি না সিএফআর, ঠিক করে দাম দিন।",
+  "তারপর এক্সপোর্টেইনে পণ্য তুলুন, ক্রেতারাই আপনাকে খুঁজে নেবে।"
+ ],
+ "sources": [
+  "https://www.tbsnews.net/economy/vegetable-exports-fail-grow-due-weak-diversification-basket-and-market-1484971",
+  "https://www.dhl.com/discover/en-bd/logistics-advice/import-export-advice/trade-licence-and-more-government-permits-bangladesh-export"
+ ],
+ "lessons": "Voice reused from an earlier run. No reliable per-kg freight figure found, so no amounts were stated (shares tagged 'উদাহরণ'). Farm hero for thumbnails: bleed layout with farm hero looks like blobs; card layout with crane r30 + crop on the crates works. Layout repeated card (0005 also card) because bleed hero failed — next Short should use split or number. Container restart once killed a background render; re-run render.sh.",
+ "id": "sh-0006-bn-agro-export-cost",
+ "logged": "2026-10-29T00:29+06:00"
+}
