@@ -65,6 +65,17 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-10-28T18:28:51.403155+00:00"
+  },
+  "sh-0007-bn-export-surplus": {
+   "n": "0007",
+   "slot": "2026-10-30T06:00:00+06:00",
+   "done": {
+    "youtube": "1wASJrMY1dA",
+    "tiktok": "6ae243ea62159c054404eb4c"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-10-28T18:50:06.806025+00:00"
   }
  }
 }
