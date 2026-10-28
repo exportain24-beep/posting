@@ -6,6 +6,7 @@ MODE=private  YouTube private upload only (test); TikTok skipped
 MODE=live     YouTube scheduled (publishAt) + TikTok scheduled in Buffer, both at the slot
 MODE=retry    repairs failed platforms: slot >= 15 min away -> scheduled again; slot passed < 6 h ago -> post now
 MODE=now      publish immediately on both
+MODE=thumbs   re-set YouTube thumbnails: shorts-media:t/<id>.jpg -> thumbnails.set on that Short's video, then removed
 
 The TikTok copy is served to Buffer as a GitHub Release asset of this public repo (release tag "shorts-media-files"),
 so the reel system's GitHub Pages / media branch are never touched. Results: shorts-state:posts.json + annotations.
@@ -229,7 +230,7 @@ def attempt(fn, *args):
 
 def main():
     mode = os.environ.get("MODE", "check")
-    if mode not in ("check", "private", "live", "now", "retry"):
+    if mode not in ("check", "private", "live", "now", "retry", "thumbs"):
         note("error", f"shorts publish: unknown mode {mode}"); return 1
     now = datetime.now(timezone.utc)
     media, state_d = branch_dir(BR["media"]), branch_dir(BR["state"])
@@ -247,6 +248,28 @@ def main():
                 note("notice", f"check release storage: {release().get('html_url', 'ok')}")
             except Exception as e:
                 bad += 1; note("error", f"check tiktok: {redact(e)}")
+
+    if mode == "thumbs":
+        tok, done = None, 0
+        for jpg in sorted(glob.glob(os.path.join(media, "t", "*.jpg"))):
+            ep = os.path.basename(jpg)[:-4]
+            vid = state["posts"].get(ep, {}).get("done", {}).get("youtube")
+            if not vid:
+                bad += 1; note("error", f"{ep}: no YouTube video recorded for this Short"); continue
+            if os.path.getsize(jpg) > 2_000_000:
+                bad += 1; note("error", f"{ep}: thumbnail larger than 2 MB"); continue
+            try:
+                tok = tok or yt_token()
+                attempt(lambda: http("POST", f"https://www.googleapis.com/upload/youtube/v3/thumbnails/set?videoId={vid}",
+                                     {"Authorization": f"Bearer {tok}", "Content-Type": "image/jpeg"}, open(jpg, "rb").read()))
+                os.remove(jpg); done += 1
+                note("notice", f"{ep} youtube: new thumbnail set on https://youtube.com/shorts/{vid}")
+            except Exception as e:
+                bad += 1; note("error", f"{ep} youtube thumbnail: {redact(e)}")
+        if done:
+            push_branch(media, BR["media"], "shorts thumbnails set", squash=True)
+        summary(f"### Shorts thumbnails\nset: {done}, problems: {bad}")
+        return 1 if bad else 0
 
     metas = sorted(glob.glob(os.path.join(media, "s", "*.json")))
     for mf in metas:

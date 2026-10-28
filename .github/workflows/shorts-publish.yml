@@ -5,9 +5,9 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "check = test login only, private = private test upload, live = schedule at slot, now = public now, retry = repair failed"
+        description: "check = test login only, private = private test upload, live = schedule at slot, now = public now, retry = repair failed, thumbs = re-set YouTube thumbnails"
         type: choice
-        options: [check, private, live, now, retry]
+        options: [check, private, live, now, retry, thumbs]
         default: check
 
 permissions: {}

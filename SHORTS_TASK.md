@@ -86,8 +86,31 @@ bash shorts/kit/new_short.sh $P <2-letter prefix> <bn|en>
 - Render (background, ≈ 8–15 min):
   `setsid nohup bash $SS/tools/render.sh $P Exportain_Short_<NNNN> upbeat 0.4 -22 > $P/render_all.log 2>&1 < /dev/null &`
   Gates: 0 frozen > 2.5 s, ≈ −14 LUFS, peak ≤ −1.05 dBFS, **duration ≤ 30.0 s** (ffprobe `$P/out/final_9x16.mp4`).
-  Then `cp $P/out/final_9x16.mp4 $P/final.mp4` and `python3 shorts/kit/thumb.py $P/final.mp4 <t> $P/thumb.jpg`
-  (t = a hook moment with headline + 3D world; view it).
+
+## 4b. Premium thumbnail + cover (owner's standing order, 28 Oct 2026: heavy colour, high contrast, must make people click)
+Never use a raw video frame as the thumbnail. Design it with `shorts/kit/thumb.py` (read its header) — it is the
+YouTube thumbnail AND the first frame of the Short (TikTok cover):
+```bash
+# $P/thumb.json — e.g.
+# {"lang":"en","layout":"card","kicker":"Bangladesh export guide","headline":"Export *garments*|in 3 steps",
+#  "sub":"from licence to first order","burst":"$38.7B","arrow":true,
+#  "hero":{"world":"ship","time":"golden","cam":"orbit","a0":0.9,"r":105,"h":26,"stack":5,"at":3,"crop":[0,520,1080,760]}}
+python3 shorts/kit/thumb.py $P/out/final_9x16.mp4 $P/thumb.json $P/thumb.jpg --n <plan number>
+python3 shorts/kit/cover.py $P/out/final_9x16.mp4 $P/thumb.jpg $P/final.mp4      # prints tiktok cover_ms
+```
+- **Headline** = the click reason in 2–6 words (max 3 lines), in the Short's language, keyword or its core word
+  included; one `*highlighted*` word/number. Curiosity, a striking number, a mistake, "how to … in 3 steps" —
+  never a full sentence, never the video title copied. Bangla Short → Bangla thumbnail; English → English.
+- **Hero** = a clean 3D shot (`"hero": {world options…, "at": seconds, "crop": […]}`) of a world that fits the topic,
+  bright and close (not the far, foggy view). Optional `sticker` (round crop of a second moment) and `burst`
+  (number / "৩ ধাপ" / "NEW 2026"), `arrow` pointing at the hero.
+- **Rotate** layout (card → bleed → split → number), palette (`--n` rotates it; or `pal` 0–9) and hero world so no two
+  consecutive Shorts look alike; check `recent` and log the thumbnail in log.json ("thumb": layout/pal/headline).
+- **Check at phone size (Read the jpg)**: headline readable in 1 second, nothing clipped, important content within
+  y 260–1600, colours vivid (no grey/pastel), logo = green icon + white wordmark. Fix thumb.json and re-run if not.
+- `post.json` → `"tiktok": {"cover_ms": <value cover.py printed>}`. If cover.py prints "skipped" (video too long),
+  shorten the voice instead of shipping without the cover.
+- To replace the thumbnail of an already-uploaded Short: `python3 tools/shorts.py rethumb <EP> <jpg> [<EP> <jpg> …]`.
 
 ## 5. SEO for Shorts — `$P/post.json`
 ```json
@@ -108,8 +131,8 @@ bash shorts/kit/new_short.sh $P <2-letter prefix> <bn|en>
 - **TikTok caption** (same language as the Short; never copy the YouTube description): line 1 = keyword-rich hook
   (TikTok search reads captions), 2–3 short value lines (emoji allowed, sparingly), CTA "আরও জানতে ফলো করুন ·
   Exportain.com" / "Follow for more · Exportain.com" (no clickable links), then 6–10 hashtags: 2–3 niche keyword
-  tags, #fyp #foryou, 1–2 Bangladesh tags, #Exportain. ≤ 600 characters. `cover_ms` = the millisecond of the hook
-  frame TikTok uses as the cover (headline + 3D world visible).
+  tags, #fyp #foryou, 1–2 Bangladesh tags, #Exportain. ≤ 600 characters. `cover_ms` = the value `cover.py`
+  printed (the designed cover frame at the start of final.mp4).
 
 ## 6. Deliver, log, next
 ```bash
@@ -119,7 +142,8 @@ Prints `youtube: OK https://youtube.com/shorts/<id> — scheduled …` and `tikt
 file is served to Buffer as a temporary asset of the GitHub release `shorts-media-files` (cleaned after 4 days); the
 reel system's Pages/media branch are not used. A Buffer "queue full" error is retried by the next run's `publish retry`. If it failed, read the notes, fix, run
 `python3 tools/shorts.py publish retry`. Then write `$P/log.json`
-`{"title","subtopic","hook","visual":"world/time/cam/palette/layout recipes","script":[take texts],"sources":[urls],
+`{"title","subtopic","hook","visual":"world/time/cam/palette/layout recipes","thumb":"layout/pal/headline/hero",
+ "script":[take texts],"sources":[urls],
  "lessons":"what looked best / improve next time"}` and `python3 tools/shorts.py log <EP> $P`.
 Then the next free slot (max 3 per run).
 

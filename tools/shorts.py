@@ -9,6 +9,7 @@ Separate from tools/studio.py and the 3-5 min reel system: own branches, own wor
   shorts.py voice EP DIR [--test-tone]  push DIR/narration.json, run shorts-voice.yml, fetch DIR/vo + durations.json
   shorts.py deliver EP DIR [--mode M]   push DIR/final.mp4 + thumb.jpg + post.json to shorts-media, run shorts-publish.yml
   shorts.py publish MODE                run shorts-publish.yml only (check | private | live | now | retry)
+  shorts.py rethumb EP JPG [EP JPG …]   replace the YouTube thumbnail of already-uploaded Shorts
   shorts.py log EP DIR                  record what was produced (script, title, visual concept) on shorts-content
   shorts.py plan-push FILE              (setup) put plan.json on shorts-content
 
@@ -209,6 +210,20 @@ def cmd_deliver(ep, d, mode):
     return 0 if ok and st and all(p in st.get("done", {}) for p in want) else 1
 
 
+def cmd_rethumb(pairs):
+    md = branch_dir(BR["media"])
+    os.makedirs(os.path.join(md, "t"), exist_ok=True)
+    for ep, jpg in pairs:
+        if not SHORT_ID.fullmatch(ep):
+            raise SystemExit(f"bad EP {ep}")
+        if os.path.getsize(jpg) > 2_000_000:
+            raise SystemExit(f"{jpg} larger than 2 MB")
+        shutil.copy(jpg, os.path.join(md, "t", f"{ep}.jpg"))
+    push_branch(md, BR["media"], "shorts new thumbnails", squash=True)
+    ok, _ = run_workflow("shorts-publish.yml", {"mode": "thumbs"})
+    return 0 if ok else 1
+
+
 def cmd_log(ep, d):
     """d/log.json: {"title","subtopic","hook","visual","script":[...],"sources":[...],"lessons"} -> shorts-content:produced/"""
     rec = json.load(open(os.path.join(d, "log.json"), encoding="utf-8"))
@@ -251,6 +266,8 @@ def main():
     elif c == "publish":
         ok, _ = run_workflow("shorts-publish.yml", {"mode": a[1]})
         return 0 if ok else 1
+    elif c == "rethumb":
+        return cmd_rethumb(list(zip(a[1::2], a[2::2])))
     elif c == "log":
         cmd_log(a[1], a[2])
     elif c == "plan-push":
