@@ -183,7 +183,7 @@ html,body{{width:1080px;height:1920px;overflow:hidden}}
 .hero img{{width:100%;height:100%;object-fit:cover;object-position:{spec.get('pos', '50% 50%')}}}
 .hero.round{{left:290px;top:1080px;width:500px;height:500px;border-radius:50%;transform:none}}
 .nv{{display:inline-block}}
-.num{{position:absolute;left:0;right:0;top:600px;text-align:center;z-index:21;font:800 300px Pop;color:{hlb};letter-spacing:-8px;
+.num{{position:absolute;left:0;right:0;top:580px;text-align:center;z-index:21;font:800 360px {'B' if re.search(r'[\u0980-\u09FF]', spec.get('number', '')) else 'Pop'};color:{hlb};letter-spacing:-8px;
  -webkit-text-stroke:18px {ol};paint-order:stroke fill;text-shadow:0 18px 0 rgba(0,0,0,.3);white-space:nowrap}}
 .full{{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(1.35) contrast(1.12)}}
 .shade{{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,0) 30%,rgba(0,0,0,0) 62%,rgba(0,0,0,.6) 100%)}}
