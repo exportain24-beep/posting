@@ -237,6 +237,20 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-10-27T11:09:28.472982+00:00"
+  },
+  "076-green-products": {
+   "script": "076",
+   "slot": "2026-10-28T12:30:00+06:00",
+   "done": {
+    "youtube": "rQzbqe_q0HU",
+    "facebook": "995335616921850",
+    "tiktok": "6ae1760e1b33b85d1be19c56",
+    "linkedin": "6ae1760f3da914b6eab1e350",
+    "twitter": "6ae1760fa48463c22752dbfc"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-10-28T04:10:40.021404+00:00"
   }
  }
 }
