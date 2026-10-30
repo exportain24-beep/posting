@@ -1,0 +1,22 @@
+{
+ "title": "ইউরোপে সবজি রপ্তানি: শুল্কমুক্ত সুবিধা, আসল বাধা কোথায়? #Shorts",
+ "subtopic": "ইউরোপে শুল্কমুক্ত সুবিধা (EBA) + আসল বাধা মান",
+ "hook": "before vs now: 'ইউরোপে সবজি রপ্তানি? আগে ভাবতেন শুল্কই বড় বাধা?' — truck bumps a red brick wall 'শুল্ক?'",
+ "visual": "3D farm world by day (orbit r30 h12 a0 .9, red tomato crates) for the hook; before/after split cards greyed wall vs 0% + EU gate opening as a veg crate slides through + EBA pill (e_sky); 3D globe at dusk (routes BD→Amsterdam/Paris/Berlin/Rome/Madrid/London, rot0 -2.9, z 92→80, lookY 3) behind '২০২৬ struck → ২০২৯' LDC card + 'তবু ইইউর নিয়ম যাচাই করুন' card with magnifier; 3 numbered quality rows: packing-house conveyor with moving veg crates, phytosanitary doc + APPROVED stamp, test tube + residue bar under EU MRL line (e_mint); kit CTA bn.",
+ "thumb": "number / pal auto(--n 11) / 'ইউরোপে *শুল্ক*|তবু আসল বাধা?' giant ০% burst EU / farm day orbit hero round crop",
+ "script": [
+  "ইউরোপে সবজি রপ্তানি? আগে ভাবতেন শুল্কই বড় বাধা?",
+  "এখন সুখবর: ইবিএ সুবিধায় আমাদের সবজি ইউরোপে শূন্য শুল্কে ঢোকে।",
+  "জাতিসংঘ এলডিসি উত্তরণ দুই হাজার ঊনত্রিশ পর্যন্ত পিছিয়েছে, তবু ইইউর নিয়ম যাচাই করুন।",
+  "আসল বাধা এখন মান: প্যাকিং হাউসে বাছাই, ফাইটোস্যানিটারি সনদ, কীটনাশক টেস্ট।",
+  "তারপর এক্সপোর্টেইনে সবজি তুলুন, ইউরোপের ক্রেতারাই খুঁজে নেবে।"
+ ],
+ "sources": [
+  "https://online-d11.thedailystar.net/business/news/eus-gsp-lifeline-bangladesh-must-win-2029-4051411",
+  "https://www.tbsnews.net/bangladesh/bangladesh-gets-3-more-years-ldc-graduation-1587421",
+  "https://www.thedailystar.net/opinion/views/news/why-bangladeshs-vegetable-exports-fail-long-take-4128121"
+ ],
+ "lessons": "UNGA deferred LDC graduation to 24 Nov 2029 on 29 Oct 2026 — older notes saying EBA ends Nov 2029 are outdated; exact EBA end date after the deferral not confirmed, so hedged. 330 chars Bangla -> 24.6 s after tighten, final 27.67 s. Farm world in bleed thumb = green blobs again; number layout with round farm crop works. Globe needs z ~90 so text above it doesn't overlap.",
+ "id": "sh-0011-bn-eu-vegetable-export",
+ "logged": "2026-10-30T23:17+06:00"
+}
