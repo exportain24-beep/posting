@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Shorts publish job (GitHub Actions): shorts-media:s/<id>.{mp4,jpg,json}  ->  YouTube (direct API) + TikTok (Buffer).
+"""Shorts publish job (GitHub Actions): shorts-media:s/<id>.{mp4,jpg,json}  ->  YouTube (direct API) + TikTok (Buffer)
++ Facebook Page Reels (direct Graph API, video_reels).
 
 MODE=check    read-only: YouTube login, Buffer TikTok channel and every waiting file; posts nothing
 MODE=private  YouTube private upload only (test); TikTok skipped
-MODE=live     YouTube scheduled (publishAt) + TikTok scheduled in Buffer, both at the slot
+MODE=live     YouTube scheduled (publishAt) + TikTok scheduled in Buffer + Facebook Reel scheduled, all at the slot
 MODE=retry    repairs failed platforms: slot >= 15 min away -> scheduled again; slot passed < 6 h ago -> post now
 MODE=now      publish immediately on both
 MODE=thumbs   re-set YouTube thumbnails: shorts-media:t/<id>.jpg -> thumbnails.set on that Short's video, then removed
@@ -11,7 +12,7 @@ MODE=thumbs   re-set YouTube thumbnails: shorts-media:t/<id>.jpg -> thumbnails.s
 The TikTok copy is served to Buffer as a GitHub Release asset of this public repo (release tag "shorts-media-files"),
 so the reel system's GitHub Pages / media branch are never touched. Results: shorts-state:posts.json + annotations.
 """
-import glob, json, os, sys, time, urllib.parse
+import glob, hashlib, hmac, json, os, sys, time, uuid, urllib.parse
 from datetime import datetime, timedelta, timezone
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -20,7 +21,8 @@ from shorts_common import BR, SCFG, STZ, validate_files, validate_meta
 
 YT = SCFG["youtube"]
 TT = SCFG.get("tiktok", {"enabled": False})
-PLATFORMS = ["youtube"] + (["tiktok"] if TT.get("enabled") else [])
+FB = SCFG.get("facebook", {"enabled": False})
+PLATFORMS = ["youtube"] + (["tiktok"] if TT.get("enabled") else []) + (["facebook"] if FB.get("enabled") else [])
 REPO = os.environ.get("GITHUB_REPOSITORY", "exportain24-beep/posting")
 RELEASE_TAG = "shorts-media-files"
 
@@ -150,6 +152,101 @@ def cleanup_release(keep_days=4):
     return n
 
 
+# ------------------------------------------------------------------ Facebook Page Reels (direct Graph API)
+def multipart(fields, files):
+    b = uuid.uuid4().hex
+    out = bytearray()
+    for k, v in fields.items():
+        out += f"--{b}\r\nContent-Disposition: form-data; name=\"{k}\"\r\n\r\n{v}\r\n".encode()
+    for k, (fname, data, ctype) in files.items():
+        out += (f"--{b}\r\nContent-Disposition: form-data; name=\"{k}\"; filename=\"{fname}\"\r\n"
+                f"Content-Type: {ctype}\r\n\r\n").encode() + data + b"\r\n"
+    out += f"--{b}--\r\n".encode()
+    return bytes(out), f"multipart/form-data; boundary={b}"
+
+
+def _proof(app_secret, tok):
+    return {"appsecret_proof": hmac.new(app_secret.encode(), tok.encode(), hashlib.sha256).hexdigest()} if app_secret else {}
+
+
+_fb = None
+
+
+def fb_auth():
+    """FB_PAGE_TOKEN (system user or Page token) -> fresh Page token. Same secrets as the reel system, read-only use."""
+    global _fb
+    if _fb:
+        return _fb
+    page, tok, app_secret = secret("FB_PAGE_ID"), secret("FB_PAGE_TOKEN"), secret("FB_APP_SECRET")
+    if not (page and tok):
+        raise RuntimeError("Facebook secrets missing (FB_PAGE_ID / FB_PAGE_TOKEN)")
+    g = f"https://graph.facebook.com/{FB.get('graph_version', 'v23.0')}"
+    q = urllib.parse.urlencode({"fields": "access_token", **_proof(app_secret, tok)})
+    page_tok = jhttp("GET", f"{g}/{page}?{q}", {"Authorization": f"OAuth {tok}"}).get("access_token")
+    if not page_tok:
+        raise RuntimeError("could not get the Page token — does the system user have full control of the Page?")
+    mask(page_tok)
+    _fb = (page, page_tok, _proof(app_secret, page_tok), g)
+    return _fb
+
+
+def fb_check():
+    page, tok, proof, g = fb_auth()
+    p = jhttp("GET", f"{g}/{page}?" + urllib.parse.urlencode({"fields": "id,name", **proof}), {"Authorization": f"OAuth {tok}"})
+    return f"page OK: {p.get('name')}"
+
+
+def fb_publish(meta, mp4, jpg, slot, mode):
+    """9:16 Short -> Facebook Page Reel: start -> rupload bytes -> finish (SCHEDULED at the slot / PUBLISHED / DRAFT)."""
+    page, tok, proof, g = fb_auth()
+    auth = {"Authorization": f"OAuth {tok}"}
+    form = {"Content-Type": "application/x-www-form-urlencoded"}
+    f = meta.get("facebook") or {}
+    st = jhttp("POST", f"{g}/{page}/video_reels", {**auth, **form},
+               urllib.parse.urlencode({"upload_phase": "start", **proof}).encode())
+    vid = st.get("video_id")
+    if not vid:
+        raise RuntimeError(f"reel start failed: {st}")
+    size = os.path.getsize(mp4)
+    up = jhttp("POST", st.get("upload_url") or f"https://rupload.facebook.com/video-upload/{FB.get('graph_version', 'v23.0')}/{vid}",
+               {**auth, "offset": "0", "file_size": str(size), "Content-Type": "application/octet-stream"},
+               open(mp4, "rb").read(), timeout=900)
+    if not up.get("success"):
+        raise RuntimeError(f"reel upload failed: {up}")
+    text = f.get("description", "")
+    fields = {"upload_phase": "finish", "video_id": vid, "description": text, **proof}
+    if f.get("title"):
+        fields["title"] = f["title"]
+    lead = (slot - datetime.now(timezone.utc)).total_seconds()
+    if mode == "live" and 11 * 60 < lead < 29 * 86400:
+        fields.update({"video_state": "SCHEDULED", "scheduled_publish_time": str(int(slot.timestamp()))})
+        state = f"scheduled {slot.astimezone(STZ):%d %b %H:%M}"
+    elif mode in ("live", "now"):
+        fields["video_state"] = "PUBLISHED"; state = "published now"
+    else:
+        fields["video_state"] = "DRAFT"; state = "draft"
+    fin = None
+    for i in range(6):                       # Facebook may still be processing the upload
+        try:
+            fin = jhttp("POST", f"{g}/{page}/video_reels", {**auth, **form}, urllib.parse.urlencode(fields).encode())
+            break
+        except RuntimeError as e:
+            if i == 5 or "HTTP 5" not in str(e) and "processing" not in str(e).lower():
+                raise
+            time.sleep(20)
+    if not (fin or {}).get("success", True):
+        raise RuntimeError(f"reel finish failed: {fin}")
+    extras = [state]
+    if jpg and os.path.isfile(jpg):
+        try:
+            b, c = multipart({"is_preferred": "true", **proof}, {"source": ("thumb.jpg", open(jpg, "rb").read(), "image/jpeg")})
+            jhttp("POST", f"{g}/{vid}/thumbnails", {**auth, "Content-Type": c}, b)
+            extras.append("cover set")
+        except Exception as e:
+            extras.append(f"cover not set ({redact(e)[:120]})")
+    return vid, f"https://www.facebook.com/reel/{vid} — " + ", ".join(extras)
+
+
 # ------------------------------------------------------------------ TikTok via Buffer
 def gql_literal(v, enums=(), key=None):
     import re
@@ -248,6 +345,11 @@ def main():
                 note("notice", f"check release storage: {release().get('html_url', 'ok')}")
             except Exception as e:
                 bad += 1; note("error", f"check tiktok: {redact(e)}")
+        if "facebook" in PLATFORMS:
+            try:
+                note("notice", f"check facebook: {fb_check()}")
+            except Exception as e:
+                bad += 1; note("error", f"check facebook: {redact(e)}")
 
     if mode == "thumbs":
         tok, done = None, 0
@@ -284,6 +386,10 @@ def main():
             cap = (meta.get("tiktok") or {}).get("caption", "")
             if not isinstance(cap, str) or not 10 <= len(cap) <= 2200:
                 errs.append("tiktok.caption: 10-2200 characters")
+        if "facebook" in PLATFORMS:
+            fd = (meta.get("facebook") or {}).get("description", "")
+            if not isinstance(fd, str) or not 10 <= len(fd) <= 5000:
+                errs.append("facebook.description: 10-5000 characters")
         if errs:
             bad += 1; note("error", f"{name}: " + "; ".join(errs)); continue
         ep, slot = meta["id"], datetime.fromisoformat(meta["slot"])
@@ -317,6 +423,8 @@ def main():
             try:
                 if p == "youtube":
                     pid, info = attempt(yt_publish, meta, mp4, jpg, slot, m)
+                elif p == "facebook":
+                    pid, info = attempt(fb_publish, meta, mp4, jpg, slot, m)
                 else:
                     tmp4 = mf[:-5] + "_tt.mp4"
                     pid, info = attempt(tt_publish, meta, tmp4 if os.path.isfile(tmp4) else mp4, slot, m)

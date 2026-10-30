@@ -1,7 +1,8 @@
-# Shorts run (YouTube + TikTok) — what Claude does (unattended)
+# Shorts run (YouTube + TikTok + Facebook Reels) — what Claude does (unattended)
 
 Goal: every day **06:00, 15:00 and 20:00 (Bangladesh)** one finished **≤ 30-second 9:16 YouTube Short** goes public,
-in plan order (1 → 1000), on **YouTube (Shorts) and TikTok** — nowhere else. Nobody is watching: never stop to ask; decide, finish, report.
+in plan order (1 → 1000), on **YouTube (Shorts), TikTok and the Facebook Page (Reels)** — nowhere else
+(Facebook added by the owner on 30 Oct 2026, from Short 0008 on). Nobody is watching: never stop to ask; decide, finish, report.
 
 **Hands off the reel system.** The 3–5 min reel pipeline (DAILY_TASK.md, tools/studio.py, scripts/voice.py,
 scripts/publish.py, config.json, their workflows and the content/audio/media/state branches, the two existing
@@ -116,7 +117,8 @@ python3 shorts/kit/cover.py $P/out/final_9x16.mp4 $P/thumb.jpg $P/final.mp4     
 ```json
 {"id": "<EP>", "n": "<NNNN>", "slot": "<free slot ISO, +06:00>", "cluster": "<plan cluster>",
  "youtube": {"title": "…", "description": "…", "tags": ["…"], "language": "bn|en"},
- "tiktok":  {"caption": "…", "cover_ms": 1800}}
+ "tiktok":  {"caption": "…", "cover_ms": 1800},
+ "facebook": {"title": "…", "description": "…"}}
 ```
 - **Title** (≤ 70 chars, best 40–60): primary keyword first (plan `seo_keyword`, natural form), then the hook/benefit,
   then ` #Shorts`. Bangla Short → Bangla title (one key English term allowed); English Short → English title.
@@ -134,11 +136,20 @@ python3 shorts/kit/cover.py $P/out/final_9x16.mp4 $P/thumb.jpg $P/final.mp4     
   tags, #fyp #foryou, 1–2 Bangladesh tags, #Exportain. ≤ 600 characters. `cover_ms` = the value `cover.py`
   printed (the designed cover frame at the start of final.mp4).
 
+- **Facebook Reel** (same language as the Short; written fresh, not a copy of YouTube or TikTok): `title` ≤ 60 chars,
+  keyword first, no `#Shorts`. `description` (≤ 900 chars, Facebook search + feed read it): line 1 = keyword-rich hook
+  question/statement (first ~125 chars show before "See more"), 2–3 short value lines (✅/👉 sparingly), source line
+  when a figure is shown, one engagement question ("আপনি কোন পণ্য রপ্তানি করতে চান? কমেন্টে লিখুন" / "Which product
+  would you export? Tell us below"), the Exportain link
+  `https://exportain.com/?utm_source=facebook&utm_medium=reels&utm_campaign=shorts&utm_content=<NNNN>`, then 5–8
+  hashtags: #Reels first, 2–3 keyword tags, 1–2 Bangladesh tags, #Exportain. The thumbnail is set as the Reel cover.
+
 ## 6. Deliver, log, next
 ```bash
 python3 tools/shorts.py deliver <EP> $P --mode live     # validates, YouTube upload (publishAt) + TikTok via Buffer at the slot
 ```
-Prints `youtube: OK https://youtube.com/shorts/<id> — scheduled …` and `tiktok: OK scheduled in Buffer …`. TikTok's
+Prints `youtube: OK https://youtube.com/shorts/<id> — scheduled …`, `tiktok: OK scheduled in Buffer …` and
+`facebook: OK https://www.facebook.com/reel/<id> — scheduled …` (Facebook Reels API, Page secrets FB_PAGE_ID/FB_PAGE_TOKEN/FB_APP_SECRET). TikTok's
 file is served to Buffer as a temporary asset of the GitHub release `shorts-media-files` (cleaned after 4 days); the
 reel system's Pages/media branch are not used. A Buffer "queue full" error is retried by the next run's `publish retry`. If it failed, read the notes, fix, run
 `python3 tools/shorts.py publish retry`. Then write `$P/log.json`
@@ -155,4 +166,4 @@ message, mention it in the report). Never touch the reel system, secrets, workfl
 Owner-only problems (revoked YouTube token, ElevenLabs balance, quota): finish what works, put exact fix steps first.
 
 ## Report (final message, short Bangla)
-Per Short: number, slot, title, length, YouTube link/status, TikTok status. Shorts left. Failures + what the owner must do.
+Per Short: number, slot, title, length, YouTube link/status, TikTok status, Facebook link/status. Shorts left. Failures + what the owner must do.

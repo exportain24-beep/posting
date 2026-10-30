@@ -1,4 +1,4 @@
-name: Shorts Publish (YouTube + TikTok)
+name: Shorts Publish (YouTube + TikTok + Facebook)
 
 # YouTube Shorts lane only. Started by Claude's Shorts task through the GitHub API. No timer, no pull_request trigger.
 on:
@@ -44,5 +44,8 @@ jobs:
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}               # Facebook Page Reels (same Page secrets as the reel system)
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          FB_APP_SECRET: ${{ secrets.FB_APP_SECRET }}
           GITHUB_TOKEN: ${{ github.token }}                   # this run's token: temporary release asset for Buffer
         run: python3 scripts/shorts_publish.py

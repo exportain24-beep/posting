@@ -188,6 +188,10 @@ def cmd_deliver(ep, d, mode):
         cap = (meta.get("tiktok") or {}).get("caption", "")
         if not isinstance(cap, str) or not 10 <= len(cap) <= 2200:
             errs.append("tiktok.caption: 10-2200 characters")
+    if SCFG.get("facebook", {}).get("enabled"):
+        fd = (meta.get("facebook") or {}).get("description", "")
+        if not isinstance(fd, str) or not 10 <= len(fd) <= 5000:
+            errs.append("facebook.description: 10-5000 characters")
     if mode == "now":
         meta["slot"] = (datetime.now(timezone.utc) + timedelta(minutes=30)).astimezone(STZ).isoformat(timespec="minutes")
     elif datetime.fromisoformat(meta["slot"]) < datetime.now(timezone.utc) + timedelta(minutes=SCFG["min_lead_minutes"]):
@@ -206,7 +210,8 @@ def cmd_deliver(ep, d, mode):
     ok, _ = run_workflow("shorts-publish.yml", {"mode": mode})
     st = load(BR["state"], "posts.json", {"posts": {}})["posts"].get(ep)
     print(json.dumps(st, ensure_ascii=False, indent=1) if st else "(no state record)")
-    want = ["youtube"] + (["tiktok"] if SCFG.get("tiktok", {}).get("enabled") else [])
+    want = ["youtube"] + (["tiktok"] if SCFG.get("tiktok", {}).get("enabled") else []) + \
+        (["facebook"] if SCFG.get("facebook", {}).get("enabled") else [])
     return 0 if ok and st and all(p in st.get("done", {}) for p in want) else 1
 
 
