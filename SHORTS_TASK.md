@@ -38,7 +38,7 @@ a Short cannot be delivered ≥ 20 min before its slot, give it the next free sl
 - 2–4 WebSearch queries (+ WebFetch the best page) for every fact; Bangladesh sources first (EPB, NBR, CCI&E, BSW,
   Bangladesh Bank, BGMEA/BKMEA, Daily Star, Financial Express, TBS). Today's date counts — use the newest figure and
   show its year on screen. Unsure fee/rule → don't state an amount ("check the latest on the portal").
-- **Script = 4–6 takes, 280–370 spoken characters in total** (cap 390; the voice is slow), in `narration.json`
+- **Script = 4–6 takes, 280–350 spoken characters in total** (cap 370; the voice is slow — 360+ Bangla chars end up at 29.4–29.7 s), in `narration.json`
   (`[{"id":"00_hook","text":"…"}]`):
   1. `00_hook` (≤ 2.5 s spoken): the keyword (or its core words) in the first sentence + a pattern interrupt: a
      surprising number, a mistake, a myth, a direct question. No greeting, no logo intro, no "in this video".
