@@ -1,0 +1,20 @@
+{
+ "title": "বায়ারের সাথে কিভাবে কথা বলতে হয়? কলে এই ৩ ভুল আর না #Shorts",
+ "subtopic": "কলে বায়ারের সাথে কথা",
+ "hook": "'এটা আর করবেন না' — 'বায়ারের সাথে কলে কথা' headline + incoming 'Buyer calling… জার্মানি থেকে কল' card with pulse rings, red 'এই ভুলটা আর করবেন না!' bar",
+ "visual": "3D globe (studio, routes BD→DE/US/UK/JP, rot0 -3.4, push z76→62, lookY 4.5) for the hook; 'ভুল ১/৩' red mistake chip carried through every point scene; mistake 1 red cross card + yellow notepad with দাম/পরিমাণ(MOQ)/ডেলিভারি rows ticked by a moving pen (e_sky); mistake 2 talk-less person bubble shrinking + teal 'জিজ্ঞেস করুন' speech bubble + কত পিস / কবে লাগবে cards (e_mint); mistake 3 slow/fast gauge + 'Simple English' pill + false promise card stamped NO + green 'তার কথা দেবেন না' (e_gold); kit CTA bn. First Short with Facebook Reels.",
+ "thumb": "split / pal auto(--n 8) / 'বায়ারের সাথে|কলে *৩ ভুল*' sub 'আর করবেন না' burst 'সাবধান!' / globe hero z95",
+ "script": [
+  "বায়ারের সাথে কলে কথা বলতে গিয়ে এই ভুলটা আর করবেন না।",
+  "প্রথম, প্রস্তুতি ছাড়া কল ধরবেন না। দাম, পরিমাণ আর ডেলিভারির সময় আগেই লিখে রাখুন।",
+  "দুই, নিজের কথা কম, প্রশ্ন বেশি। জিজ্ঞেস করুন, কত পিস লাগবে, কবে লাগবে।",
+  "তিন, ধীরে, সহজ ভাষায় বলুন। যা দিতে পারবেন না, তার কথা দেবেন না।",
+  "কলের পরই ইমেইলে সারাংশ পাঠান। আর এক্সপোর্টেইনে প্রোফাইল খুলুন, বায়াররাই আপনাকে খুঁজে নেবে।"
+ ],
+ "sources": [
+  "https://www.trade.gov/index.php/strategies-keeping-buyers"
+ ],
+ "lessons": "361 chars Bangla -> 33.1 s raw, 26.4 s after tighten 1.08; final 29.4 s with cover (near the cap — aim <= 350 chars). Globe thumb hero needs z ~95 to show the whole globe in split layout. setAttribute rotate on a data-k group with a centre point misbehaves; wrap in translate group and rotate about 0,0. Facebook Reels scheduled fine via video_reels API.",
+ "id": "sh-0008-bn-buyer-call",
+ "logged": "2026-10-30T16:23+06:00"
+}
