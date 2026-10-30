@@ -293,6 +293,20 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-10-30T11:34:56.262724+00:00"
+  },
+  "080-product-mistakes": {
+   "script": "080",
+   "slot": "2026-10-31T18:00:00+06:00",
+   "done": {
+    "youtube": "wEqmNjQeNE0",
+    "facebook": "1161738656415872",
+    "tiktok": "6ae4ba94cd8290b9b9f9f6c8",
+    "linkedin": "6ae4ba9698505e7f521cb0c9",
+    "twitter": "6ae4ba970d17552c83a2b508"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-10-30T15:40:19.940970+00:00"
   }
  }
 }
