@@ -76,6 +76,18 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-10-28T18:50:06.806025+00:00"
+  },
+  "sh-0008-bn-buyer-call": {
+   "n": "0008",
+   "slot": "2026-10-30T20:00:00+06:00",
+   "done": {
+    "youtube": "fDZ23DdpVXY",
+    "tiktok": "6ae4700f36e83ed1636e1c62",
+    "facebook": "1417636573683756"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-10-30T10:23:00.107468+00:00"
   }
  }
 }
