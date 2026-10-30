@@ -1,0 +1,20 @@
+{
+ "title": "বিদেশে পণ্য রপ্তানি: শুধু পোশাক নয়, বাড়ছে এই ৪ পণ্য #Shorts",
+ "subtopic": "সম্ভাবনাময় নতুন রপ্তানি পণ্য",
+ "hook": "question → direct answer: 'বিদেশে পণ্য রপ্তানি — শুধু পোশাক?' + slammed red 'না!' + card of 4 product icons 'নতুন পণ্যে সুযোগ বাড়ছে'",
+ "visual": "3D container ship at golden hour (flyby r120 h30, stack 5, seed 7) for the hook; spinning gear trio + +22% counter on blue card with EPB source chip (e_sky); jute bag +8% ≈$884M and leather bag/shoe +7% ≈$1.23B stacked cards (e_lime); towel stack +6.5% + 4-bar growth chart + 'ছোট উদ্যোক্তাও শুরু করতে পারেন' person card (e_sea); kit CTA bn.",
+ "thumb": "number / pal auto(--n 9) / 'শুধু পোশাক নয়!|বাড়ছে *এই পণ্য*' giant +২২% burst FY26 / ship golden hero sticker",
+ "script": [
+  "বিদেশে পণ্য রপ্তানি মানেই কি শুধু পোশাক? না, নতুন পণ্যেই সুযোগ বাড়ছে।",
+  "গত অর্থবছরে প্রকৌশল পণ্যের রপ্তানি বেড়েছে প্রায় বাইশ শতাংশ।",
+  "পাট ও পাটপণ্য বেড়েছে প্রায় আট শতাংশ, চামড়াজাত পণ্য প্রায় সাত শতাংশ।",
+  "হোম টেক্সটাইলও বাড়ছে, প্রায় সাড়ে ছয় শতাংশ। ছোট উদ্যোক্তাও এসব পণ্যে শুরু করতে পারেন।",
+  "আপনার পণ্য এক্সপোর্টেইনে তুলুন, নতুন বাজারের ক্রেতারা আপনাকে খুঁজে নেবে।"
+ ],
+ "sources": [
+  "https://thefinancialexpress.com.bd/economy/june-exports-surge-by-2591pc-fy26-earnings-hold-steady-at-48b-epb"
+ ],
+ "lessons": "362 chars -> 25.8 s after tighten, final 28.9 s. Ship golden flyby reads well behind the hook. Thumb rendered fine while a video render ran (3D hero).",
+ "id": "sh-0009-bn-new-export-products",
+ "logged": "2026-10-30T16:41+06:00"
+}
