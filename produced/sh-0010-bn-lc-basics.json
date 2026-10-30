@@ -1,0 +1,21 @@
+{
+ "title": "এলসি করার নিয়ম: এলসি আসলে কী? টাকা আগে না মাল আগে #Shorts",
+ "subtopic": "এলসি আসলে কী",
+ "hook": "this-or-that: 'এলসি করার নিয়ম — জানার আগে বুঝুন' + two cards 'টাকা আগে?' vs 'মাল আগে?' with red 'নাকি' between, rocking",
+ "visual": "3D docs desk (fov 64, papers Export LC/Invoice/B/L/Packing List/CoO landing) for the hook; Letter of Credit: buyer's bank + 'লিখিত প্রতিশ্রুতি' scroll with signature, docs→coins flow dot (e_mint); ship sailing + 3 document pages + arrow into green AD Bank card (e_sky); LC terms vs your docs table ('Example'), Port Chattogram/Chittagong mismatch, green 'মিললে টাকা আসে' swaps to red lock 'ছোট ভুলেও আটকে যেতে পারে', 'মিলিয়ে নিন' card (e_gold); kit CTA bn.",
+ "thumb": "card / pal auto(--n 10) / 'টাকা আগে|নাকি *মাল আগে?*' sub 'এলসি আসলে কী' burst LC / port golden orbit hero",
+ "script": [
+  "এলসি করার নিয়ম জানার আগে বুঝুন, টাকা আগে, নাকি মাল আগে?",
+  "এলসি মানে ব্যাংকের লিখিত প্রতিশ্রুতি। শর্তমতো কাগজ দিলে বায়ারের ব্যাংক টাকা দেবে।",
+  "আপনি মাল পাঠান, তারপর ইনভয়েস, বিল অব লেডিংসহ কাগজ জমা দেন নিজের এডি ব্যাংকে।",
+  "কাগজ শর্তের সাথে মিললে টাকা আসে। ছোট ভুলেও আটকে যেতে পারে, তাই মিলিয়ে নিন।",
+  "নিয়ম বদলায়, এডি ব্যাংকে জেনে নিন। আর ক্রেতা খুঁজতে এক্সপোর্টেইনে পণ্য তুলুন।"
+ ],
+ "sources": [
+  "https://awsdevint.tallysolutions.com/bd/en/accounting/letter-of-credit-in-bangladesh/",
+  "https://juralacuity.com/legal-position-of-letter-of-credit-in-bangladesh/"
+ ],
+ "lessons": "368 chars -> 26.7 s after tighten, final 29.73 s — at the cap; keep Bangla <= 350 chars. docs world as thumbnail hero (bleed) shows an empty desk — don't use docs for thumbs; port golden orbit r120 h44 in card layout is strong.",
+ "id": "sh-0010-bn-lc-basics",
+ "logged": "2026-10-30T16:51+06:00"
+}
