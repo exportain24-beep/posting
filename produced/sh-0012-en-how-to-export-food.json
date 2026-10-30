@@ -1,0 +1,21 @@
+{
+ "title": "How to Export Food from Bangladesh: Avoid This Port Mistake #Shorts",
+ "subtopic": "How to start exporting food products",
+ "hook": "15-second story: 'How to export food? Rina's first pickle shipment got stuck at port.' — Rina card (Fictional story pill), pickle jar, red STUCK stamp shaking",
+ "visual": "3D port at dusk (orbit r140 h50 a0 2.2, slow) for the hook; mistake card with crossed Health Cert page → 'Food exports need one' → dark-green BFSA card with certificate (e_gold); 'Second try' navy header + 3 tiles Trade licence/ERC/BIN + arrow → Buyer country rules card with spinning globe → green US FDA Food Facility Registration card (e_sky); 3D docs desk golden (Health Certificate BFSA, Invoice, Packing List, Certificate of Origin APPROVED, Food Label) behind a 4-item checklist + pulsing CLEARED! pill; kit CTA en.",
+ "thumb": "split / pal auto(--n 12) / 'Export food?|Don't get *stuck*' sub 'the port mistake to avoid' burst BFSA arrow / port golden orbit r170 h70 hero",
+ "script": [
+  "How to export food? Rina's first pickle shipment got stuck at port.",
+  "No health certificate. Food exports need one, often from BFSA.",
+  "Second try: trade licence, ERC, BIN, then buyer rules, like US FDA registration.",
+  "Labels, invoice, packing list, origin certificate. Cleared!",
+  "Then list your food on Exportain and let buyers find you."
+ ],
+ "sources": [
+  "https://bangladeshcustoms.gov.bd/procedures/agroProducts_exp_food/123",
+  "https://www.tbsnews.net/node/531186"
+ ],
+ "lessons": "325 chars EN -> 24.0 s after tighten, final 27.0 s. A fictional story hook with a persistent character works for 'how to' topics. Port thumb hero needs r>=170 h70 or the crane legs fill the frame. Docs world: keep checklist in the bottom band (y 1190+).",
+ "id": "sh-0012-en-how-to-export-food",
+ "logged": "2026-10-30T23:45+06:00"
+}
