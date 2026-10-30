@@ -1,0 +1,22 @@
+{
+ "title": "Export Import Business: LDC Graduation Moved to 2029, 3 Steps #Shorts",
+ "subtopic": "LDC graduation and exporters (UN deferral to 2029, 29 Oct 2026)",
+ "hook": "3 quick steps: 'Export import business in Bangladesh just got three more years. Use them.' — +3 YEARS gold pill + hourglass + '3 quick steps' card",
+ "visual": "3D container ship by day (crane r110 h30, stack 5, seed 5) for the hook; UN General Assembly card + 2026→2029 timeline bar filling with moving marker + Duty-free perks card with EU/UK/Canada/Japan pills and 'rules can change' shield (e_sea); 1-2-3 step tracker; phone chat with EU buyer (order → samples → deal) + EU/UK flags, then 3 compliance certificates (e_sky); 3D fabric floor by day (crane r32) behind 'Price without cash incentives' + Example price sheet where the incentive row fades out, 'Still profitable' check; kit CTA en.",
+ "thumb": "card / pal auto(--n 13) / 'LDC exit|moved to *2029*' sub '3 steps to use the extra time' burst +3 YEARS arrow / ship day orbit hero",
+ "script": [
+  "Export import business in Bangladesh just got three more years. Use them.",
+  "The UN moved LDC graduation to 2029, so duty-free perks stay for now.",
+  "One: lock in EU and UK buyers. Two: get compliance certificates ready.",
+  "Three: price without cash incentives; they will fade.",
+  "Then list your company on Exportain and let buyers find you."
+ ],
+ "sources": [
+  "https://www.tbsnews.net/bangladesh/bangladesh-gets-3-more-years-ldc-graduation-1587421",
+  "https://www.tbsnews.net/analysis/what-if-we-graduate-ldc-next-year-or-three-years-later-1297226",
+  "https://thefinancialexpress.com.bd/trade/92pc-of-bd-exports-to-uk-to-remain-duty-free-after-ldc-graduation"
+ ],
+ "lessons": "325 chars EN -> 23.0 s after tighten, final 26.07 s. Voice workflow sat queued ~10 min once (foreground call timed out) — run voice in background and poll. bub()/cert() titles use the Bangla font: for English Shorts draw chat bubbles and labels with lat(). Use the EU flag, not the German flag, for 'EU'.",
+ "id": "sh-0013-en-ldc-graduation",
+ "logged": "2026-10-31T00:42+06:00"
+}
