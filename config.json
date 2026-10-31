@@ -11,15 +11,20 @@
  "tts_model_id": "eleven_v4_turbo",
  "tts_language_code": "bn",
  "tts_output_format": "mp3_44100_128",
- "max_voice_chars_per_episode": 3600,
+ "max_voice_chars_per_episode": 2000,
  "keep_audio_days": 7,
  "video_limits": {
-  "aspect": "16:9",
-  "min_seconds": 180,
-  "max_seconds": 300,
+  "aspect": "9:16",
+  "min_seconds": 90,
+  "max_seconds": 150,
   "max_mb": 900,
   "thumb_max_mb": 2,
-  "x_teaser_seconds": 135
+  "x_teaser_seconds": 135,
+  "legacy": {
+   "aspect": "16:9",
+   "min_seconds": 180,
+   "max_seconds": 300
+  }
  },
  "pages_base_url": "https://exportain24-beep.github.io/posting",
  "platforms": {

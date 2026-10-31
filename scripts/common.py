@@ -257,8 +257,18 @@ def probe(path):
     return json.loads(out)
 
 
-def validate_files(mp4, jpg):
-    errs, lim = [], CFG["video_limits"]
+def validate_files(mp4, jpg, allow_legacy=False):
+    """Checks against config video_limits. allow_legacy (publish/retry of videos already delivered): a file that
+    meets video_limits["legacy"] instead (the 3-5 min 16:9 format used until 31 Oct 2026) is accepted too."""
+    errs = _validate_files(mp4, jpg, CFG["video_limits"])
+    if errs and allow_legacy and CFG["video_limits"].get("legacy"):
+        if not _validate_files(mp4, jpg, {**CFG["video_limits"], **CFG["video_limits"]["legacy"]}):
+            return []
+    return errs
+
+
+def _validate_files(mp4, jpg, lim):
+    errs = []
     if not os.path.isfile(mp4):
         return [f"video missing: {os.path.basename(mp4)}"]
     if os.path.getsize(mp4) > lim["max_mb"] * 1e6:
@@ -271,9 +281,9 @@ def validate_files(mp4, jpg):
         if v["codec_name"] not in ("h264", "hevc"):
             errs.append(f"video codec {v['codec_name']} (need h264)")
         if abs(v["width"] / v["height"] - want) > 0.01 or min(v["width"], v["height"]) < 720:
-            errs.append(f"video is {v['width']}x{v['height']} (need {lim.get('aspect')}, e.g. 1920x1080)")
+            errs.append(f"video is {v['width']}x{v['height']} (need {lim.get('aspect')}, e.g. {'1920x1080' if lim.get('aspect', '16:9') == '16:9' else '1080x1920'})")
         if not lim["min_seconds"] <= dur <= lim["max_seconds"]:
-            errs.append(f"video is {dur:.0f}s (need {lim['min_seconds']}-{lim['max_seconds']}s, i.e. 3-5 minutes)")
+            errs.append(f"video is {dur:.0f}s (need {lim['min_seconds']}-{lim['max_seconds']}s)")
         if not any(s["codec_type"] == "audio" for s in p["streams"]):
             errs.append("video has no audio")
     except Exception as e:

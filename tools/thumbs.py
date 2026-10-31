@@ -9,6 +9,10 @@ Writes into DIR:
   thumb_fb.jpg  1080x1920  Facebook + Instagram cover (Bangla)
   thumb_tt.jpg  1080x1920  TikTok cover (Bangla, first frame of the TikTok copy)
   vframe.jpg    1080x1920  background of the vertical video (16:9 video sits in the middle)
+When --video is 9:16 (the reel format since 31 Oct 2026) it also writes:
+  thumb_yt9.jpg 1080x1920  YouTube Shorts cover = first frames of final.mp4 (cover.py --prepend), yt headline
+  thumb_li9.jpg 1080x1920  LinkedIn cover (English, li headline) = first frames of the LinkedIn copy
+and picture frames / stickers are taken from the vertical video (sticker "crop" in 1080x1920 coordinates).
 
 thumbs.json (all keys optional except headlines; "|" = line break, *word* = highlighted, kept on one line):
 {"yt": {"headline": "টুপির আয়|সাইকেলের *৩ গুণ!*", "chip": "বিস্ময়কর রপ্তানি পণ্য", "badge": "$447M", "t": 66.5},
@@ -74,7 +78,7 @@ def css(p):
 .logo .ic{{height:1em;filter:drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 8px 16px rgba(0,0,0,.35))}}
 .logo .wd{{height:.38em;filter:drop-shadow(0 4px 10px rgba(0,0,0,.35))}}
 .frame{{position:absolute;overflow:hidden;border:10px solid #fff;box-shadow:0 18px 50px rgba(0,0,0,.35)}}
-.frame img{{width:100%;height:100%;object-fit:cover;display:block}}
+.frame img{{width:100%;height:100%;object-fit:cover;object-position:50% 38%;display:block}}
 .h{{position:absolute;color:#fff;letter-spacing:-.5px;text-shadow:3px 3px 0 rgba(0,0,0,.62),-3px 3px 0 rgba(0,0,0,.62),3px -3px 0 rgba(0,0,0,.62),-3px -3px 0 rgba(0,0,0,.62),0 9px 0 {sh},0 0 34px rgba(0,0,0,.5)}}   /* high contrast (owner, 26 Oct 2026) */
 #c::before{{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 62% 48%,rgba(0,0,0,0) 38%,rgba(0,0,0,.34) 100%)}}
 .hl{{background:{hb};color:{hf};padding:0 14px;border-radius:14px;white-space:nowrap;text-shadow:none;display:inline-block;border:5px solid rgba(0,0,0,.8);box-shadow:0 8px 0 rgba(0,0,0,.4)}}
@@ -92,7 +96,14 @@ def page(w, h, p, body):
             f"#c{{width:{w}px;height:{h}px}}</style><div id=c>{body}</div>")
 
 
+def vsize(video):
+    w, h = subprocess.check_output(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height",
+                                    "-of", "csv=p=0:s=x", video]).decode().strip().split("x")[:2]
+    return int(w), int(h)
+
+
 def build(ep, d, video, spec):
+    FW, FH = vsize(video); vert = FH > FW
     n = int(re.sub(r"\D", "", ep)[:3] or 0)
     pal = [PAL[(n * 3 + k) % len(PAL)] for k in range(4)]          # yt, li, fb, tt — all different
     ic, wd = uri(ICON, "image/png"), uri(WORD, "image/png")
@@ -110,10 +121,10 @@ def build(ep, d, video, spec):
         c, out = spec.get(k, {}), []
         for i, st in enumerate(c.get("stickers", [])):
             src = frame_at(video, st.get("t", 12), os.path.join(tmp, f"{k}_s{i}.jpg"))
-            cx, cy, cw, chh = st.get("crop", [0, 0, 1920, 1080]); w = st.get("w", 300); sc = w / cw; h = chh * sc
+            cx, cy, cw, chh = st.get("crop", [0, 0, FW, FH]); w = st.get("w", 300); sc = w / cw; h = chh * sc
             out.append(f'<div class=stk style="left:{st.get("x", 0)}px;top:{st.get("y", 0)}px;width:{w + 18}px;height:{h + 18:.0f}px;'
                        f'border-radius:{st.get("round", 40)}px;transform:rotate({st.get("r", 0)}deg)"><img src="{src}" '
-                       f'style="left:{-cx * sc:.0f}px;top:{-cy * sc:.0f}px;width:{1920 * sc:.0f}px"></div>')
+                       f'style="left:{-cx * sc:.0f}px;top:{-cy * sc:.0f}px;width:{FW * sc:.0f}px"></div>')
         for b in c.get("bursts", []):
             out.append(f'<div class=burst style="left:{b["x"]}px;top:{b["y"]}px;width:{b.get("d", 220)}px;height:{b.get("d", 220)}px;'
                        f'background:{b.get("bg", "#fff")};color:{b.get("fg", "#111")};font:800 {b.get("size", 52)}px/1.05 P,B;'
@@ -151,6 +162,20 @@ def build(ep, d, video, spec):
 <div style="position:absolute;left:0;top:646px;width:1080px;height:628px;background:#0b1d12"></div>
 {f'<div style="position:absolute;left:0;right:0;top:1330px;text-align:center"><span class=chip style="position:static;font:800 50px B,P;padding:14px 40px">{html.escape(v["sub"])}</span></div>' if v.get('sub') else ''}
 <div style="position:absolute;left:0;right:0;top:1480px;text-align:center"><span style="background:#fff;color:#005a1e;font:800 58px P;padding:12px 44px;border-radius:999px;box-shadow:0 10px 30px rgba(0,0,0,.25)">Exportain.com</span></div>""")
+    if vert:   # 9:16 video: portrait picture frames + 9:16 covers for YouTube Shorts and LinkedIn
+        def vcard(k, c, p, font, size):
+            return (1080, 1920, p, f"""<div class=blob style="width:1000px;height:1000px;right:-420px;top:-360px"></div>
+{logo('left:50%;top:110px;transform:translateX(-50%)', 132)}
+<div class=h style="left:70px;right:70px;top:300px;text-align:center;font:800 {fz(c, size)}px/1.14 {font}">{head(c.get('headline', ''))}</div>
+<div class=frame style="left:250px;width:580px;top:900px;height:780px;border-radius:44px;transform:rotate(-2deg)"><img src="{img(k, 12)}"></div>{extras(k)}
+{f'<div style="position:absolute;left:0;right:0;bottom:110px;text-align:center"><span class=chip style="position:static;font:800 54px {font};padding:14px 42px">{html.escape(c["chip"])}</span></div>' if c.get('chip') else ''}""")
+        cards["thumb_yt9.jpg"] = vcard("yt", yt, pal[0], "B,P", 130)
+        cards["thumb_li9.jpg"] = vcard("li", li, pal[1], "P", 110)
+        for k in ("thumb_fb.jpg", "thumb_tt.jpg"):   # landscape boxes -> portrait boxes for a 9:16 picture
+            w, h, p, body = cards[k]
+            body = body.replace('left:70px;right:70px;top:1020px;height:560px', 'left:270px;right:270px;top:1000px;height:680px')
+            body = body.replace('left:60px;right:60px;top:330px;height:620px', 'left:300px;right:300px;top:300px;height:640px')
+            cards[k] = (w, h, p, body)
     from playwright.sync_api import sync_playwright
     with sync_playwright() as pw:
         b = pw.chromium.launch()

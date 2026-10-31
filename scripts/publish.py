@@ -62,7 +62,7 @@ def yt_publish(meta, mp4, jpg, slot, mode):
     tok = yt_token()
     auth = {"Authorization": f"Bearer {tok}"}
     y = meta["youtube"]
-    title = y["title"][:100]                       # 3-5 min 16:9 = regular video, not a Short
+    title = y["title"][:100]                       # 9:16 and <= 3 min: YouTube files it as a Short
     status = {"privacyStatus": "private", "selfDeclaredMadeForKids": False,
               "containsSyntheticMedia": PL["youtube"]["contains_synthetic_media"]}
     if mode == "live":
@@ -137,7 +137,7 @@ def fb_check():
 
 
 def fb_publish(meta, mp4, jpg, slot, mode):
-    """3-5 min video (9:16 copy when present, else 16:9) -> regular Page video (Reels are limited to 90 s), with title, description,
+    """Reel video (9:16 copy with the Facebook cover when present) -> native Page video upload, with title, description,
     custom thumbnail (thumb), scheduled publish, and Bangla subtitles when allowed."""
     page, auth, proof, g = fb_auth()
     f = meta["facebook"]
@@ -337,7 +337,7 @@ def main():
             bad += 1; note("error", f"{name}: invalid JSON ({e})"); continue
         errs = validate_meta(meta, name)
         mp4, jpg = mf[:-5] + ".mp4", mf[:-5] + ".jpg"
-        errs += validate_files(mp4, jpg)
+        errs += validate_files(mp4, jpg, allow_legacy=True)
         if errs:
             bad += 1; note("error", f"{name}: " + "; ".join(errs)); continue
         ep, slot = meta["id"], parse_slot(meta["slot"])

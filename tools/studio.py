@@ -70,12 +70,24 @@ def vertical(src, cover, vframe, out, hold=COVER_HOLD):
         "-c:a", "aac", "-b:a", "128k", "-ar", "48000", "-ac", "2", "-movflags", "+faststart", out])
 
 
+def vsize(src):
+    w, h = subprocess.check_output(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height",
+                                    "-of", "csv=p=0:s=x", src]).decode().strip().split("x")[:2]
+    return int(w), int(h)
+
+
+def duration(src):
+    return float(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration",
+                                          "-of", "default=nw=1:nk=1", src]).decode())
+
+
 def recover(src, cover, out, hold=COVER_HOLD):
-    """Same 16:9 video with a different cover in the first frames (LinkedIn copy)."""
+    """Same video (16:9 or 9:16) with a different cover in the first frames (platform copies)."""
+    w, h = vsize(src)
     subprocess.check_call([
         "ffmpeg", "-y", "-loglevel", "error", "-loop", "1", "-t", str(hold), "-framerate", "30", "-i", cover,
         "-ss", str(hold), "-i", src, "-filter_complex",
-        "[0:v]scale=1920:1080,setsar=1,format=yuv420p[c];[1:v]scale=1920:1080,setsar=1,format=yuv420p[v];"
+        f"[0:v]scale={w}:{h},setsar=1,format=yuv420p[c];[1:v]scale={w}:{h},setsar=1,format=yuv420p[v];"
         f"[c][v]concat=n=2:v=1:a=0[vo];[1:a]adelay={int(hold*1000)}|{int(hold*1000)}[ao]",
         "-map", "[vo]", "-map", "[ao]", "-c:v", "libx264", "-crf", "21", "-preset", "veryfast", "-r", "30",
         "-c:a", "aac", "-b:a", "160k", "-ar", "48000", "-movflags", "+faststart", out])
@@ -206,7 +218,8 @@ def make_teaser(src, out, seconds):
 
 
 def cmd_deliver(ep, d, mode, meta_name="meta.json"):
-    """DIR must hold final.mp4 (16:9, 3-5 min), thumb.jpg (1280x720), meta.json, optional captions.srt."""
+    """DIR must hold final.mp4 (9:16 1080x1920, 90-150 s, burned-in subtitles; limits in config.json), thumb.jpg
+    (1280x720), the post meta (--meta), optional captions.srt (subs.srt is used when present)."""
     meta = json.load(open(os.path.join(d, meta_name), encoding="utf-8"))
     meta["id"] = ep
     mp4, thumb = os.path.join(d, "final.mp4"), os.path.join(d, "thumb.jpg")
@@ -235,12 +248,26 @@ def cmd_deliver(ep, d, mode, meta_name="meta.json"):
     v = os.path.join(md, "v", ep)
     shutil.copy(mp4, v + ".mp4")
     shutil.copy(thumb, v + ".jpg")
-    srt = os.path.join(d, "captions.srt")
+    srt = os.path.join(d, "subs.srt")
+    if not os.path.isfile(srt):
+        srt = os.path.join(d, "captions.srt")
     if os.path.isfile(srt):
         shutil.copy(srt, v + ".srt")
     th = {k: os.path.join(d, f) for k, f in (("li", "thumb_li.jpg"), ("fb", "thumb_fb.jpg"), ("tt", "thumb_tt.jpg"),
                                              ("vf", "vframe.jpg"))}
-    if all(os.path.isfile(p) for p in th.values()):   # per-platform covers (tools/thumbs.py): 9:16 for FB/IG/TikTok/X
+    w, h = vsize(mp4)
+    li9 = os.path.join(d, "thumb_li9.jpg")
+    if h > w and all(os.path.isfile(th[k]) for k in ("fb", "tt")):   # native 9:16 reel: only the covers change
+        print("making platform copies: Facebook/Instagram, TikTok, LinkedIn (9:16, own covers) …")
+        recover(mp4, th["fb"], v + "_ig.mp4")
+        recover(mp4, th["tt"], v + "_tt.mp4")
+        if CFG["platforms"]["buffer"].get("linkedin", {}).get("enabled"):
+            if not os.path.isfile(li9):
+                ig_cover(th["li"], li9)          # 16:9 English cover centred on its own blur
+            recover(mp4, li9, v + "_li.mp4")
+        shutil.copy(th["fb"], v + "_fb.jpg"); shutil.copy(th["fb"], v + "_ig.jpg")
+        x_src = v + "_ig.mp4"
+    elif all(os.path.isfile(p) for p in th.values()):   # per-platform covers (tools/thumbs.py): 9:16 for FB/IG/TikTok/X
         print("making platform copies: 9:16 (Facebook/Instagram, TikTok, X) + 16:9 LinkedIn …")
         vertical(mp4, th["fb"], th["vf"], v + "_ig.mp4")          # Facebook + Instagram
         vertical(mp4, th["tt"], th["vf"], v + "_tt.mp4")          # TikTok
@@ -253,7 +280,7 @@ def cmd_deliver(ep, d, mode, meta_name="meta.json"):
             ig_mp4(mp4, v + "_ig.mp4")
         x_src = mp4
     if CFG["platforms"]["buffer"].get("twitter", {}).get("enabled"):
-        make_teaser(x_src, v + "_x.mp4", CFG["video_limits"]["x_teaser_seconds"])
+        make_teaser(x_src, v + "_x.mp4", min(CFG["video_limits"]["x_teaser_seconds"], duration(x_src)))
     json.dump(meta, open(v + ".json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     push_branch(md, "media", f"video {ep}", squash=True)
     print("media pushed")
