@@ -1,0 +1,21 @@
+{
+ "title": "কৃষি পণ্য রপ্তানি লাভ: মার্জিন কোথায় হারায়? #Shorts",
+ "subtopic": "রপ্তানিতে লাভের মার্জিন (কোথায় হারায় + কীভাবে বাড়ে)",
+ "hook": "জানতেন কি?: gold pill 'জানতেন কি?' + 'কৃষি পণ্য রপ্তানির লাভ' + slammed 'পথেই হারায়!' with ৳ coins falling through the frame",
+ "visual": "3D farm golden flyby (r30 h12, mango-orange produce) for the hook; field→port dashed road with truck driving, 10 produce crates where 3 sink/fade, big red '২৫–৩০%' card + FE source pill (e_gold); dark-green chalk checklist board 'দামে ধরুন' with 4 rows Packing/Lab test/Cold chain/Freight ticking on keys (e_mint); raw crate vs processed jam jars with margin bars (short vs filling long), green '১০% নগদ সহায়তা' card FY2026-27 Bangladesh Bank, lock card 'শর্ত ব্যাংকে মিলিয়ে নিন' (e_sky); kit CTA bn.",
+ "thumb": "split / pal auto(--n 17) / 'লাভ কোথায়|*হারায়?*' kicker কৃষি পণ্য রপ্তানি, sub '২৫–৩০% ফসল পথেই নষ্ট', burst '১০% সহায়তা', arrow / hero farm golden push r16 h6 (close crates)",
+ "script": [
+  "জানতেন কি? কৃষি পণ্য রপ্তানির লাভ অনেক সময় পথেই হারায়।",
+  "মাঠ থেকে বন্দরে যেতে পঁচিশ থেকে ত্রিশ শতাংশ ফসল নষ্ট হয়।",
+  "তাই দামে ধরুন প্যাকিং, ল্যাব পরীক্ষা, ঠান্ডা পরিবহন আর ভাড়া।",
+  "প্রক্রিয়াজাত পণ্যে মার্জিন বেশি; নগদ সহায়তা দশ শতাংশ, শর্ত ব্যাংকে মিলিয়ে নিন।",
+  "তারপর এক্সপোর্টেইনে পণ্য তুলুন, বিদেশি ক্রেতারাই আপনাকে খুঁজে নেবে।"
+ ],
+ "sources": [
+  "https://thefinancialexpress.com.bd/trade/agro-exports-fall-short-of-10b-again",
+  "https://thefinancialexpress.com.bd/trade/bb-announces-export-incentives-for-43-sectors-for-fy26-27"
+ ],
+ "lessons": "322 chars Bangla -> 23.4 s after tighten, final 26.1 s. Delivered for 20:00 Nov 2 although it was just outside the 40 h free_slots window at delivery time (no other run had taken it; status checked first). Close farm hero (push r16 h6) fills the split thumb with crates — no more green blobs. A chalk checklist board suits cost-list topics.",
+ "id": "sh-0017-bn-agro-export-profit",
+ "logged": "2026-10-31T23:50+06:00"
+}
