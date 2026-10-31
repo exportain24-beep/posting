@@ -256,6 +256,13 @@ def cmd_deliver(ep, d, mode, meta_name="meta.json"):
     v = os.path.join(md, "v", ep)
     shutil.copy(mp4, v + ".mp4")
     shutil.copy(thumb, v + ".jpg")
+    cards = sorted(glob.glob(os.path.join(d, "card_*.jpg")), key=lambda f: int(f.rsplit("_", 1)[1][:-4]))
+    if CFG["platforms"].get("facebook_photos", {}).get("enabled") and cards:
+        for i, f in enumerate(cards, 1):                   # Facebook photo carousel (tools/cards.py)
+            if os.path.getsize(f) > 4e6:
+                raise SystemExit(f"{os.path.basename(f)} larger than 4 MB")
+            shutil.copy(f, f"{v}_c{i}.jpg")
+        print(f"photo cards: {len(cards)}")
     srt = os.path.join(d, "subs.srt")
     if not os.path.isfile(srt):
         srt = os.path.join(d, "captions.srt")

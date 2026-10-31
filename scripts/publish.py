@@ -301,6 +301,44 @@ def buffer_publish(platform, meta, mp4, slot, mode):
     return r["post"]["id"], "sent now via Buffer" if mode == "now" else "scheduled in Buffer"
 
 
+def fb_photos_publish(meta, mp4, slot, mode):
+    """Key-takeaway photo carousel (v/<id>_c1.jpg …, made by tools/cards.py) as one Facebook Page post, scheduled
+    facebook_photos.offset_minutes after the video's slot. Returns (None, reason) when the video has no cards."""
+    cards = sorted(glob.glob(mp4[:-4] + "_c*.jpg"), key=lambda f: int(f.rsplit("_c", 1)[1][:-4]))
+    if not cards:
+        return None, "no photo cards for this video, skipped"
+    page, auth, proof, g = fb_auth()
+    msg = (meta.get("facebook_photos") or {}).get("message") or meta["facebook"]["description"]
+    when = slot + timedelta(minutes=PL["facebook_photos"].get("offset_minutes", 150))
+    lead = (when - datetime.now(timezone.utc)).total_seconds()
+    sched = mode == "live" and 11 * 60 < lead < 29 * 86400
+    ids = []
+    for f in cards:                                        # unpublished photos, attached to one post below
+        fields = {"published": "false", **proof}
+        if sched:
+            fields["temporary"] = "true"                   # required for photos of a scheduled post
+        body, ctype = multipart(fields, {"source": (os.path.basename(f), open(f, "rb").read(), "image/jpeg")})
+        r = jhttp("POST", f"{g}/{page}/photos", {**auth, "Content-Type": ctype}, body)
+        if not r.get("id"):
+            raise RuntimeError(f"photo upload failed: {r}")
+        ids.append(r["id"])
+    post = {"message": msg, **proof}
+    for i, pid in enumerate(ids):
+        post[f"attached_media[{i}]"] = json.dumps({"media_fbid": pid})
+    if mode == "private":
+        post["published"] = "false"; state = "unpublished draft"
+    elif sched:
+        post.update({"published": "false", "scheduled_publish_time": str(int(when.timestamp()))})
+        state = f"scheduled {when.astimezone(TZ):%d %b %H:%M}"
+    else:
+        state = "published"
+    body = urllib.parse.urlencode(post).encode()
+    r = jhttp("POST", f"{g}/{page}/feed", {**auth, "Content-Type": "application/x-www-form-urlencoded"}, body)
+    if not r.get("id"):
+        raise RuntimeError(f"photo post failed: {r}")
+    return r["id"], f"{len(ids)} photos, {state}"
+
+
 # ------------------------------------------------------------------ main
 TRANSIENT = ("HTTP 500", "HTTP 502", "HTTP 503", "HTTP 504", "HTTP 429", "network error", "timed out", "temporarily")
 
@@ -326,7 +364,8 @@ def main():
     sp = os.path.join(state_d, "posts.json")
     state = json.load(open(sp, encoding="utf-8")) if os.path.isfile(sp) else {"posts": {}}
     active = {"youtube": PL["youtube"]["enabled"], "facebook": PL["facebook"]["enabled"],
-              **{k: bool(v.get("enabled")) for k, v in PL["buffer"].items()}}
+              **{k: bool(v.get("enabled")) for k, v in PL["buffer"].items()},
+              "fb_photos": bool(PL.get("facebook_photos", {}).get("enabled"))}
     bad = 0
 
     if mode == "check":
@@ -368,6 +407,8 @@ def main():
             note("notice", f"{ep}: retrying {', '.join(rec['errors'])} ({'scheduled' if m == 'live' else 'posting now, slot was missed'})")
         elif rec.get("mode") and rec["mode"] != mode:
             note("warning", f"{ep}: already handled in {rec['mode']} mode, skipped"); continue
+        if active["fb_photos"] and "fb_photos" not in rec["done"] and not glob.glob(mp4[:-4] + "_c*.jpg"):
+            rec["done"]["fb_photos"] = "skipped"            # video delivered without photo cards (e.g. before 1 Nov 2026)
         todo = [p for p in active if active[p] and p not in rec["done"]]
         if not todo:
             continue
@@ -384,6 +425,10 @@ def main():
                     vert = os.path.isfile(fv) and os.path.isfile(fj)
                     pid, info = attempt(fb_publish, meta, fv if vert else mp4, fj if vert else jpg, slot, m)
                     info += ", 9:16" if vert else ""
+                elif p == "fb_photos":                      # photo carousel after the video (tools/cards.py)
+                    pid, info = attempt(fb_photos_publish, meta, mp4, slot, m)
+                    if pid is None:
+                        rec["done"][p] = "skipped"; note("notice", f"{ep} {p}: {info}"); continue
                 else:
                     pid, info = attempt(buffer_publish, p, meta, mp4, slot, m)
                     if pid is None:

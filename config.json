@@ -55,6 +55,10 @@
   },
   "instagram": {
    "enabled": true
+  },
+  "facebook_photos": {
+   "enabled": true,
+   "offset_minutes": 150
   }
  },
  "prompts_file": "prompts/Exportain_Reels_500_Script_Prompts.md",

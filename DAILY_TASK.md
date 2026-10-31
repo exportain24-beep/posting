@@ -196,6 +196,16 @@ python3 tools/thumbs.py <EP> $P --video $P/out/<Name_9x16>.mp4
 #   thumb_li.jpg + thumb_li9.jpg (LinkedIn, English). Read every one; fix thumbs.json and re-run.
 python3 tools/cover.py --prepend $P/thumb_yt9.jpg --video $P/out/<Name_9x16>_sub.mp4 --out $P/final.mp4 --hold 0.5
 ```
+**Facebook photo carousel** (owner, 31 Oct 2026 — photo posts often reach more people on Facebook): every video also
+gets 3–5 colourful 4:5 key-takeaway cards, posted as one Page photo post 150 min after the video's slot
+(`config.json` → `platforms.facebook_photos`). Write `$P/cards.json` (format in the header of `tools/cards.py`): a cover
+card (big hook headline + a video frame), 1–3 point cards (2–4 short verified lines each, "উদাহরণ" note on invented
+numbers), an end card; palette different from the covers. Then
+`python3 tools/cards.py <EP> $P --video $P/out/<Name_9x16>.mp4` and **read every card** (text inside the white panel,
+nothing clipped). deliver uploads `card_*.jpg` automatically. Its caption is `facebook_photos.message` in post.json:
+Bangla, keyword first line, the takeaways in 3–5 short lines, "পুরো ভিডিও আমাদের পেজে" style pointer, one specific
+question, 3–5 hashtags, no URL, different from the video caption.
+
 **SEO first:** `keyword-research` skill for the topic (Bangla + Banglish + English, Bangladesh; TikTok Creator Search
 Insights cannot be reached from here — use web research). Then write every platform's text by `CAPTION_GUIDE.md`
 with these overrides, as `$P/post.json`:
@@ -213,6 +223,7 @@ with these overrides, as `$P/post.json`:
  "tiktok":   {"caption": "Bangla, keyword-rich first line, value, CTA, 11–15 relevant hashtags incl. #FYP #ForYou, no URL"},
  "linkedin": {"text": "ENGLISH, ≤ 2,900 chars, professional insight-led, 3–5 hashtags, no URL"},
  "twitter":  {"text": "ENGLISH, ≤ 275 weighted chars, 0–2 hashtags, no URL"},
+ "facebook_photos": {"message": "Bangla caption of the photo carousel (see above), ≤ 2,000 chars"},
  "playlist": "suggested YouTube playlist: Export Business Basics | Bangladesh Export Documentation | International Trade Regulations | Shipping and Logistics | Product Export Guides | International Certification | Bangladesh Export Opportunities"}
 ```
 Never reuse identical text across platforms. CTA in captions: educate first, invite naturally, never promise orders.
@@ -224,7 +235,7 @@ bait ("লাইক/শেয়ার/ট্যাগ/কমেন্টে ল
 setsid nohup python3 tools/studio.py deliver <EP> $P --mode live --meta post.json > $P/deliver.log 2>&1 < /dev/null &
 ```
 (poll `$P/deliver.log` and `status`). Deliver checks the files (9:16, 90–150 s, thumbnail ≤ 2 MB, texts within
-limits), makes the platform copies (Facebook/Instagram without the still cover so they start in motion; TikTok and
+limits), copies the photo cards, makes the platform copies (Facebook/Instagram without the still cover so they start in motion; TikTok and
 LinkedIn with their own covers; X gets the reel, or its first 135 s if longer), puts everything on the `media` branch (GitHub Pages serves it to Buffer), runs
 `publish.yml` (YouTube files a 9:16 ≤ 3 min video as a Short) and starts the Instagram job. Never claim a platform as
 scheduled unless `status` shows it in `posted`. A platform error is retried by the next deliver/publish while the
