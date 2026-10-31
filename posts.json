@@ -307,6 +307,20 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-10-30T15:40:19.940970+00:00"
+  },
+  "081-country-selection": {
+   "script": "081",
+   "slot": "2026-11-01T12:30:00+06:00",
+   "done": {
+    "youtube": "FMn7KI5GQKs",
+    "facebook": "1606308867847376",
+    "tiktok": "6ae578e1eaa24d6f9a5866ec",
+    "linkedin": "6ae578e3b84259308bbbed23",
+    "twitter": "6ae578e41891472093b57658"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-10-31T05:11:48.031257+00:00"
   }
  }
 }
