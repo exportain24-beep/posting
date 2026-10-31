@@ -1,0 +1,21 @@
+{
+ "title": "Bangladesh Export Processing Zones Authority (BEPZA): $8.41B #Shorts",
+ "subtopic": "EPZ and BEPZA",
+ "hook": "one surprising number: 'Export Processing Zones Authority, BEPZA: eight point four billion dollars.' — gold keyword pill, 'BEPZA zones exported', $8.41B counter slamming in, FY2025-26 source pill",
+ "visual": "3D port by day (orbit r175 h72 a0 .4, slow spin) for the hook; donut ring filling to 17.51% with counter + total-exports card + drifting ship (e_sea); giant '8' + 8 numbered EPZ name tiles popping (Chattogram…Karnaphuli) + 3 cards ready plot/power bolt/one-stop desk (e_lime); factory + LEASE AGREEMENT with signature drawing, bepza.gov.bd browser 'Investor eligibility' rows + roaming magnifier, 'Rules change: confirm with BEPZA' pill (e_sky); kit CTA en.",
+ "thumb": "card / pal auto(--n 16) / 'EPZs made|*$8.41B*' kicker BEPZA · EPZ, sub '17.5% of Bangladesh's exports', burst FY26, arrow / hero port golden orbit r180 h70",
+ "script": [
+  "Export Processing Zones Authority, BEPZA: eight point four billion dollars.",
+  "That's seventeen and a half percent of Bangladesh's exports last fiscal year.",
+  "BEPZA runs eight EPZs: ready plots, power, one-stop service.",
+  "Investors lease space there; check eligibility with BEPZA first.",
+  "Then show your products on Exportain, so buyers abroad find you."
+ ],
+ "sources": [
+  "https://bepza.gov.bd/spotlight/bepza-contributes-1751-to-national-exports-in-fy-2025-26",
+  "https://thefinancialexpress.com.bd/trade/bepza-exports-grow-22pc-to-841b-in-fy26"
+ ],
+ "lessons": "340 chars EN -> 24.2 s after tighten, final 26.8 s. SVG elements that carry data-k get wrapped: setAttribute on q('id') hits the wrapper — put data-k on a <g> and querySelector the shape inside. Port world renders slowly (~25 min with parallel stills); keep port to one scene. Port hero r180 h70 in card layout looks full and colourful.",
+ "id": "sh-0016-en-bepza",
+ "logged": "2026-10-31T23:36+06:00"
+}
