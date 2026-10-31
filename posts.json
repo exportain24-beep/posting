@@ -321,6 +321,20 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-10-31T05:11:48.031257+00:00"
+  },
+  "082-diaspora-first-market": {
+   "script": "082",
+   "slot": "2026-11-01T18:00:00+06:00",
+   "done": {
+    "youtube": "-Kiq2HvuBEE",
+    "facebook": "1126185283238140",
+    "tiktok": "6ae5b4521891472093c44ddd",
+    "linkedin": "6ae5b4531891472093c44e3b",
+    "twitter": "6ae5b453eaa24d6f9a671638"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-10-31T09:25:34.685955+00:00"
   }
  }
 }
