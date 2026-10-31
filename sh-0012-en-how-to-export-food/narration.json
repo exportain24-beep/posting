@@ -1,0 +1,22 @@
+[
+ {
+  "id": "00_hook",
+  "text": "How to export food? Rina's first pickle shipment got stuck at port."
+ },
+ {
+  "id": "01_mistake",
+  "text": "No health certificate. Food exports need one, often from BFSA."
+ },
+ {
+  "id": "02_steps",
+  "text": "Second try: trade licence, ERC, BIN, then buyer rules, like US FDA registration."
+ },
+ {
+  "id": "03_docs",
+  "text": "Labels, invoice, packing list, origin certificate. Cleared!"
+ },
+ {
+  "id": "04_cta",
+  "text": "Then list your food on Exportain and let buyers find you."
+ }
+]
