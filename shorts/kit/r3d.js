@@ -1,6 +1,6 @@
 // Exportain Shorts — realistic 3D layer (three.js, physically based lighting, rendered by SwiftShader in headless
 // Chromium). A scene opts in from board.json with  "gl": {"world": "ship", "cam": "orbit", ...}  and draws its SVG
-// on a transparent background (overlay text/cards only). Worlds: ship, port, globe, warehouse, docs, fabric, farm.
+// on a transparent background (overlay text/cards only). Worlds: ship, port, globe, warehouse, docs, fabric, line, farm.
 // Every world takes options so each Short can look different (time of day, palette, camera move, props).
 import * as THREE from './three/three.module.js';
 import { RoomEnvironment } from './three/RoomEnvironment.js';
@@ -219,6 +219,33 @@ const W3 = {
       for (let s = 0; s < 4; s++) box(2.2, .25, 1.6, std(cols[(t + s) % cols.length], .9, 0), -1.4 + (s % 2) * 2.8, 3.3 + Math.floor(s / 2) * .26, 0, g); }
     for (let i = 0; i < 5; i++) { const l = new THREE.PointLight('#fff6e8', 90, 35, 2); l.position.set(-12 + i * 7, 10, 0); B.s.add(l); }
     return { ...B, update(lt, d) { cam(B.cam, o.cam || 'dolly', lt, d, { r: 26, h: 8, look: [0, 2.5, -2], ...o }); } };
+  },
+  line(o) {     // factory packing line: roller conveyor with cartons gliding to a pallet stack (options: speed, n, carton)
+    const B = baseScene({ time: o.time || 'studio', fogNear: 30, fogFar: 120, ...o }); B.s.background = skyTex('#1d2b24', '#2b4636', '#3d5c47');
+    box(160, .2, 160, std('#a9b1ad', .8, .05), 0, -.1, 0, B.s);
+    for (let i = -6; i <= 6; i++) box(.15, .02, 160, std('#f2b705', .6, 0), i * 9, .01, 0, B.s);              // floor lane marks
+    const frame = std('#3d4a52', .45, .6), roll = std('#c7ccd0', .3, .85), cb = std(o.carton || '#c9975b', .9, 0), tape = std('#e9d3a8', .6, 0);
+    const lines = [[0, 0], [0, -9]];
+    lines.forEach(([x0, z]) => {
+      box(60, .25, 2.6, frame, x0, 2.1, z - 1.45 + 1.45, B.s);
+      for (let x = -29; x <= 29; x += 0.9) { const r = new THREE.Mesh(new THREE.CylinderGeometry(.16, .16, 2.4, 14), roll); r.rotation.x = Math.PI / 2; r.position.set(x0 + x, 2.35, z); B.s.add(r); }
+      for (let x = -28; x <= 28; x += 7) { box(.25, 2.1, .25, frame, x0 + x, 1.05, z - 1.2); box(.25, 2.1, .25, frame, x0 + x, 1.05, z + 1.2); }
+      for (let x = -28; x <= 28; x += 7) [z - 1.4, z + 1.4].forEach(zz => box(.06, .5, 7, std('#f2b705', .5, .3), x0 + x, 2.75, zz).rotation.y = Math.PI / 2);
+    });
+    const n = o.n || 9, cartons = [];
+    for (let k = 0; k < lines.length; k++) for (let i = 0; i < n; i++) { const g = new THREE.Group(); B.s.add(g);
+      const sz = 1.5 + rnd(i * 3 + k) * .4; box(sz, sz * .8, sz, cb, 0, sz * .4, 0, g); box(.28, sz * .8 + .02, sz + .02, tape, 0, sz * .4, 0, g);
+      const lab = box(.5, .36, .02, std('#ffffff', .6, 0), sz * .25, sz * .45, sz / 2 + .02, g); cartons.push({ g, k, i, z: lines[k][1] }); }
+    const wood = std('#a8743a', .8, 0);
+    for (let p = 0; p < 3; p++) { const g = new THREE.Group(); g.position.set(36 + p * 5.5, 0, -4.5 + (p % 2) * 5); B.s.add(g); box(4.6, .5, 4.6, wood, 0, .25, 0, g);
+      for (let y = 0; y < 2 + p; y++) for (let a = 0; a < 2; a++) for (let b = 0; b < 2; b++) { box(2.2, 1.5, 2.2, cb, -1.15 + a * 2.3, 1.25 + y * 1.52, -1.15 + b * 2.3, g); box(.28, 1.52, 2.22, tape, -1.15 + a * 2.3, 1.25 + y * 1.52, -1.15 + b * 2.3, g); } }
+    for (let i = 0; i < 7; i++) { const l = new THREE.PointLight('#fff4e0', 110, 40, 2); l.position.set(-24 + i * 9, 12, -4); B.s.add(l);
+      box(4, .15, .6, std('#ffffff', .2, 0), -24 + i * 9, 12.2, -4).material.emissive = new THREE.Color('#fff8e6'); }
+    const sp = o.speed ?? 2.2;
+    return { ...B, update(lt, d) {
+      cartons.forEach(({ g, k, i, z }) => { const x = ((i * 60 / n + lt * sp * (k ? .8 : 1) + k * 3) % 60) - 30; g.position.set(x, 2.5, z); });
+      cam(B.cam, o.cam || 'push', lt, d, { r: 30, h: 9, look: [0, 2.5, -3], ...o });
+    } };
   },
   farm(o) {     // agro exports: field rows + crates of produce
     const B = baseScene({ time: o.time || 'golden', fogNear: 30, fogFar: 140, ...o });
