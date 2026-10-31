@@ -151,11 +151,21 @@ def fb_publish(meta, mp4, jpg, slot, mode):
         state = "scheduled"
     else:
         state = "published"
-    body, ctype = multipart(fields, {"source": (os.path.basename(mp4), open(mp4, "rb").read(), "video/mp4"),
-                                     "thumb": ("thumb.jpg", open(jpg, "rb").read(), "image/jpeg")})
     gv = PL["facebook"]["graph_version"]
-    res = jhttp("POST", f"https://graph-video.facebook.com/{gv}/{page}/videos", {**auth, "Content-Type": ctype}, body,
-                timeout=1800)
+    cat = PL["facebook"].get("content_category")          # e.g. BUSINESS: helps Facebook match the video to its topic
+
+    def upload(extra):
+        body, ctype = multipart({**fields, **extra}, {"source": (os.path.basename(mp4), open(mp4, "rb").read(), "video/mp4"),
+                                                      "thumb": ("thumb.jpg", open(jpg, "rb").read(), "image/jpeg")})
+        return jhttp("POST", f"https://graph-video.facebook.com/{gv}/{page}/videos", {**auth, "Content-Type": ctype}, body,
+                     timeout=1800)
+    try:
+        res = upload({"content_category": cat} if cat else {})
+    except Exception as e:                                 # never lose the upload over the optional category field
+        if cat and ("content_category" in str(e) or "HTTP 400" in str(e)):
+            res = upload({})
+        else:
+            raise
     vid = res.get("id")
     if not vid:
         raise RuntimeError(f"upload failed: {res}")

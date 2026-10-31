@@ -93,6 +93,14 @@ def recover(src, cover, out, hold=COVER_HOLD):
         "-c:a", "aac", "-b:a", "160k", "-ar", "48000", "-movflags", "+faststart", out])
 
 
+def strip_cover(src, out, hold=COVER_HOLD):
+    """Same video without the still cover frames: starts straight on the moving hook (Facebook / Instagram show their
+    own cover from the API `thumb` / `cover_url`, so the feed autoplay begins in motion — better first-second hold)."""
+    subprocess.check_call(["ffmpeg", "-y", "-loglevel", "error", "-ss", str(hold), "-i", src, "-c:v", "libx264", "-crf", "20",
+                           "-preset", "veryfast", "-r", "30", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "128k",
+                           "-ar", "48000", "-ac", "2", "-movflags", "+faststart", out])
+
+
 def run_workflow(wf, inputs, timeout_min=40):
     t0 = datetime.now(timezone.utc) - timedelta(seconds=15)
     args = ["-X", "POST", f"repos/{REPO}/actions/workflows/{wf}/dispatches", "-f", "ref=main"]
@@ -258,8 +266,8 @@ def cmd_deliver(ep, d, mode, meta_name="meta.json"):
     w, h = vsize(mp4)
     li9 = os.path.join(d, "thumb_li9.jpg")
     if h > w and all(os.path.isfile(th[k]) for k in ("fb", "tt")):   # native 9:16 reel: only the covers change
-        print("making platform copies: Facebook/Instagram, TikTok, LinkedIn (9:16, own covers) …")
-        recover(mp4, th["fb"], v + "_ig.mp4")
+        print("making platform copies: Facebook/Instagram (no still cover, starts in motion), TikTok, LinkedIn …")
+        strip_cover(mp4, v + "_ig.mp4")
         recover(mp4, th["tt"], v + "_tt.mp4")
         if CFG["platforms"]["buffer"].get("linkedin", {}).get("enabled"):
             if not os.path.isfile(li9):

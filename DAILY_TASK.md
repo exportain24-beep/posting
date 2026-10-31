@@ -55,6 +55,32 @@ to Exportain. These rules replace the 26 Oct "quality upgrade" where they differ
    No stock clips, no copyrighted music, no real logos except Exportain's.
 8. **No promises:** never promise buyers, orders, rankings, views or approval.
 
+## Reach rules (owner, 31 Oct 2026: "use what makes posts reach more people" — only methods the platforms reward)
+Checked against Meta / YouTube / TikTok guidance, Oct 2026. Every run applies all of them:
+1. **Frame 1 must move and say the hook.** The hook scene shows its big kinetic hook text (the keyword + the problem
+   or number) by 0.3 s and has motion from the first frame — no empty title card, no slow fade, no logo intro.
+   Facebook/Instagram copies start straight on this moving hook (deliver strips the still cover; their covers are
+   set through the API); YouTube (first frames = Shorts cover) and TikTok (Buffer takes frame 1) keep a 0.5 s cover.
+2. **Retention over length.** Something new on screen every 1.5–2.5 s, a mid-video "re-hook" line around 45–60 s
+   ("কিন্তু আসল ভুলটা হয় এখানে…" style, only when true), no slow stretches. Watch time, completion and replays are
+   the strongest signals on all three platforms.
+3. **One clear topic per video, same niche every day** (export education for Bangladeshi exporters). Viewer-interest
+   surveys and topic consistency decide who sees it; never chase unrelated trends.
+4. **100 % original** (Meta favours content produced by the page itself; reposts and lightly edited clips are
+   demoted): our own drawings, narration and generated music; never another platform's watermark; never re-upload
+   an old video unchanged.
+5. **Search words where they are read and heard:** the primary keyword is spoken in the first sentence, shown on
+   screen in the hook, in the subtitles, and in the first line of every caption/title.
+6. **Comments that are real conversation:** end each caption with ONE specific, easy question about the topic
+   (e.g. "আপনার পণ্যের প্রথম প্রবাসী বাজার কোন দেশ?"). **Never engagement bait** (Meta demotes it): no "লাইক দিন",
+   "শেয়ার করুন", "বন্ধুকে ট্যাগ করুন", "কমেন্টে হ্যাঁ লিখুন", vote-by-reaction or "শেয়ার না করলে…".
+7. **Shareable value:** at least one concrete, save-worthy item per video (a checklist, a document name, a number with
+   its year, a step order) — that is what people forward to other exporters.
+8. **Consistency:** both daily slots filled, every day, at the fixed times; never late, never two at once.
+Facebook Reels API only accepts 3–90 s videos, so the 90–150 s reel is uploaded as a native Page video (Facebook shows
+it as a Reel) with `content_category` BUSINESS. YouTube Shorts custom thumbnails are desktop/YPP-only (no API), so
+the Shorts cover is the 0.5 s first frame.
+
 ## 0. Setup (every run — fresh machine)
 ```bash
 git clone --depth 1 https://github.com/exportain24-beep/posting /home/claude/posting
@@ -190,14 +216,16 @@ with these overrides, as `$P/post.json`:
  "playlist": "suggested YouTube playlist: Export Business Basics | Bangladesh Export Documentation | International Trade Regulations | Shipping and Logistics | Product Export Guides | International Certification | Bangladesh Export Opportunities"}
 ```
 Never reuse identical text across platforms. CTA in captions: educate first, invite naturally, never promise orders.
+Every caption follows the Reach rules: keyword in the first line, one specific question at the end, no engagement
+bait ("লাইক/শেয়ার/ট্যাগ/কমেন্টে লিখুন" asks).
 
 ## 5. Deliver
 ```bash
 setsid nohup python3 tools/studio.py deliver <EP> $P --mode live --meta post.json > $P/deliver.log 2>&1 < /dev/null &
 ```
 (poll `$P/deliver.log` and `status`). Deliver checks the files (9:16, 90–150 s, thumbnail ≤ 2 MB, texts within
-limits), makes the platform copies with their own covers (Facebook/Instagram, TikTok, LinkedIn; X gets the reel, or
-its first 135 s if longer), puts everything on the `media` branch (GitHub Pages serves it to Buffer), runs
+limits), makes the platform copies (Facebook/Instagram without the still cover so they start in motion; TikTok and
+LinkedIn with their own covers; X gets the reel, or its first 135 s if longer), puts everything on the `media` branch (GitHub Pages serves it to Buffer), runs
 `publish.yml` (YouTube files a 9:16 ≤ 3 min video as a Short) and starts the Instagram job. Never claim a platform as
 scheduled unless `status` shows it in `posted`. A platform error is retried by the next deliver/publish while the
 slot is ≥ 15 min away; run `python3 tools/studio.py publish retry` once more at the end if anything failed.

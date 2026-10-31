@@ -38,7 +38,8 @@
   "facebook": {
    "enabled": true,
    "graph_version": "v23.0",
-   "upload_captions": true
+   "upload_captions": true,
+   "content_category": "BUSINESS"
   },
   "buffer": {
    "tiktok": {
