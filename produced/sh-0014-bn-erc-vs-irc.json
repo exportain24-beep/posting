@@ -1,0 +1,22 @@
+{
+ "title": "এক্সপোর্ট ইমপোর্ট লাইসেন্স কিভাবে করা যায়? ERC vs IRC #Shorts",
+ "subtopic": "ইআরসি আর আইআরসির পার্থক্য (ERC vs IRC)",
+ "hook": "save-this checklist: 'এক্সপোর্ট ইমপোর্ট লাইসেন্স কিভাবে?' keyword headline on lime bar + clipboard 'লাইসেন্স চেকলিস্ট' with 4 empty boxes + gold SAVE bookmark tapped by a hand",
+ "visual": "3D warehouse at golden light (orbit r40 h14 a0 .4, fov 46) for the hook; persistent 4-chip checklist tracker (ERC/IRC/অনলাইন/৫ বছর) ticking through every scene; big '২' dial + two navy quiz cards flipping (rotateY) to ERC-রপ্তানির (ship, arrow out) and IRC-আমদানির (box, arrow in) with vs badge (e_sky); 3D container ship at dusk (flyby r110 h28, stack 5, seed 11) behind gold-framed ERC certificate card + 'রপ্তানি নিবন্ধন সনদ' + BD flag→globe pill; plane flying along dashed arc from globe to a BD factory, cartons dropping, blue IRC card + 'আমদানি নিবন্ধন সনদ' pill (e_mint); olm.ccie.gov.bd browser with filling fields + Submit press, '১ বছর' struck → '৫ বছর' card with 2022 circular source, magnifier 'ফি আর নিয়ম বদলায়' card (e_gold); kit CTA bn.",
+ "thumb": "split / pal auto(--n 14) / 'লাইসেন্স *দুটো*|ERC না IRC?' sub 'সেভ করার চেকলিস্ট' burst ৫ বছর arrow / ship golden orbit r105 h26 (bleed tried first: ship hero too close/empty — split works) hero",
+ "script": [
+  "এক্সপোর্ট ইমপোর্ট লাইসেন্স কিভাবে করা যায়? চেকলিস্টটা সেভ করুন।",
+  "লাইসেন্স আসলে দুটো, রপ্তানির আর আমদানির।",
+  "পণ্য বিদেশে পাঠাবেন? লাগবে ইআরসি, মানে রপ্তানি নিবন্ধন সনদ।",
+  "বিদেশ থেকে মাল আনবেন? লাগবে আইআরসি, মানে আমদানি নিবন্ধন সনদ।",
+  "আবেদন অনলাইনে, মেয়াদ পাঁচ বছর। ফি পোর্টালে মিলিয়ে নিন।",
+  "ইআরসি পেলে এক্সপোর্টেইনে পণ্য তুলুন, ক্রেতারাই আপনাকে খুঁজবে।"
+ ],
+ "sources": [
+  "https://www.thedailystar.net/business/economy/news/export-import-be-easier-certificates-tenure-extended-3178931",
+  "https://thefinancialexpress.com.bd/trade/govt-to-introduce-unified-irc-to-simplify-import-registration"
+ ],
+ "lessons": "340 chars Bangla -> 31.6 s raw, 25.1 s after tighten 1.08. Quiz-card flip via style.transform perspective rotateY on an inner data-k group works (fill-box origin). A persistent checklist tracker suits 'save this' hooks. Unified IRC (industrial+commercial) proposal under review since Jul 2026 — not stated as fact; mention once approved. No fee amounts stated.",
+ "id": "sh-0014-bn-erc-vs-irc",
+ "logged": "2026-10-31T12:10+06:00"
+}
