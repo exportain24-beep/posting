@@ -1,0 +1,29 @@
+{
+ "takes": {
+  "00_hook": "4d1aa0af53b7e578",
+  "01_promise": "1684495b3be3bf96",
+  "02_story": "5c5ed84abce4c32e",
+  "03_question": "a3469e69d9bb46a5",
+  "04_raw": "5a345c1f07e1736c",
+  "05_crowd": "7288adf80e0a9e98",
+  "06_season": "b378d33220dd3c24",
+  "07_value": "266b8215bdaa4400",
+  "08_margin": "1e6c6bc1f6e0a56f",
+  "09_mango": "a406b01e49150408",
+  "10_pulpbuyer": "d475b3cee6397547",
+  "11_jute": "b3c0dc95f63a8140",
+  "12_calc": "f7af6f2c3a72f93c",
+  "13_incentive": "303e062a4cd1736c",
+  "14_cash": "2431d27fc847a13e",
+  "15_rules": "383bfef9e49be885",
+  "16_cert": "f829889b77850b4c",
+  "17_invest": "1a55f529023fecd3",
+  "18_steps": "e1a9f031cd75a241",
+  "19_outcome": "3f51fe21fec63594",
+  "20_recap": "d74353f2641e8d75",
+  "21_brand": "eba7c35d55e6a39d",
+  "22_advice": "e7efb16cfc2dd307",
+  "23_cta": "fcc44b7f9deeec06"
+ },
+ "updated": "2026-10-27T08:27:14.243136+00:00"
+}

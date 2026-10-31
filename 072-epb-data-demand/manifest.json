@@ -1,0 +1,27 @@
+{
+ "takes": {
+  "00_hook": "3472f7d888603591",
+  "01_promise": "d3af24889006fadf",
+  "02_story": "49b4e03f1440d84b",
+  "03_story_b": "3dce13848d2f79d7",
+  "04_epb": "7f0f224f05edb8bf",
+  "05_epb_site": "bbb76d68299a3b1d",
+  "06_country": "de903515741b4f13",
+  "07_country_us": "b0c8115fe359a9aa",
+  "08_country_read": "5efaa0862b6e74c6",
+  "09_growth": "fd95ce31fb79bc3a",
+  "10_growth_b": "3f480c9330079810",
+  "11_growth_trap": "4eb6cf923b6f9560",
+  "12_reports": "c63207e4f32e8e2d",
+  "13_reports_b": "19fe52b782a06ece",
+  "14_reports_c": "811601d03e2394b6",
+  "15_decide": "038f342b2707ffcd",
+  "16_decide_b": "802bb9f7ab620842",
+  "17_story2": "3efbdba96a796524",
+  "18_recap": "982b818bca5d418d",
+  "19_brand": "741e6f7da8a171df",
+  "20_advice": "0413f1449895595e",
+  "21_cta": "db7e4153e11cb5bb"
+ },
+ "updated": "2026-10-26T03:15:08.182628+00:00"
+}

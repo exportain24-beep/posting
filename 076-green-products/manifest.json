@@ -1,0 +1,30 @@
+{
+ "takes": {
+  "00_hook": "213504cf5dea4c1d",
+  "01_promise": "aa7310084c3215d8",
+  "02_story": "b311f5b8781be1d1",
+  "04_demand": "7829e56ba9a49509",
+  "05_market": "8e86036918b5d896",
+  "06_rules": "54832141350c4194",
+  "07_materials": "f0aa8ee65066e593",
+  "08_products": "e3f731f446b3ccbf",
+  "09_jute_reach": "3a08814f6ffa9630",
+  "10_pick": "bd7668cca7ebc321",
+  "11_bag": "c0f298587c1f7cb8",
+  "12_bag_types": "f58a5b7bda87a6b6",
+  "13_bag_quality": "70e8d5447816559e",
+  "14_eu_buyer": "93162294b6f2483a",
+  "15_certs": "d52cc4b288cab78d",
+  "16_cheap_start": "7dfcddac9400fd71",
+  "17_greenwash": "867588f9797fb2db",
+  "18_story_how": "d01d473bfb6029b6",
+  "19_story_steps": "d5d04702bd93f680",
+  "20_story_proof": "708341559ef930e8",
+  "21_outcome": "5a0b71760d475025",
+  "22_recap": "6495f605756ff4cd",
+  "23_brand": "e2a779681b0e21d6",
+  "24_advice": "a655cb7042f72819",
+  "25_cta": "db7e4153e11cb5bb"
+ },
+ "updated": "2026-10-28T03:16:31.337845+00:00"
+}

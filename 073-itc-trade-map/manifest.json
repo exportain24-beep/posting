@@ -1,0 +1,24 @@
+{
+ "takes": {
+  "00_hook": "f8e95708ffe4fcf4",
+  "01_story": "26ca7c309eb77f99",
+  "02_what": "27efe1568788b0f9",
+  "03_free": "17031d63b6f8936a",
+  "04_source": "d407a7b4c35b1c71",
+  "05_hs": "42177b873893418c",
+  "06_code": "49d36542c4d0f2ca",
+  "07_importers": "9853f36eec5fc6fe",
+  "08_growth": "d2ab5c93e9f613aa",
+  "09_suppliers": "e8c48ee6f02c1acf",
+  "10_bd": "42096945d07758e8",
+  "11_bdmarkets": "f97f7eca7e3bfde0",
+  "12_mirror": "520fd0c6838b92cc",
+  "13_record": "126d6d0c5ea41ee9",
+  "14_story2": "def5adedf984ce80",
+  "15_recap": "c42087cbd4bf4426",
+  "16_brand": "8d90e53c06c8d53b",
+  "17_advice": "17dbdf6fd33feb64",
+  "18_cta": "db7e4153e11cb5bb"
+ },
+ "updated": "2026-10-26T08:18:42.764325+00:00"
+}

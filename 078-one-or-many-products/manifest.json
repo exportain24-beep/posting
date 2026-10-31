@@ -1,0 +1,30 @@
+{
+ "takes": {
+  "00_hook": "695b9bd9ad3c261a",
+  "01_story": "28a31ae183895ed9",
+  "02_promise": "96d1356f33a3ebda",
+  "03_focus": "6b38387152d418ff",
+  "04_lens": "800e48a4678dac84",
+  "05_pick": "97cb3f8d7c7c6254",
+  "06_mitali_pick": "601f223448ec4cf6",
+  "07_spread": "b5b65b3a3e1fe39a",
+  "08_juggle": "6b08d36a29e6670f",
+  "09_quality": "d05b9df342e9458d",
+  "10_cost": "75ae16e362a3f887",
+  "11_related": "c90512becd4a98a7",
+  "12_related_how": "98fad65045d61d7f",
+  "13_related_why": "b605c5f46241e94e",
+  "14_expand": "a9ccbc91c8a70227",
+  "15_signals": "04042e04a80b5a2b",
+  "16_ladder": "d21b544e7bc8883d",
+  "17_country": "58e8eca7625a3e9f",
+  "18_country2": "9655af38b97a065a",
+  "19_benefits": "58b6d504e1b086aa",
+  "20_benefit2": "f7c480018cb9f9d8",
+  "21_benefit3": "51df1d27cab27a96",
+  "22_outcome": "5e9163fd1df2119f",
+  "23_brand": "f6b771c2efe77581",
+  "24_cta": "db7e4153e11cb5bb"
+ },
+ "updated": "2026-10-28T17:09:59.966370+00:00"
+}

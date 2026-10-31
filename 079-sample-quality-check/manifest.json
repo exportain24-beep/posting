@@ -1,0 +1,29 @@
+{
+ "takes": {
+  "00_hook": "83281cab53140806",
+  "01_story": "745676a65e16ee09",
+  "02_promise": "5dbe64ddf4aa86a1",
+  "03_self": "daacf3d31987b9f7",
+  "04_self_how": "18832fb29f6b8f65",
+  "05_self_avg": "2ef7c8393f9859d1",
+  "06_spec": "b8b4799b7b45247a",
+  "07_spec_items": "1beaf0db1d8f3244",
+  "08_spec_tol": "b28b576e677eeaad",
+  "09_spec_sign": "8895103e108479ed",
+  "10_lab": "09385b59e1a34a07",
+  "11_lab_where": "067476750eb0fe7e",
+  "12_lab_ask": "24a6c7fafc3f79cc",
+  "13_record": "f08627a21427b4a5",
+  "14_record_video": "63c2bcbace5d270c",
+  "15_record_why": "d36205fd13b196a1",
+  "16_same": "7b6a84da42dd67b6",
+  "17_same_keep": "0f525d7342898375",
+  "18_same_material": "2dfdc347d09336a6",
+  "19_same_check": "9be936deddeb3686",
+  "20_outcome": "b264407ee6155d66",
+  "21_recap": "302e058119db6d7d",
+  "22_brand": "5f96cfc89666ce21",
+  "23_cta": "db7e4153e11cb5bb"
+ },
+ "updated": "2026-10-28T18:16:25.390444+00:00"
+}

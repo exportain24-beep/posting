@@ -1,0 +1,30 @@
+{
+ "takes": {
+  "00_hook": "ea94e7b1bb3f7b74",
+  "01_story": "de1651744bd7aa97",
+  "04_demand": "2db0fc9c6c20ddb3",
+  "02_story_b": "aa9e82ba856b2004",
+  "03_five": "bc51bb80d69f4ff8",
+  "05_trademap": "39b9b02a7077e06a",
+  "06_tariff": "8e9fcc226ca2257a",
+  "07_freight": "232f6beb638344fb",
+  "08_diaspora": "9c28cd497bc88688",
+  "09_compete": "c65f7597dd1003b4",
+  "10_macmap": "6004b03186c1fba5",
+  "11_macmap2": "1ea7306ee58e11a7",
+  "12_ldc": "60a17f22a9c9e8e7",
+  "13_language": "8f4cdf51bd346f2a",
+  "14_culture": "23d34bda234cf13c",
+  "15_payment": "a401ecd1f1b054b8",
+  "16_focus": "d7098b91d892358b",
+  "18_table": "353b42e0c8fe1dad",
+  "19_weight": "a5219079081daa92",
+  "20_story2": "490e8c745ba95181",
+  "21_story3": "2e6e60c0f7ff9b79",
+  "22_recap": "08614a729e3caa7b",
+  "23_brand": "16cb6b4f6d13463c",
+  "24_advice": "b851d1da461d8e6e",
+  "25_cta": "db7e4153e11cb5bb"
+ },
+ "updated": "2026-10-31T03:16:55.559641+00:00"
+}

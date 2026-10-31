@@ -1,0 +1,31 @@
+{
+ "takes": {
+  "00_hook": "eb40d5a6c3dfd958",
+  "01_story": "e51a82b04d732868",
+  "02_need": "99cf9bd5e0f1f39e",
+  "03_why": "9e255470d22a021b",
+  "04_season": "55932bec5eb8b299",
+  "05_map": "105e302f36feddf0",
+  "06_gulf": "719d564147215040",
+  "07_uk": "696bff3f7d0daa42",
+  "08_it_us": "ac8021adcb01ca48",
+  "10_chain": "584ed3db11f1db2a",
+  "11_grocery": "81dceeb3e504c9d5",
+  "12_importer": "155310728320baa8",
+  "13_warehouse": "c077642cd5b796be",
+  "14_network": "73159ba678a1b671",
+  "15_network2": "af0849dff302b960",
+  "16_network3": "6bcbe66335c83caf",
+  "17_main": "a983caf7f94840e2",
+  "18_main2": "9364e210d9b80b20",
+  "19_main3": "e0e3911c34118bad",
+  "20_main4": "01f426104b766128",
+  "21_story2": "2eafcc1d50ff465e",
+  "22_story3": "6ad15d0daa97ccd6",
+  "23_recap": "35af51816057e250",
+  "24_brand": "f5497a1d109223ba",
+  "25_advice": "1ebd6719a3a6fe55",
+  "26_cta": "db7e4153e11cb5bb"
+ },
+ "updated": "2026-10-31T08:18:01.746781+00:00"
+}
