@@ -1,0 +1,22 @@
+{
+ "title": "Export Documents Bangladesh: Commercial Invoice Explained #Shorts",
+ "subtopic": "Commercial invoice (export documents, explain-like-I'm-new)",
+ "hook": "explain like I'm new: 'Export documents in Bangladesh? Start with one paper.' — gold kicker pill EXPORT DOCUMENTS · BANGLADESH, 'Start with' + slammed gold 'ONE paper', tilted invoice sheet rising + '#1' badge",
+ "visual": "NEW 3D world 'line' (factory packing line: two roller conveyors with taped cartons gliding, pallet stacks, ceiling lights) golden, push r30 h8 fov44 for the hook; factory→buyer cards with marching dashed arrow + big Example invoice whose 5 rows (seller/buyer/goods/qty/price) slide in on keys (e_sky); tilted mini invoice with ERC/HS/FOB stickers flying on + 3 numbered side-striped rows ERC No./HS Code 6109.10 Example/FOB Chattogram with ship (e_mint); CUSTOMS card with swinging scale + US$ counter 'taken from the invoice', LC vs YOUR INVOICE cards with 'Chatogram' typo circled red + shake, 'Payment ON HOLD' lock card, AD-bank hedge line (e_gold); kit CTA en.",
+ "thumb": "number / pal auto(--n 15) / 'Start with|*this* paper' kicker EXPORT DOCUMENTS, number #1, sub 'Commercial invoice 101', burst NEW?, arrow / hero line world dusk push r20 h6 (round)",
+ "script": [
+  "Export documents in Bangladesh? Start with one paper.",
+  "The commercial invoice is your bill to the buyer: seller, buyer, goods, quantity, price.",
+  "Add your ERC number, HS code and a term like FOB.",
+  "Customs values goods from it. With an LC, one typo can hold your payment.",
+  "Then list your company on Exportain, and let buyers find you."
+ ],
+ "sources": [
+  "https://hub.bangladeshcustoms.gov.bd/hs-code/details/description/general-documents",
+  "https://www.dhl.com/discover/en-bd/logistics-advice/import-export-advice/export-documents-for-shipping-from-bangladesh",
+  "https://online91.thedailystar.net/opinion/views/news/the-cost-comma-documentation-errors-are-the-hidden-tax-bangladeshs-exports-4120986"
+ ],
+ "lessons": "324 chars EN -> 22.6 s after tighten 1.08, final 25.2 s (+0.4 s cover = 25.6 s). New 'line' world reads well behind text with a dark band; its far floor is flat/empty, so keep the camera low (h 6-8) and crop the hero to the conveyor. Thumb number layout: sub line must stay <= ~24 chars and burst <= 1 short word or they clip.",
+ "id": "sh-0015-en-commercial-invoice",
+ "logged": "2026-10-31T23:06+06:00"
+}
