@@ -1,0 +1,21 @@
+{
+ "title": "Buying House Course: A Merchandiser's Day, Before vs After #Shorts",
+ "subtopic": "Merchandiser's daily work",
+ "hook": "Before vs after: 'BUYING HOUSE COURSE?' 96px from frame 1 over 3D garment floor, red BEFORE pill, 5 shaking sticky notes (URGENT!/Lab dip?/Sample late/Price?/Trims missing), '= CHAOS' slam",
+ "visual": "3D fabric floor golden push (r24 h7 fov44) for the hook; e_sky green AFTER pill + 'a daily SYSTEM', ticking 9:00 AM clock, buyer inbox with 3 mails ticking off, Example TNA Gantt bars filling (fabric/trims/sample/shipment); e_lime 1:00 PM clock + MIDDAY, Fabric roll / Trims (buttons+zipper) / Sample tee cards, marching arrow to 'Buyer approval' card with APPROVED stamp slam; 3D warehouse dusk crane (r30 h10) behind EVENING 6:00 PM clock + Costing $4.20 FOB Example / Quality AQL check / Ship date calendar cards + navy '$38.7B garment exports FY2025-26 · EPB' counter; kit CTA en.",
+ "thumb": "split / pal auto(--n 19) / 'Buying house|course: *before*|vs after' kicker MERCHANDISER'S DAY, sub 'what you really do 9 to 6', burst 9 TO 6, arrow / hero fabric golden dolly r30 h11",
+ "script": [
+  "Buying house course? Before it, a merchandiser's day looks like chaos.",
+  "After it, it's a system. Morning: buyer emails and the time and action plan.",
+  "Midday: chase fabric, trims and samples for buyer approval.",
+  "Evening: costing, quality checks, and a ship date that holds.",
+  "Then list your factory on Exportain, and let buyers find you."
+ ],
+ "sources": [
+  "https://onlineclothingstudy.com/?p=5196",
+  "https://thefinancialexpress.com.bd/economy/june-exports-surge-by-2591pc-fy26-earnings-hold-steady-at-48b-epb"
+ ],
+ "lessons": "327 chars EN -> 26.0 s raw, 21.4 s after tighten, final 24.1 s (+0.4 cover). Clock hands: rotate an inner <g> via setAttribute('transform','rotate()') (rotH helper) so they spin around the clock centre. Fabric world hero at r18 is aliased/washed — use r30 h11 dolly. Keep sticky notes x >= 200 so tilted cards are not clipped.",
+ "id": "sh-0019-en-buying-house-course",
+ "logged": "2026-11-01T23:28+06:00"
+}
