@@ -1,0 +1,21 @@
+{
+ "title": "আমদানি রপ্তানি কাকে বলে? রপ্তানি মানে কী, সহজ ভাষায় #Shorts",
+ "subtopic": "রপ্তানি মানে কী (আমদানি vs রপ্তানি, নতুনদের জন্য)",
+ "hook": "একদম নতুনদের মতো করে: 3D globe with BD routes, keyword 'আমদানি রপ্তানি' 112px from frame 1 + gold 'কাকে বলে?' pill pulsing, two cards রপ্তানি↗EXPORT / আমদানি↙IMPORT sliding in",
+ "visual": "3D globe studio (z 62->52, lookY -4, routes incl. China) for the hook; e_mint 'রপ্তানি EXPORT' BD-map card -> carton arcs to globe card, dashed marching arrow, green 'দেশের পণ্য → বিদেশে বিক্রি' bar, $ coins pop in; e_sky mirror 'আমদানি IMPORT' globe -> factory with ship sailing in, navy bar, coins drift out; e_gold 'উদাহরণ' two cards: Dhaka shirt + plane arc to USA with green '= রপ্তানি' stamp, CN circle + ship to machine with blue '= আমদানি' stamp; 3D ship golden orbit (r125 h26 a0 2.6) behind $48 counter + 'বিলিয়ন ডলার (প্রায়)' + EPB source pill + 'বেশিরভাগই পোশাক' card with 81% bar; kit CTA bn.",
+ "thumb": "bleed / pal auto(--n 18) / 'আমদানি রপ্তানি|*কাকে বলে?*' kicker একদম নতুনদের জন্য, sub সহজ ভাষায় ৩০ সেকেন্ডে, burst $48B, arrow / hero globe z72 with route arcs",
+ "script": [
+  "আমদানি রপ্তানি কাকে বলে? একদম সহজ করে বলি।",
+  "দেশের পণ্য বিদেশে বিক্রি করলে, সেটাই রপ্তানি।",
+  "আর বিদেশ থেকে পণ্য দেশে আনলে, সেটা আমদানি।",
+  "যেমন, ঢাকার শার্ট আমেরিকায় গেলে রপ্তানি; চীনের মেশিন এলে আমদানি।",
+  "গত অর্থবছরে বাংলাদেশের রপ্তানি প্রায় আটচল্লিশ বিলিয়ন ডলার, বেশিরভাগই পোশাক।",
+  "শুরু করতে এক্সপোর্টেইনে পণ্য তুলুন, বিদেশি ক্রেতারাই আপনাকে খুঁজে নেবে।"
+ ],
+ "sources": [
+  "https://thefinancialexpress.com.bd/economy/june-exports-surge-by-2591pc-fy26-earnings-hold-steady-at-48b-epb"
+ ],
+ "lessons": "342 chars Bangla -> 30.6 s raw, 25.9 s after tighten 1.08, final 28.8 s (+0.4 cover = 29.2 s) — near the cap; keep Bangla at <=330 chars. Globe hero for thumbs needs z ~70 (z 44 is just a green blob). factB at scale .8 fits a 400px card. Mirror-scene pair (export vs import) explains a definition topic well.",
+ "id": "sh-0018-bn-import-export-meaning",
+ "logged": "2026-11-01T23:05+06:00"
+}
