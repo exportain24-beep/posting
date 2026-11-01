@@ -196,6 +196,23 @@ def fb_check():
     return f"page OK: {p.get('name')}"
 
 
+def fb_status(state, last=10):
+    """check mode: what Facebook itself says about the recorded Reels (scheduled / published / failed)."""
+    page, tok, proof, g = fb_auth()
+    posts = sorted(((v.get("slot", ""), k, v["done"]["facebook"]) for k, v in state["posts"].items()
+                    if (v.get("done") or {}).get("facebook")), reverse=True)[:last]
+    for slot, ep, vid in sorted(posts):
+        try:
+            q = urllib.parse.urlencode({"fields": "status,published,scheduled_publish_time,permalink_url,created_time", **proof})
+            r = jhttp("GET", f"{g}/{vid}?{q}", {"Authorization": f"OAuth {tok}"})
+            st = r.get("status") or {}
+            note("notice", f"fbstatus {ep} slot {slot}: published={r.get('published')} video_status={st.get('video_status')} "
+                           f"publishing={json.dumps(st.get('publishing_phase'))[:300]} processing={json.dumps(st.get('processing_phase'))[:200]} "
+                           f"scheduled={r.get('scheduled_publish_time')} url={r.get('permalink_url')}")
+        except Exception as e:
+            note("error", f"fbstatus {ep} ({vid}): {redact(e)[:400]}")
+
+
 def fb_publish(meta, mp4, jpg, slot, mode):
     """9:16 Short -> Facebook Page Reel: start -> rupload bytes -> finish (SCHEDULED at the slot / PUBLISHED / DRAFT)."""
     page, tok, proof, g = fb_auth()
@@ -348,6 +365,7 @@ def main():
         if "facebook" in PLATFORMS:
             try:
                 note("notice", f"check facebook: {fb_check()}")
+                fb_status(state)
             except Exception as e:
                 bad += 1; note("error", f"check facebook: {redact(e)}")
 
