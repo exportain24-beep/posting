@@ -288,7 +288,8 @@
     "facebook": "1511939324101388",
     "tiktok": "6ae480fc1c1ab1e7bc3409d0",
     "linkedin": "6ae480fe14812ff596799e46",
-    "twitter": "6ae480ffab6b84214cd1683a"
+    "twitter": "6ae480ffab6b84214cd1683a",
+    "fb_photos": "skipped"
    },
    "errors": {},
    "mode": "live",
@@ -302,7 +303,8 @@
     "facebook": "1161738656415872",
     "tiktok": "6ae4ba94cd8290b9b9f9f6c8",
     "linkedin": "6ae4ba9698505e7f521cb0c9",
-    "twitter": "6ae4ba970d17552c83a2b508"
+    "twitter": "6ae4ba970d17552c83a2b508",
+    "fb_photos": "skipped"
    },
    "errors": {},
    "mode": "live",
@@ -316,7 +318,8 @@
     "facebook": "1606308867847376",
     "tiktok": "6ae578e1eaa24d6f9a5866ec",
     "linkedin": "6ae578e3b84259308bbbed23",
-    "twitter": "6ae578e41891472093b57658"
+    "twitter": "6ae578e41891472093b57658",
+    "fb_photos": "skipped"
    },
    "errors": {},
    "mode": "live",
@@ -330,11 +333,27 @@
     "facebook": "1126185283238140",
     "tiktok": "6ae5b4521891472093c44ddd",
     "linkedin": "6ae5b4531891472093c44e3b",
-    "twitter": "6ae5b453eaa24d6f9a671638"
+    "twitter": "6ae5b453eaa24d6f9a671638",
+    "fb_photos": "skipped"
    },
    "errors": {},
    "mode": "live",
    "updated": "2026-10-31T09:25:34.685955+00:00"
+  },
+  "083-18-markets": {
+   "script": "083",
+   "slot": "2026-11-02T12:30:00+06:00",
+   "done": {
+    "youtube": "lTTgSiiUBRA",
+    "facebook": "2400605300743381",
+    "tiktok": "6ae6b94721c807e9d59d38de",
+    "linkedin": "6ae6b949cf3a3112f3dabac6",
+    "twitter": "6ae6b94bf0984eef3346dba1",
+    "fb_photos": "765925453279031_122146187103042178"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-11-01T03:58:32.451674+00:00"
   }
  }
 }
