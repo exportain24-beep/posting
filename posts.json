@@ -369,6 +369,21 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-11-01T09:08:45.522313+00:00"
+  },
+  "085-europe-market": {
+   "script": "085",
+   "slot": "2026-11-03T12:30:00+06:00",
+   "done": {
+    "youtube": "ZdPYRBmbNTw",
+    "facebook": "2424195358115693",
+    "tiktok": "6ae80a707817c41d1a400d81",
+    "linkedin": "6ae80a721a965d64fbe91e27",
+    "twitter": "6ae80a731a965d64fbe91e54",
+    "fb_photos": "765925453279031_122146345587042178"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-11-02T03:56:18.389289+00:00"
   }
  }
 }
