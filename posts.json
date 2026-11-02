@@ -384,6 +384,21 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-11-02T03:56:18.389289+00:00"
+  },
+  "086-usa-largest-market": {
+   "script": "086",
+   "slot": "2026-11-03T18:00:00+06:00",
+   "done": {
+    "youtube": "-jh6kiHpkmU",
+    "facebook": "2237837800093851",
+    "tiktok": "6ae856075e62d9a270fa8379",
+    "linkedin": "6ae8560843b939472a7ad6f5",
+    "twitter": "6ae8560943b939472a7ad734",
+    "fb_photos": "765925453279031_122146386759042178"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-11-02T09:19:42.629284+00:00"
   }
  }
 }
