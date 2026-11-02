@@ -232,6 +232,18 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-11-02T06:06:36.089636+00:00"
+  },
+  "sh-0021-en-export-course": {
+   "n": "0021",
+   "slot": "2026-11-04T06:00:00+06:00",
+   "done": {
+    "youtube": "T2uKB_7OQv4",
+    "tiktok": "6ae8ca74a99125fa8e9e0138",
+    "facebook": "1683071336937304"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-11-02T17:37:45.968351+00:00"
   }
  }
 }
