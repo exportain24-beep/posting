@@ -1,0 +1,21 @@
+{
+ "title": "Export Import Business Full Course: 4 Checks Before You Pay #Shorts",
+ "subtopic": "How to judge an export course (4 checks before paying)",
+ "hook": "Question -> straight answer: gold pill EXPORT IMPORT BUSINESS + 'FULL COURSE?' 118px white from frame 1 over 3D ship, 'Check 4 things' card with 4 numbered dots, red 'before you pay' pill shaking",
+ "visual": "3D ship at dusk flyby (r115 h26 stack5 seed7) for the hook with dark top/bottom bands; e_mint '1 Real steps' Course syllabus card (Example) with 4 rows ERC/HS code/LC/Shipping papers ticking; e_sky '2 Real trainers' chalkboard teacher + navy BFTI card + 3 expert cards NBR/Bangladesh Bank/EPB + BFTI 3 days max 25 seats source line; e_gold '3 Practice' slides deck crossed vs Example commercial invoice with lines filling and pencil writing, '4 No order promise' 'Guaranteed buyers' ad card with RED FLAG stamp slam + shake; kit CTA en.",
+ "thumb": "split / pal auto(--n 21) / 'Export course?|*Check 4*|things' kicker BEFORE YOU PAY, sub 'how to judge a full course', burst 4 TIPS, arrow / hero ship day orbit a0 .9 r85 h22 crop [0,600,1080,720] (container wall)",
+ "script": [
+  "Export import business full course? Check four things before you pay.",
+  "One: real steps, like ERC, HS code, LC and shipping papers.",
+  "Two: real trainers. BFTI brings in experts from NBR, Bangladesh Bank and EPB.",
+  "Three: practice on sample papers. Four: no course can promise orders.",
+  "Then list your products on Exportain, and let buyers find you."
+ ],
+ "sources": [
+  "https://bfti.org.bd/training-details/27",
+  "https://bangladesh.eregulations.org/procedure/45/46/step/51?l=en"
+ ],
+ "lessons": "336 chars EN -> 31.8 s raw, 25.6 s after tighten 1.08, final 28.2 s (+0.4 cover = 28.6 s) — keep EN <= 335. Bleed thumb layout hides a centred ship behind the headline band (only sky/sea showed); split with a crop on the container stack works. tx() with Latin text falls back to a serif font — use lat() or custom stamp for Latin. Running two shorts.py voice jobs in parallel breaks the shallow git fetch: voice one at a time.",
+ "id": "sh-0021-en-export-course",
+ "logged": "2026-11-02T23:38+06:00"
+}
