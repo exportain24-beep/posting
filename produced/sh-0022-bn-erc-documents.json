@@ -1,0 +1,21 @@
+{
+ "title": "এক্সপোর্ট ইমপোর্ট লাইসেন্স করার নিয়ম: ERC-র আগে ৫ কাগজ #Shorts",
+ "subtopic": "ইআরসির আগে যে কাগজগুলো লাগে (ERC documents checklist)",
+ "hook": "এটা নাকি ওটা: gold pill 'এক্সপোর্ট ইমপোর্ট লাইসেন্স' + 'করার নিয়ম' 104px from frame 1 over 3D docs desk; 'আগে আবেদন?' vs 'আগে কাগজ?' cards sliding in with gold 'নাকি' circle, cross/check pop, green answer card 'কাগজ আগে'",
+ "visual": "3D docs world studio (papers Trade Licence/e-TIN/Bank Solvency OK/Membership/NID + Photo landing on desk) for the hook; e_lime '১ প্রথম' Example Traders nameplate with marching dashed links to Trade Licence certificate (shop) + e-TIN card both carrying the same name, 'নাম মিলতে হবে' pill; e_sea '২ দ্বিতীয়' bank with ৳ coins flowing + Bank Solvency certificate sliding out + VERIFIED stamp, chamber/association Membership Certificate card + pulsing সদস্যপদ সনদ chip; e_mint '৩ তৃতীয়' Example NID card + 2 photos, yellow folder 'কোম্পানি হলে' + Incorporation/MoA & AoA/Partnership Deed tags, navy hedge card with lock 'নিয়ম বদলায় ... পোর্টালে মিলিয়ে নিন · CCI&E' + source line; kit CTA bn.",
+ "thumb": "number / pal auto(--n 22) / 'লাইসেন্সের *কাগজ*' number ৫টি kicker ইআরসির আগে, burst ERC, arrow / hero docs studio at 3.2 (round)",
+ "script": [
+  "এক্সপোর্ট ইমপোর্ট লাইসেন্স করার নিয়ম: আগে আবেদন, নাকি কাগজ? কাগজ আগে।",
+  "প্রথম, ব্যবসার নামে ট্রেড লাইসেন্স আর ই-টিআইএন।",
+  "দ্বিতীয়, ব্যাংকের সলভেন্সি সনদ, আর চেম্বার বা অ্যাসোসিয়েশনের সদস্যপদ।",
+  "তৃতীয়, এনআইডি আর ছবি, কোম্পানি হলে নিবন্ধনের কাগজ। নিয়ম বদলায়, মিলিয়ে নিন।",
+  "কাগজ গুছিয়ে ইআরসি পেলে এক্সপোর্টেইনে পণ্য তুলুন, ক্রেতারাই খুঁজবে।"
+ ],
+ "sources": [
+  "https://bangladesh.eregulations.org/procedure/45/46/step/51?l=en",
+  "https://bfti.org.bd/training-details/27"
+ ],
+ "lessons": "333 chars Bangla -> 30.7 s raw, 24.7 s after tighten 1.08, final 27.4 s (+0.4 cover = 27.8 s). Docs world hook reads well with dark bands top/bottom; papers fill the middle. Number layout: keep the headline on one line and drop sub, else the giant number and hero circle collide with it. Contact sheet times on scene boundaries show crossfades — pick mid-scene times.",
+ "id": "sh-0022-bn-erc-documents",
+ "logged": "2026-11-02T23:45+06:00"
+}
