@@ -1,0 +1,21 @@
+{
+ "title": "How to Export Vegetables from Bangladesh: Stop This Mistake #Shorts",
+ "subtopic": "How to start exporting vegetables (3 steps + the random-market mistake)",
+ "hook": "Stop doing this: 'How to export VEGETABLES from Bangladesh?' keyword 118px gold from frame 1, red '#1 beginner mistake' pill, STOP octagon slam, market stall card 'buying from random markets' crossed red",
+ "visual": "3D farm by day (push r24 h8, purple brinjal crates, seed 20) for the hook; e_mint '1 FIXED farms' field card + 3 FARM ID tags, yellow 'Spray record · Example' table rows ticking, residue test tube filling + bar under buyer-limit line + PASS pill; e_sky '2 CERTIFY' Central Packing House (Shyampur · Dhaka) with veg crates gliding on a conveyor + roaming magnifier, tilted Phytosanitary Certificate (Plant Quarantine Wing · DAE) + APPROVED stamp + 'Rules change: confirm with DAE' pill; 3D globe at dusk (rot0 -3.3, z 84->74, lookY 1.5, routes BD->Dubai/Riyadh/Doha/Kuwait/Muscat/London) behind '3 MIDDLE EAST buyers' + '$88.9M FY2025-26 EPB' card + By AIR plane card + Keep it COLD spinning snowflake card; kit CTA en.",
+ "thumb": "card / pal auto(--n 20) / 'Export *vegetables*|the right way' kicker BANGLADESH EXPORT GUIDE, sub '3 steps, 1 big mistake', burst STOP, arrow / hero farm day push r16 h6 purple crates",
+ "script": [
+  "How to export vegetables from Bangladesh? Stop buying from random markets.",
+  "One: buy from fixed farms with spray records, so residue tests pass.",
+  "Two: inspect at the Shyampur packing house for your phytosanitary certificate.",
+  "Three: start with Middle East buyers, ship by air, keep it cold.",
+  "Then list your produce on Exportain, and let buyers find you."
+ ],
+ "sources": [
+  "https://www.tbsnews.net/economy/vegetable-exports-fail-grow-due-weak-diversification-basket-and-market-1484971",
+  "https://www.thedailystar.net/opinion/views/news/why-bangladeshs-vegetable-exports-fail-long-take-4128121"
+ ],
+ "lessons": "345 chars EN -> 26.8 s raw, 22.2 s after tighten 1.08, final 24.9 s (+0.4 cover = 25.3 s). Globe rot0 -3.3 with lookY 1.5 centres BD + Gulf arcs nicely. Purple farm produce reads as grapes/brinjal blobs — fine as hero, but a real vegetable prop (elongated mesh) would be better. Ghost STOP octagon early fills the empty bottom band of a 3D hook.",
+ "id": "sh-0020-en-vegetable-export",
+ "logged": "2026-11-02T12:07+06:00"
+}
