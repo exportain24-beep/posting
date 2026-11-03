@@ -1,0 +1,21 @@
+{
+ "title": "কিভাবে বিদেশি বায়ার পাবো? মেলা নয়, আগে অনলাইন পেজ #Shorts",
+ "subtopic": "প্রথম বায়ার পেতে বিটুবি মার্কেটপ্লেস (মেলা বনাম অনলাইন)",
+ "hook": "ভুল ধারণা বনাম সত্য: 'কিভাবে বিদেশি বায়ার পাবো?' 104/128px glow headline from frame 1 over 3D globe + green pill 'বাংলাদেশ থেকে বিশ্বের ক্রেতা'; myth card with trade-fair booth + DAC plane ticket 'মেলায় যেতেই হবে?' → red 'ভুল ধারণা!' slab slams (scale 2.3→1), cross pops, card shakes and dims",
+ "visual": "3D globe golden (rot0 -3.25, z 64->54, lookY .5, 8 routes BD->NY/Berlin/London/Tokyo/Dubai/Toronto/Sydney/Madrid) with dark top/bottom bands for the hook; e_sky 'সত্যি হলো' check pill + browser with search bar typing 'cotton t-shirt supplier Bangladesh' + 3 Example supplier rows with BD flag + Verified, 61% donut ring filling with counter, 'সেলস কল নয়' crossed salesperson card, Gartner source pill; 3D packing line by day (orbit r30 h9 a0 .5 fov44) behind 'ধাপ ১ বিটুবি মার্কেটপ্লেসে কোম্পানি পেজ খুলুন' + Company page card (Example Knitwear Ltd) with camera flash → 3 real-photo tiles, সনদ certificate + 'Certificate verified' pill; e_mint 'ধাপ ২ RFQ দেখেই দ্রুত কোটেশন দিন' New RFQ card (Germany, 5,000 pcs, উদাহরণ) + spinning stopwatch + Quotation sheet rows (Price/MOQ/Lead time, Example) + paper plane fly-out + Sent pill; kit CTA bn.",
+ "thumb": "card / pal auto(--n 23) / 'বিদেশি *বায়ার*|কোথায় পাবেন?' kicker রপ্তানিকারকদের জন্য, sub 'মেলা নয়, আগে অনলাইন', burst ৬১%, arrow / hero globe golden z70 at 3.5 crop [0,420,1080,1080]",
+ "script": [
+  "কিভাবে বিদেশি বায়ার পাবো? মেলায় যেতেই হবে? ভুল ধারণা!",
+  "সত্যি হলো, ক্রেতারা আগে অনলাইনে সাপ্লায়ার খোঁজেন। একষট্টি শতাংশ ক্রেতা বিক্রয়কর্মী ছাড়াই কিনতে চান।",
+  "তাই বিটুবি মার্কেটপ্লেসে কোম্পানি পেজ খুলুন, আসল ছবি আর সনদসহ পণ্য দিন।",
+  "তারপর ক্রেতার আরএফকিউ দেখে দ্রুত কোটেশন দিন।",
+  "আজই এক্সপোর্টেইনে পণ্য তুলুন, ক্রেতারাই আপনাকে খুঁজে নেবে।"
+ ],
+ "sources": [
+  "https://uk.marketscreener.com/quote/stock/GARTNER-INC-40311131/news/Gartner-Sales-Survey-Finds-61-of-B2B-Buyers-Prefer-a-Rep-Free-Buying-Experience-50340554/",
+  "https://www.dhakatribune.com/business/banks/412718/exporters-to-sell-products-directly-in-online"
+ ],
+ "lessons": "330 chars Bangla -> 29.2 s raw, 23.3 s after tighten 1.08, final 25.96 s (+0.4 cover = 26.36 s). A <circle> with data-k gets wrapped: setAttribute stroke-dasharray must go through a <g data-k> + querySelector('circle'). Globe hero at z70 crop [0,420,1080,1080] fills the card layout well. Globe+line 3D render took ~16 min with 2 workers. Gartner 61% figure = survey Aug-Sep 2024, published Jun 2025.",
+ "id": "sh-0023-bn-find-foreign-buyers",
+ "logged": "2026-11-03T12:12+06:00"
+}
