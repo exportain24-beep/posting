@@ -256,6 +256,18 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-11-02T17:44:30.970001+00:00"
+  },
+  "sh-0023-bn-find-foreign-buyers": {
+   "n": "0023",
+   "slot": "2026-11-04T20:00:00+06:00",
+   "done": {
+    "youtube": "qJj8Nw04UXE",
+    "tiktok": "6ae97b143f84a453ac0952d1",
+    "facebook": "1179548307973887"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-11-03T06:11:20.004043+00:00"
   }
  }
 }
