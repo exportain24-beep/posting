@@ -1,0 +1,11 @@
+{
+ "takes": {
+  "00_hook": "0143619804a673f5",
+  "01_export": "505636bcb3ad8f49",
+  "02_import": "5a5d44d9b9a150c1",
+  "03_example": "4786f8cc88375e8d",
+  "04_number": "efff1487d7319663",
+  "05_cta": "bffca8e2e6ae080e"
+ },
+ "updated": "2026-11-01T16:42:37.030562+00:00"
+}

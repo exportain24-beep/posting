@@ -1,0 +1,22 @@
+[
+ {
+  "id": "00_hook",
+  "text": "Export documents in Bangladesh? Start with one paper."
+ },
+ {
+  "id": "01_what",
+  "text": "The commercial invoice is your bill to the buyer: seller, buyer, goods, quantity, price."
+ },
+ {
+  "id": "02_add",
+  "text": "Add your ERC number, HS code and a term like FOB."
+ },
+ {
+  "id": "03_why",
+  "text": "Customs values goods from it. With an LC, one typo can hold your payment."
+ },
+ {
+  "id": "04_cta",
+  "text": "Then list your company on Exportain, and let buyers find you."
+ }
+]
