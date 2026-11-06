@@ -21,19 +21,23 @@ message (that message is what the owner is notified about).
 From script 087 on, the two daily videos (12:30 and 18:00) are **Shorts of about 50 seconds** made from the same
 numbered script prompts, in the same strict order. No long videos any more. Everything else stays: research, locked
 voice, illustrated 9:16 scenes, burned-in subtitles, covers, captions, photo cards, all six platforms.
-- **Length:** 40–60 s finished (`publish` refuses anything else), target 48–55 s. Narration **430–520 characters**
-  (tags excluded) in **6–8 scenes** (real rate ≈ 11.3 chars/s; finished ≈ speech + 0.7 s per scene + 3.5 s). Over
-  58 s → trim the longest scenes (only changed scenes are re-voiced); under 45 s → add one concrete fact, never filler.
+- **No Exportain talk in the video (owner, 6 Nov 2026):** no Exportain/brand scene, no spoken CTA, no "join/visit
+  Exportain" line, no company-page scene. The only Exportain element is a **1-second silent logo end card** at the very
+  end (plus the small corner logo badge the build adds). After `new_project.sh` run
+  `sed -i 's/--endcard 2.5/--endcard 1/' $P/build.sh`. This replaces the brand-scene and CTA rules further below.
+- **Length:** 40–60 s finished (`publish` refuses anything else), target 48–55 s. Narration **440–540 characters**
+  (tags excluded) in **6–8 scenes** (real rate ≈ 11.3 chars/s; finished ≈ speech + 0.7 s per scene + 1.5 s for the
+  1 s end card and the 0.5 s cover). Over 58 s → trim the longest scenes (only changed scenes are re-voiced); under
+  45 s → add one concrete fact, never filler.
 - **Structure (≈ 50 s):** `00_hook` 0–4 s (keyword + the real problem/number, moving hook text by 0.3 s) →
-  `01_points…` 4–34 s: **every point of the prompt, in order, one short sentence each** (merge two points into one
-  scene when they belong together; a fictional entrepreneur only if it costs ≤ 1 short clause) → `NN_tip` 34–40 s: one
-  save-worthy takeaway (number with its year, document name or step order); for legal/fee/bank/regulatory topics end it
-  with "কাজের আগে এডি ব্যাংক বা বিশেষজ্ঞের সাথে মিলিয়ে নিন।" (no separate advice scene) → `NN_brand` short:
-  "এক্সপোর্টেইন হলো বাংলাদেশি প্রস্তুতকারক আর রপ্তানিকারকদের বিটুবি মার্কেটপ্লেস।" (may add ≤ 4 words tied to the
-  topic) → `NN_cta`, exactly the CTA sentence below. Nothing after the CTA.
+  `01_points…` 4–40 s: **every point of the prompt, in order, one or two short sentences each** (merge two points into
+  one scene when they belong together; a fictional entrepreneur only if it costs ≤ 1 short clause) → last scene
+  `NN_tip` 40–48 s: one save-worthy takeaway (number with its year, document name or step order); for
+  legal/fee/bank/regulatory topics end it with "কাজের আগে এডি ব্যাংক বা বিশেষজ্ঞের সাথে মিলিয়ে নিন।" (no separate
+  advice scene). Then only the 1 s logo end card. Nothing else.
 - **Pace:** one visual event per key, something new every 1–1.5 s, no road-map header (no room) — use a small
   "১/৫"-style point counter chip instead; title cards only where they replace a scene.
-- **Captions:** same platforms and rules; YouTube description and LinkedIn text may be shorter (LinkedIn ≤ 1,500
+- **Captions:** same platforms and rules (a short, natural exportain.com mention stays allowed in the captions, not in the video); YouTube description and LinkedIn text may be shorter (LinkedIn ≤ 1,500
   chars). Facebook photo cards: 3–4 cards.
 - X gets the whole Short. The sections below still apply wherever they do not contradict this order.
 
