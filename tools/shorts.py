@@ -2,7 +2,7 @@
 """Claude's side of the Shorts lane (YouTube + TikTok) (runs in Claude's workspace, never sees a secret).
 Separate from tools/studio.py and the 3-5 min reel system: own branches, own workflows, own state.
 
-  shorts.py status                      free Short slots (06:00, 15:00, 20:00 BD), next plan items, pending, errors
+  shorts.py status                      free Short slots (15:00, 20:00 BD), next plan items, pending, errors
   shorts.py next [K]                    the next K unused plan items in full (default 3)
   shorts.py item N                      one plan item (N = plan number, e.g. 12)
   shorts.py recent [K]                  the last K produced Shorts (title, subtopic, hook, visual) — avoid repeats
@@ -13,7 +13,7 @@ Separate from tools/studio.py and the 3-5 min reel system: own branches, own wor
   shorts.py log EP DIR                  record what was produced (script, title, visual concept) on shorts-content
   shorts.py plan-push FILE              (setup) put plan.json on shorts-content
 
-EP = sh-<NNNN>-<bn|en>-<short-english-slug>, NNNN = plan number.
+EP = sh-<NNNN>-bn-<short-english-slug> (Bangla only since 6 Nov 2026), NNNN = plan number.
 """
 import glob, json, os, shutil, subprocess, sys, time
 from datetime import datetime, timedelta, timezone
@@ -71,7 +71,10 @@ def load(branch, rel, default):
 
 
 def plan_items():
-    return load(BR["content"], "plan.json", {"shorts": []})["shorts"]
+    """Plan in order, only the languages still produced (owner 2026-11-06: Bangla only; English items are dropped)."""
+    langs = SCFG.get("plan_languages")
+    items = load(BR["content"], "plan.json", {"shorts": []})["shorts"]
+    return [p for p in items if not langs or p.get("lang") in langs]
 
 
 def pending_media():

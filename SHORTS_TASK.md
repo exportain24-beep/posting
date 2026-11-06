@@ -1,7 +1,7 @@
 # Shorts run (YouTube + TikTok + Facebook Reels) — what Claude does (unattended)
 
-Goal: every day **06:00, 15:00 and 20:00 (Bangladesh)** one finished **≤ 30-second 9:16 YouTube Short** goes public,
-in plan order (1 → 1000), on **YouTube (Shorts), TikTok and the Facebook Page (Reels)** — nowhere else
+Goal: every day **15:00 and 20:00 (Bangladesh)** one finished **≤ 30-second 9:16 YouTube Short** goes public,
+in plan order (1 → 1000, **Bangla items only** — owner 6 Nov 2026: no more English Shorts; `status`/`next` already skip English plan items), on **YouTube (Shorts), TikTok and the Facebook Page (Reels)** — nowhere else
 (Facebook added by the owner on 30 Oct 2026, from Short 0008 on). Nobody is watching: never stop to ask; decide, finish, report.
 
 **Hands off the reel system.** The 3–5 min reel pipeline (DAILY_TASK.md, tools/studio.py, scripts/voice.py,
@@ -11,8 +11,8 @@ scheduled tasks) is the owner's running system. A Shorts run never edits, runs o
 `shorts-content`, `shorts-audio`, `shorts-media`, `shorts-state`.
 
 **Locked:** voice Debashish `3XjJ1C8taYP9CHnHKmK5`, model `eleven_v4_turbo`, only through `tools/shorts.py voice`
-(never the ElevenLabs connector, never another TTS). Language = the plan item's language: **Bangla item → Bangla
-Short, English item → English Short, Banglish keyword → Bangla Short.** Never print, read or ask for a key.
+(never the ElevenLabs connector, never another TTS). Language: **always Bangla** (Bangla and Banglish plan items only; English items are skipped and
+never made — `en` voice is refused). Never print, read or ask for a key.
 
 ## 0. Setup (fresh machine every run)
 ```bash
@@ -26,8 +26,8 @@ missed by < 6 h → public now). Read the skill once: `$SS/SKILL.md`, `$SS/refer
 `$SS/examples/assoc_9x16/js` (9:16 layout reference), and this kit: `shorts/kit/r3d.js` (3D worlds + options).
 
 ## 1. Which Shorts this run makes
-Up to **3 Shorts**, one per entry of `free_slots` (earliest first), using `next_items` in order: first free slot ←
-first next item. EP = `sh-<NNNN>-<bn|en>-<short-english-slug>` (NNNN = plan number). `python3 tools/shorts.py item N`
+Up to **2 Shorts**, one per entry of `free_slots` (earliest first), using `next_items` in order: first free slot ←
+first next item. EP = `sh-<NNNN>-bn-<short-english-slug>` (NNNN = plan number). `python3 tools/shorts.py item N`
 prints the full plan entry (keyword, seo_keyword, subtopic, hook_format, visual_world, draft_title, tags, hashtags).
 Budget per Short ≈ 30 min (research 5 · script 3 · voice 2 · scenes 10 · render 8 · deliver 2). Never post late: if
 a Short cannot be delivered ≥ 20 min before its slot, give it the next free slot instead (edit `slot` in post.json).
@@ -43,9 +43,9 @@ a Short cannot be delivered ≥ 20 min before its slot, give it the next free sl
   1. `00_hook` (≤ 2.5 s spoken): the keyword (or its core words) in the first sentence + a pattern interrupt: a
      surprising number, a mistake, a myth, a direct question. No greeting, no logo intro, no "in this video".
   2. 2–4 value takes: one idea each, concrete (what / where / how), numbered when it is a list ("One:", "প্রথম,").
-  3. last take: payoff + CTA in one line naming Exportain, e.g. EN "Then list your factory on Exportain, and let
-     buyers find you." / BN "তারপর এক্সপোর্টেইনে পণ্য তুলুন, বিশ্বের ক্রেতারাই আপনাকে খুঁজে নেবে।" Vary the wording.
-     Never promise orders, profit or approval. Optional loop line: the last words lead back into the hook.
+  3. last take: the payoff / key takeaway of the topic, said plainly. **No CTA, no "Exportain" in the voice, no
+     outro talk** (owner 6 Nov 2026) — the video simply ends with the Exportain logo for 1 second. Optional loop
+     line: the last words lead back into the hook. Never promise orders, profit or approval.
 - Bangla Shorts: Bangla script only, no Latin letters, no slash; acronyms in Bangla (ইআরসি, এলসি, এইচএস কোড, সিএন্ডএফ);
   screen shows the Latin form. English Shorts: plain English, no Bangla script in the voice text.
 - Legal/fee/bank topics: one short hedge inside a take ("rules change — confirm with your AD bank").
@@ -57,13 +57,13 @@ P=/home/claude/sh/<EP>; mkdir -p $P   # narration.json goes here
 python3 tools/shorts.py voice <EP> $P          # GitHub runs ElevenLabs (locked voice/model, language from EP)
 python3 shorts/kit/tighten.py $P --tempo 1.08  # trims breaths/pauses, light speed-up; originals kept in vo_raw/
 ```
-Target: sum(durations) ≤ 26.5 s (the build adds ≈ 1.2 s gaps + 1.2 s end card; the final video must be ≤ 30.0 s,
+Target: sum(durations) ≤ 27.5 s (the build adds ≈ 1.2 s gaps + a 1.0 s logo-only end card; the final video must be ≤ 30.0 s,
 ideally 24–29 s). Too long → shorten the text of the longest take and re-voice (only changed takes are charged).
 Never use `--tempo` above 1.10.
 
 ## 4. Video — 9:16, every Short different, realistic 3D + motion graphics
 ```bash
-bash shorts/kit/new_short.sh $P <2-letter prefix> <bn|en>
+bash shorts/kit/new_short.sh $P <2-letter prefix> bn
 ```
 - **Design brief first (write it in log.json "visual")**: pick a 3D world + time of day + camera move + palette
   that fit THIS topic and differ from the last 3 (`recent`). Worlds in r3d.js: `ship`, `port`, `globe`
@@ -76,7 +76,8 @@ bash shorts/kit/new_short.sh $P <2-letter prefix> <bn|en>
   with a dark gradient band behind text (see `shade()` in examples). Other scenes: illustrated motion graphics on
   the brand gradients (e_sky e_mint e_gold e_sea e_lime) — never caption slides.
 - Board: one entry per take, `kind` `<pfx>_<name>`, 3–6 `keys` (exact substrings of the take), `sfx` one per key.
-  Last entry = the kit CTA scene `<pfx>_cta_en` or `<pfx>_cta_bn` with `"badge": "white"`, `bg` `e_forest`.
+  **No CTA scene** (never `<pfx>_cta_bn`/`_cta_en`): the last entry is the payoff scene of the last take; the build's
+  1.0 s end card (Exportain logo only, nothing else) finishes the Short.
 - Muted-viewer rule: every scene has big readable text (keyword in the first frame of the hook, ≥ 56 px headline,
   numbers 120–200 px), something new appears every 1–1.5 s, nothing frozen > 1.5 s. Keep text inside x 70–1010,
   y 230–1720 (YouTube UI covers the bottom ≈ 200 px and the right edge buttons). Brand colours only; red = risk only;

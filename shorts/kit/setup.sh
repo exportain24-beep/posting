@@ -19,6 +19,12 @@ s=s.replace('pg = b.new_page(viewport={"width": w, "height": h})','pg = b.new_pa
 assert "swiftshader" in s and "R3_WANT" in s and "180000" in s; open(p,"w").write(s)
 p=f"{sk}/scripts/topic_build.py"; s=open(p).read()
 s=s.replace("LEAD, GAP, TAIL = 0.6, 0.7, 0.6","LEAD, GAP, TAIL = 0.15, 0.25, 0.3"); assert "0.15, 0.25" in s; open(p,"w").write(s)
+# 1-second logo-only finish: logo pops in 0.35 s, rings + shine done by 1.0 s
+p=f"{sk}/templates/illustrated.html"; s=open(p).read()
+s=s.replace("scale(${L(.6,1,eb(cl(lt/.7)))})`;lg.style.opacity=cl(lt*4);","scale(${L(.6,1,eb(cl(lt/.35)))})`;lg.style.opacity=cl(lt*6);")
+s=s.replace("const p=cl((lt-.15-k*.15)/1.1);","const p=cl((lt-.05-k*.1)/.8);")
+s=s.replace("sp=cl((lt-.7)/.8);","sp=cl((lt-.35)/.55);")
+assert "lt/.35" in s and "/.8);" in s and "(lt-.35)/.55" in s; open(p,"w").write(s)
 PY
 bash $SK/scripts/setup.sh >/dev/null 2>&1 || true
 echo "export SS=$SS SK=$SK KIT=$KIT"

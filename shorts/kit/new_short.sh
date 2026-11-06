@@ -11,10 +11,10 @@ sed -i "s#__ENGINE__#$SK#" "$P/build.sh"
 rm -f "$P/js/9_end.js"
 sed "s/PFX_/${X}_/g; s#__KIT__#$KIT#g" "$KIT/js/9_short_end.js" > "$P/js/9_end.js"
 sed -i "s/PFX_/${X}_/g" "$P/js/99_amb.js"
-sed -i "s/--endcard 2.5/--endcard 1.2/" "$P/build.sh"
+sed -i "s/--endcard 2.5/--endcard 1.0/" "$P/build.sh"   # logo-only finish, 1 s (owner 6 Nov 2026)
 grep -q inject3d "$P/build.sh" || cat >> "$P/build.sh" <<EOS
 # ---- Shorts kit: realistic 3D layer + gl options from board.json into plan.json
 python3 "$KIT/inject3d.py" "\$(pwd)" "$KIT"
 EOS
 echo "$LG" > "$P/.lang"
-echo "short ready: $P  prefix ${X}_  lang $LG   (CTA scene: ${X}_cta_$LG)"
+echo "short ready: $P  prefix ${X}_  lang $LG   (no CTA scene: the 1 s logo end card closes the Short)"
