@@ -1,7 +1,7 @@
 # Daily run — what Claude does every day (unattended)
 
-Goal: keep every **12:30 and 18:00** (Bangladesh) slot filled with a finished **9:16 vertical reel of 1:30–2:30
-(90–150 s, target 1:55–2:20)** built from the owner's numbered script prompts, strictly in number order (the next
+Goal: keep every **12:30 and 18:00** (Bangladesh) slot filled with a finished **9:16 vertical Short of about 50 s
+(40–60 s, target 48–55 s; owner's order 6 Nov 2026: Shorts only, no long videos)** built from the owner's numbered script prompts, strictly in number order (the next
 unused number from `status`), posted to YouTube (as a Short) + Facebook (native Page video, shown as a Reel)
 (their own APIs, run by `publish.yml`), Instagram (Reel, `ig.yml`) and TikTok, LinkedIn, X (Buffer).
 Claude never sees a key.
@@ -12,10 +12,30 @@ language = Bangla only. Hard-coded in `scripts/voice.py`; the workflow refuses a
 
 **The video skill is `exportain-video-studio`** (the owner's skill). Load it fresh every run and follow its SKILL.md and
 references for research, writing rules, drawing library, reveal vocabulary, build, QA and render. **Only the
-differences listed in this file override it** — above all: the reel is now 9:16, 90–150 s, with burned-in subtitles.
+differences listed in this file override it** — above all: the video is now a 9:16 Short of about 50 s (40–60 s), with burned-in subtitles.
 
 Nobody is watching: never stop to ask. If something blocks, finish what can be finished and report it in the final
 message (that message is what the owner is notified about).
+
+## Owner's order — Shorts only, ≈ 50 s (6 Nov 2026; overrides every length/structure rule below)
+From script 087 on, the two daily videos (12:30 and 18:00) are **Shorts of about 50 seconds** made from the same
+numbered script prompts, in the same strict order. No long videos any more. Everything else stays: research, locked
+voice, illustrated 9:16 scenes, burned-in subtitles, covers, captions, photo cards, all six platforms.
+- **Length:** 40–60 s finished (`publish` refuses anything else), target 48–55 s. Narration **430–520 characters**
+  (tags excluded) in **6–8 scenes** (real rate ≈ 11.3 chars/s; finished ≈ speech + 0.7 s per scene + 3.5 s). Over
+  58 s → trim the longest scenes (only changed scenes are re-voiced); under 45 s → add one concrete fact, never filler.
+- **Structure (≈ 50 s):** `00_hook` 0–4 s (keyword + the real problem/number, moving hook text by 0.3 s) →
+  `01_points…` 4–34 s: **every point of the prompt, in order, one short sentence each** (merge two points into one
+  scene when they belong together; a fictional entrepreneur only if it costs ≤ 1 short clause) → `NN_tip` 34–40 s: one
+  save-worthy takeaway (number with its year, document name or step order); for legal/fee/bank/regulatory topics end it
+  with "কাজের আগে এডি ব্যাংক বা বিশেষজ্ঞের সাথে মিলিয়ে নিন।" (no separate advice scene) → `NN_brand` short:
+  "এক্সপোর্টেইন হলো বাংলাদেশি প্রস্তুতকারক আর রপ্তানিকারকদের বিটুবি মার্কেটপ্লেস।" (may add ≤ 4 words tied to the
+  topic) → `NN_cta`, exactly the CTA sentence below. Nothing after the CTA.
+- **Pace:** one visual event per key, something new every 1–1.5 s, no road-map header (no room) — use a small
+  "১/৫"-style point counter chip instead; title cards only where they replace a scene.
+- **Captions:** same platforms and rules; YouTube description and LinkedIn text may be shorter (LinkedIn ≤ 1,500
+  chars). Facebook photo cards: 3–4 cards.
+- X gets the whole Short. The sections below still apply wherever they do not contradict this order.
 
 ## Owner's standing order — Professional Video Growth System v2.0 (31 Oct 2026, from script 083 on)
 Exportain is a professional B2B export-education and international-trade media brand, not entertainment. Every
@@ -137,7 +157,7 @@ Source: block `### NNN.` of `content:prompts/Exportain_Reels_500_Script_Prompts.
   never mention a previous/next episode.
 - **Length:** the real voice rate is ≈ 11.5 spoken characters per second (082: 2,998 chars → 257 s). Final length =
   sum(durations) + ≈ 0.7 s per scene + 3.5 s (end card + cover). **1,150–1,500 narration characters** (tags
-  excluded; hard cap 2,000 in config.json) in **11–15 scenes** lands at ≈ 110–145 s. `make_scripts.py` estimates at
+  excluded; hard cap 700 in config.json since the Shorts order) in **11–15 scenes** lands at ≈ 110–145 s. `make_scripts.py` estimates at
   the old speed — trust `durations.json`. If over 150 s, trim sentences in the longest scenes (only changed scenes
   are re-voiced); under 90 s, add explanation, never filler.
 - The Exportain scene keeps the sentence "এক্সপোর্টেইন হলো বাংলাদেশি প্রস্তুতকারক আর রপ্তানিকারকদের বিটুবি মার্কেটপ্লেস, …"
