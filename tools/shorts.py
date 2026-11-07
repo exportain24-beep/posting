@@ -2,7 +2,7 @@
 """Claude's side of the Shorts lane (YouTube + TikTok) (runs in Claude's workspace, never sees a secret).
 Separate from tools/studio.py and the 3-5 min reel system: own branches, own workflows, own state.
 
-  shorts.py status                      free Short slots (15:00, 20:00 BD), next plan items, pending, errors
+  shorts.py status                      free Short slots (09:00, 17:00 BD), next plan items, pending, errors
   shorts.py next [K]                    the next K unused plan items in full (default 3)
   shorts.py item N                      one plan item (N = plan number, e.g. 12)
   shorts.py recent [K]                  the last K produced Shorts (title, subtopic, hook, visual) — avoid repeats

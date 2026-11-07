@@ -1,6 +1,6 @@
 # Shorts run (YouTube + TikTok + Facebook Reels) — what Claude does (unattended)
 
-Goal: every day **15:00 and 20:00 (Bangladesh)** one finished **≤ 30-second 9:16 YouTube Short** goes public,
+Goal: every day **09:00 and 17:00 (Bangladesh)** one finished **≤ 30-second 9:16 YouTube Short** goes public,
 in plan order (1 → 1000, **Bangla items only** — owner 6 Nov 2026: no more English Shorts; `status`/`next` already skip English plan items), on **YouTube (Shorts), TikTok and the Facebook Page (Reels)** — nowhere else
 (Facebook added by the owner on 30 Oct 2026, from Short 0008 on). Nobody is watching: never stop to ask; decide, finish, report.
 

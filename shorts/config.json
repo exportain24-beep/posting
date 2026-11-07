@@ -1,7 +1,7 @@
 {
  "_note": "Exportain Shorts lane (YouTube + TikTok + Facebook Reels). Completely separate from the 3-5 min reel system (config.json, voice.py, publish.py and their branches are never touched by this lane).",
  "timezone_offset_hours": 6,
- "slots_local": ["15:00", "20:00"],
+ "slots_local": ["09:00", "17:00"],
  "plan_ahead_hours": 40,
  "min_lead_minutes": 20,
  "voice_id": "3XjJ1C8taYP9CHnHKmK5",
