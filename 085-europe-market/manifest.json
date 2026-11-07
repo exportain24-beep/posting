@@ -1,0 +1,20 @@
+{
+ "takes": {
+  "00_hook": "43e6d961974b532e",
+  "01_context": "46a99f1b1e164fd0",
+  "02_market": "e5b801a36ad4e92a",
+  "03_eba": "c850c7ce074b7430",
+  "04_eba2": "f22271625063ccea",
+  "05_food": "bf49b95f17fdfc5d",
+  "06_label": "9b28d6257e6c7e89",
+  "07_rex": "76945d116cb7672d",
+  "08_rex2": "67e4cead59c507c5",
+  "09_free": "ed40f22cb1279566",
+  "10_example": "3ef42531eacc33f9",
+  "11_takeaway": "2ba1a35342cc11ef",
+  "12_brand": "08541800d4013abd",
+  "13_advice": "82800e0a3841aee6",
+  "14_cta": "db7e4153e11cb5bb"
+ },
+ "updated": "2026-11-02T03:24:13.601184+00:00"
+}

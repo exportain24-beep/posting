@@ -1,0 +1,20 @@
+{
+ "takes": {
+  "00_hook": "79df2796b8d3710f",
+  "01_context": "000cbb95cebea7ba",
+  "02_diaspora": "c8cde11b4c4927d3",
+  "03_demand": "31c03573a021be15",
+  "04_data": "350ce72b9e1a260f",
+  "05_attest": "f8d75cbfcf50bb70",
+  "06_rehook": "600820575111cd5a",
+  "07_halal": "f5efc47dcdbdf8c2",
+  "08_air": "b92291446195f411",
+  "09_sea": "81f07a9386cff78f",
+  "10_example": "a2b7028f2d8ae33e",
+  "11_takeaway": "f033cd76360d844c",
+  "12_brand": "25157eca9d15d0c0",
+  "13_advice": "ba7223b7ce455166",
+  "14_cta": "db7e4153e11cb5bb"
+ },
+ "updated": "2026-11-01T08:22:34.365945+00:00"
+}

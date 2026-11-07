@@ -1,0 +1,19 @@
+{
+ "takes": {
+  "00_hook": "ce54118a944b82ef",
+  "01_context": "c5d305f5dd3c111c",
+  "02_market": "a2af08d294e1e16e",
+  "03_tariff": "6d96b2c218abfca3",
+  "04_tariff2": "75e972e89d6e25b7",
+  "05_fda": "ff099ffc809ed9fb",
+  "06_prior": "dedb1178b48346c8",
+  "07_labour": "314123c04dece445",
+  "08_trace": "6b15106d65c1d4e1",
+  "09_example": "483f05d32e3b053e",
+  "10_rule": "9b4b03bfcfe257ec",
+  "11_brand": "493e5b1bac2918fe",
+  "12_advice": "b2d99f93acfab3e9",
+  "13_cta": "fcc44b7f9deeec06"
+ },
+ "updated": "2026-11-02T08:37:37.426431+00:00"
+}

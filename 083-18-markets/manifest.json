@@ -1,0 +1,20 @@
+{
+ "takes": {
+  "00_hook": "383ec49822205bab",
+  "01_context": "e5051a39ea8e36ed",
+  "02_gulf": "69ea365d2ec399c4",
+  "03_asia": "3c2480e26a268b87",
+  "04_asia2": "9cf2aa51ea887e27",
+  "05_west": "1572d618d4fb3962",
+  "06_west2": "8ce3dd220f3e0074",
+  "07_africa": "820f639f06f3ee4a",
+  "08_match": "80ac35968230d631",
+  "09_choose": "7bfc7a49b216df33",
+  "10_steps": "636381619f86be14",
+  "11_example": "c7b695f6b1efdcf5",
+  "12_takeaway": "2556c33b0831e689",
+  "13_brand": "f9fb1a64fd94f4fb",
+  "14_cta": "db7e4153e11cb5bb"
+ },
+ "updated": "2026-11-01T03:20:22.535973+00:00"
+}
