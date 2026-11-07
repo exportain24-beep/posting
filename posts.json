@@ -414,6 +414,21 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-11-07T08:54:33.864711+00:00"
+  },
+  "088-japan-korea": {
+   "script": "088",
+   "slot": "2026-11-08T12:30:00+06:00",
+   "done": {
+    "youtube": "uPrybuqn9AY",
+    "facebook": "29391125853838239",
+    "tiktok": "6aeeebad229bf05daf3c9546",
+    "linkedin": "6aeeebae004e4879a745aec2",
+    "twitter": "6aeeebaf229bf05daf3c9594",
+    "fb_photos": "765925453279031_122146832673042178"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-11-07T09:12:52.022910+00:00"
   }
  }
 }
