@@ -226,7 +226,7 @@ def make_teaser(src, out, seconds):
 
 
 def cmd_deliver(ep, d, mode, meta_name="meta.json"):
-    """DIR must hold final.mp4 (9:16 1080x1920, 40-60 s Short, burned-in subtitles; limits in config.json), thumb.jpg
+    """DIR must hold final.mp4 (9:16 1080x1920, 40-50 s Short, burned-in subtitles; limits in config.json), thumb.jpg
     (1280x720), the post meta (--meta), optional captions.srt (subs.srt is used when present)."""
     meta = json.load(open(os.path.join(d, meta_name), encoding="utf-8"))
     meta["id"] = ep

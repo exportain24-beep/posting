@@ -1,7 +1,7 @@
 # Daily run — what Claude does every day (unattended)
 
-Goal: keep every **12:30 and 18:00** (Bangladesh) slot filled with a finished **9:16 vertical Short of about 50 s
-(40–60 s, target 48–55 s; owner's order 6 Nov 2026: Shorts only, no long videos)** built from the owner's numbered script prompts, strictly in number order (the next
+Goal: keep every **12:30 and 19:30** (Bangladesh) slot filled with a finished **9:16 vertical Short of at most 50 s
+(40–50 s, target 44–48 s; owner's order 6–7 Nov 2026: Shorts only, story style, no long videos)** built from the owner's numbered script prompts, strictly in number order (the next
 unused number from `status`), posted to YouTube (as a Short) + Facebook (native Page video, shown as a Reel)
 (their own APIs, run by `publish.yml`), Instagram (Reel, `ig.yml`) and TikTok, LinkedIn, X (Buffer).
 Claude never sees a key.
@@ -12,34 +12,41 @@ language = Bangla only. Hard-coded in `scripts/voice.py`; the workflow refuses a
 
 **The video skill is `exportain-video-studio`** (the owner's skill). Load it fresh every run and follow its SKILL.md and
 references for research, writing rules, drawing library, reveal vocabulary, build, QA and render. **Only the
-differences listed in this file override it** — above all: the video is now a 9:16 Short of about 50 s (40–60 s), with burned-in subtitles.
+differences listed in this file override it** — above all: the video is now a 9:16 Short of at most 50 s (40–50 s), with burned-in subtitles.
 
 Nobody is watching: never stop to ask. If something blocks, finish what can be finished and report it in the final
 message (that message is what the owner is notified about).
 
-## Owner's order — Shorts only, ≈ 50 s (6 Nov 2026; overrides every length/structure rule below)
-From script 087 on, the two daily videos (12:30 and 18:00) are **Shorts of about 50 seconds** made from the same
-numbered script prompts, in the same strict order. No long videos any more. Everything else stays: research, locked
-voice, illustrated 9:16 scenes, burned-in subtitles, covers, captions, photo cards, all six platforms.
-- **No Exportain talk in the video (owner, 6 Nov 2026):** no Exportain/brand scene, no spoken CTA, no "join/visit
-  Exportain" line, no company-page scene. The only Exportain element is a **1-second silent logo end card** at the very
-  end (plus the small corner logo badge the build adds). After `new_project.sh` run
-  `sed -i 's/--endcard 2.5/--endcard 1/' $P/build.sh`. This replaces the brand-scene and CTA rules further below.
-- **Length:** 40–60 s finished (`publish` refuses anything else), target 48–55 s. Narration **440–540 characters**
-  (tags excluded) in **6–8 scenes** (real rate ≈ 11.3 chars/s; finished ≈ speech + 0.7 s per scene + 1.5 s for the
-  1 s end card and the 0.5 s cover). Over 58 s → trim the longest scenes (only changed scenes are re-voiced); under
-  45 s → add one concrete fact, never filler.
-- **Structure (≈ 50 s):** `00_hook` 0–4 s (keyword + the real problem/number, moving hook text by 0.3 s) →
-  `01_points…` 4–40 s: **every point of the prompt, in order, one or two short sentences each** (merge two points into
-  one scene when they belong together; a fictional entrepreneur only if it costs ≤ 1 short clause) → last scene
-  `NN_tip` 40–48 s: one save-worthy takeaway (number with its year, document name or step order); for
-  legal/fee/bank/regulatory topics end it with "কাজের আগে এডি ব্যাংক বা বিশেষজ্ঞের সাথে মিলিয়ে নিন।" (no separate
-  advice scene). Then only the 1 s logo end card. Nothing else.
-- **Pace:** one visual event per key, something new every 1–1.5 s, no road-map header (no room) — use a small
-  "১/৫"-style point counter chip instead; title cards only where they replace a scene.
-- **Captions:** same platforms and rules (a short, natural exportain.com mention stays allowed in the captions, not in the video); YouTube description and LinkedIn text may be shorter (LinkedIn ≤ 1,500
-  chars). Facebook photo cards: 3–4 cards.
-- X gets the whole Short. The sections below still apply wherever they do not contradict this order.
+## Owner's order — Shorts only, max 50 s (6–7 Nov 2026; THIS SECTION IS THE AUTHORITY)
+From script 087 on, the job makes **two Shorts a day, at 12:30 and 19:30 Bangladesh time** (the old 18:00 slot is
+gone), from the same numbered script prompts in strict number order. **No long videos any more**, and everything that
+belonged only to the long videos is dropped: the 90–150 s length, the long 150 s structure, the road-map header, the
+Exportain/brand scene, the advice scene, the spoken CTA, the company page. Kept: research, the locked voice,
+illustrated 9:16 scenes, burned-in subtitles, covers, captions, photo cards, all six platforms, deliver.
+- **No Exportain talk in the video:** nothing about Exportain is said or shown in the scenes (no "এক্সপোর্টেইন হলো…",
+  no "ভিজিট করুন / যোগ দিন"). The only Exportain element is a **1-second silent logo end card** at the very end (plus the
+  small corner logo badge the build adds). After `new_project.sh` run `sed -i 's/--endcard 2.5/--endcard 1/' $P/build.sh`.
+- **Length: never over 50 s.** Finished file (incl. 0.5 s cover + 1 s end card) **40–50 s**, target 44–48 s;
+  `publish` refuses anything else. Narration **380–460 characters** (tags excluded, hard cap 600) in **5–7 scenes**
+  (real rate ≈ 11.3 chars/s; finished ≈ speech + 0.7 s per scene + 1.5 s). Check `durations.json` right after voicing:
+  over 48.5 s → shorten the longest scenes (only changed scenes are re-voiced); under 41 s → add one concrete fact.
+- **Tell it as a story (owner: "গল্পের মতো, যাতে বেশি ভিউ হয়").** One fictional Bangladeshi entrepreneur (named,
+  district + product, "একজন কাল্পনিক উদ্যোক্তা" said once, pill "কাল্পনিক চরিত্র" on screen) lives the topic:
+  - `00_hook` (0–3 s): the character's moment of trouble or surprise with the topic keyword in the first sentence and a
+    number/risk ("নাদিয়ার প্রথম আমেরিকান অর্ডার, কিন্তু শুল্কেই চলে যাচ্ছে পঁচিশ শতাংশ!"). Moving hook text by 0.3 s.
+  - `01…` (3–36 s): what the character finds out, **every point of the prompt in order**, one short spoken sentence
+    each, each point a turn in the story ("তারপর জানলেন…", "কিন্তু আসল চমক…" as the mid re-hook at ≈ 50 %).
+  - last scene (36–45 s): how the story ends + one save-worthy takeaway (a number with its year, a document name or a
+    step order). Legal/fee/bank/regulatory topics end with "কাজের আগে এডি ব্যাংক বা বিশেষজ্ঞের সাথে মিলিয়ে নিন।"
+  - Then only the 1 s logo end card. A last line that echoes the hook helps replays.
+- **Pace:** one visual event per key, something new every 1–1.5 s, the character visible in most scenes, a small
+  "১/৫"-style point counter chip instead of the road-map, big short on-screen words; facts stay verified and dated,
+  invented numbers labelled "উদাহরণ".
+- **Captions:** same platforms and rules (a short natural exportain.com mention is allowed in captions only);
+  YouTube description and LinkedIn text short (LinkedIn ≤ 1,500 chars). Facebook photo cards: 3–4 cards.
+- The older sections below are kept only for the process steps (setup, research sources, voice, build, QA, render,
+  subtitles, covers, deliver, self-repair). Wherever they mention 90–150 s, 18:00, the road-map, brand/advice/CTA
+  scenes or the long structure, this section wins.
 
 ## Owner's standing order — Professional Video Growth System v2.0 (31 Oct 2026, from script 083 on)
 Exportain is a professional B2B export-education and international-trade media brand, not entertainment. Every
