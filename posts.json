@@ -429,6 +429,21 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-11-07T09:12:52.022910+00:00"
+  },
+  "089-africa-market": {
+   "script": "089",
+   "slot": "2026-11-08T19:30:00+06:00",
+   "done": {
+    "youtube": "GZjVyKjbVCA",
+    "facebook": "1135909706076181",
+    "tiktok": "6aefecf09214322f682d744f",
+    "linkedin": "6aefecf19214322f682d7483",
+    "twitter": "6aefecf2229bf05daf8abf6e",
+    "fb_photos": "765925453279031_122146906845042178"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-11-08T03:30:32.144232+00:00"
   }
  }
 }
