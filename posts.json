@@ -444,6 +444,21 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-11-08T03:30:32.144232+00:00"
+  },
+  "090-australia-canada": {
+   "script": "090",
+   "slot": "2026-11-09T12:30:00+06:00",
+   "done": {
+    "youtube": "bq4x6fK83Fs",
+    "facebook": "1582406163655329",
+    "tiktok": "6af032899214322f683f314c",
+    "linkedin": "6af0328a004e4879a7a4e74e",
+    "twitter": "6af0328b51492b796e271cfa",
+    "fb_photos": "765925453279031_122146921275042178"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-11-08T08:27:23.598745+00:00"
   }
  }
 }
