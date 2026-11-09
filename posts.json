@@ -459,6 +459,21 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-11-08T08:27:23.598745+00:00"
+  },
+  "091-china-export": {
+   "script": "091",
+   "slot": "2026-11-09T19:30:00+06:00",
+   "done": {
+    "youtube": "PfF4nzQ-PlI",
+    "facebook": "1168129232314909",
+    "tiktok": "6af13ed97522f65ac0b8806b",
+    "linkedin": "6af13eda0361dbda74b5afff",
+    "twitter": "6af13eda7522f65ac0b880df",
+    "fb_photos": "765925453279031_122146995543042178"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-11-09T03:32:18.548411+00:00"
   }
  }
 }
