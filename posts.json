@@ -489,6 +489,21 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-11-09T08:31:33.152159+00:00"
+  },
+  "093-market-access-map": {
+   "script": "093",
+   "slot": "2026-11-10T19:30:00+06:00",
+   "done": {
+    "youtube": "sxps1pQc-jg",
+    "facebook": "1698307448578735",
+    "tiktok": "6af290cde261c09acc993791",
+    "linkedin": "6af290ceb59b34913a528ade",
+    "twitter": "6af290ceb59b34913a528b19",
+    "fb_photos": "765925453279031_122147083899042178"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-11-10T03:34:05.804472+00:00"
   }
  }
 }
