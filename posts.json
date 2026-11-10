@@ -504,6 +504,21 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-11-10T03:34:05.804472+00:00"
+  },
+  "094-competitor-countries": {
+   "script": "094",
+   "slot": "2026-11-11T12:30:00+06:00",
+   "done": {
+    "youtube": "FWDYqGr3YXM",
+    "facebook": "1692734302471645",
+    "tiktok": "6af2d8222224e5e62372b4b3",
+    "linkedin": "6af2d8226043a21c9f5a063a",
+    "twitter": "6af2d8231586e43ae33e1429",
+    "fb_photos": "765925453279031_122147100921042178"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-11-10T08:38:37.049188+00:00"
   }
  }
 }
