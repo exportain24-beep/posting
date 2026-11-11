@@ -534,6 +534,21 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-11-11T03:31:44.235281+00:00"
+  },
+  "096-company-profile": {
+   "script": "096",
+   "slot": "2026-11-12T12:30:00+06:00",
+   "done": {
+    "youtube": "SYpKaQ0pRM4",
+    "facebook": "1403695761534239",
+    "tiktok": "6af427d660e4cf0fafb3611c",
+    "linkedin": "6af427d77e9ab194b7fcb571",
+    "twitter": "6af427d7dad19848c698196e",
+    "fb_photos": "765925453279031_122147182605042178"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-11-11T08:30:06.549546+00:00"
   }
  }
 }
