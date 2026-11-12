@@ -5,7 +5,7 @@
   studio.py add-scripts FILE...            put the user's numbered scripts into content/scripts/
   studio.py voice EP DIR [--test-tone]     push DIR/narration.json, run the Voice workflow, fetch DIR/vo + durations.json
   studio.py deliver EP DIR [--mode M] [--meta post.json]  push DIR/final.mp4 + thumb.jpg + meta.json (+captions.srt) to media, run Publish
-  studio.py publish MODE                   run Publish only (check | private | live)
+  studio.py publish MODE [EP]              run Publish only (check | private | live | retry | cancel EP)
   studio.py pages                          make sure GitHub Pages serves the media branch
   studio.py ig MODE [EP]                   Instagram job: check | slots (fire and forget) | now EP (waits)
   studio.py styles                         last 12 entries of the visual style log (read before designing)
@@ -350,7 +350,7 @@ def main():
         meta = a[a.index("--meta") + 1] if "--meta" in a else "meta.json"
         return cmd_deliver(a[1], a[2], mode, meta)
     elif c == "publish":
-        ok, _ = run_workflow("publish.yml", {"mode": a[1]})
+        ok, _ = run_workflow("publish.yml", {"mode": a[1], **({"episode": a[2]} if len(a) > 2 else {})})
         return 0 if ok else 1
     elif c == "pages":
         cmd_pages()

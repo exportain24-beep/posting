@@ -366,6 +366,52 @@ def fb_photos_cancel(state, now):
     return bad
 
 
+def cancel_episode(state, ep):
+    """Owner-requested replacement of a scheduled (not yet public) video: delete its scheduled YouTube video,
+    Facebook video and Buffer posts, then forget it in the state so the next deliver posts the new version."""
+    rec = state["posts"].get(ep)
+    if not rec:
+        note("error", f"cancel: {ep} not in state"); return 1
+    if parse_slot(rec["slot"]) < datetime.now(timezone.utc) + timedelta(minutes=10):
+        note("error", f"cancel: {ep} slot {rec['slot']} is too close or already public; not cancelled"); return 1
+    bad = 0
+    for p, pid in list(rec.get("done", {}).items()):
+        if not pid or pid in ("skipped", "cancelled"):
+            rec["done"].pop(p, None); continue
+        try:
+            if p == "youtube":
+                tok = yt_token(); auth = {"Authorization": f"Bearer {tok}"}
+                try:
+                    http("DELETE", f"https://www.googleapis.com/youtube/v3/videos?id={pid}", auth)
+                    info = "deleted"
+                except Exception as e:                    # upload-only scope: at least keep it private for ever
+                    if "HTTP 403" not in str(e) and "HTTP 401" not in str(e):
+                        raise
+                    jhttp("PUT", "https://www.googleapis.com/youtube/v3/videos?part=status", auth,
+                          {"id": pid, "status": {"privacyStatus": "private", "selfDeclaredMadeForKids": False}})
+                    info = "kept private (publishAt removed)"
+            elif p in ("facebook", "fb_photos"):
+                page, auth, proof, g = fb_auth()
+                r = jhttp("DELETE", f"{g}/{pid}?{urllib.parse.urlencode(proof)}", auth)
+                if r.get("success") is False:
+                    raise RuntimeError(f"delete refused: {r}")
+                info = "deleted"
+            else:
+                r = buffer("mutation { deletePost(input: {id: %s}) { ... on DeletePostSuccess { id } "
+                           "... on MutationError { message } } }" % json.dumps(pid))["deletePost"]
+                if "id" not in r:
+                    raise RuntimeError(f"deletePost: {r.get('message')}")
+                info = "deleted"
+            rec["done"].pop(p); note("notice", f"cancel {ep} {p}: {info}")
+        except Exception as e:
+            bad += 1; note("error", f"cancel {ep} {p}: {redact(e)}")
+    if bad:
+        rec.setdefault("errors", {})["cancel"] = "some platforms could not be cancelled"
+    else:
+        state["posts"].pop(ep); note("notice", f"cancel {ep}: all scheduled posts removed; deliver the new version")
+    return bad
+
+
 # ------------------------------------------------------------------ main
 TRANSIENT = ("HTTP 500", "HTTP 502", "HTTP 503", "HTTP 504", "HTTP 429", "network error", "timed out", "temporarily")
 
@@ -384,7 +430,7 @@ def attempt(fn, *args):
 
 def main():
     mode = os.environ.get("MODE", "check")
-    if mode not in ("check", "private", "live", "now", "retry"):
+    if mode not in ("check", "private", "live", "now", "retry", "cancel"):
         note("error", f"publish: unknown mode {mode}"); return 1
     now = datetime.now(timezone.utc)
     media, state_d, content = branch_dir("media"), branch_dir("state"), branch_dir("content")
@@ -394,6 +440,11 @@ def main():
               **{k: bool(v.get("enabled")) for k, v in PL["buffer"].items()},
               "fb_photos": bool(PL.get("facebook_photos", {}).get("enabled"))}
     bad = 0
+    if mode == "cancel":
+        bad = cancel_episode(state, os.environ.get("EPISODE", ""))
+        json.dump(state, open(sp, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+        push_branch(state_d, "state", f"cancel {os.environ.get('EPISODE', '')}")
+        return 1 if bad else 0
     if mode != "check" and not active["fb_photos"]:
         try:
             bad += fb_photos_cancel(state, now)

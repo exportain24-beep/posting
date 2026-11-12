@@ -5,10 +5,14 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "check = test logins only, private = YouTube private + Facebook draft, live = schedule posts, now = publish immediately, retry = repair failed platforms"
+        description: "check = test logins only, private = YouTube private + Facebook draft, live = schedule posts, now = publish immediately, retry = repair failed platforms, cancel = delete the scheduled posts of one episode (owner-requested replacement)"
         type: choice
-        options: [check, private, live, now, retry]
+        options: [check, private, live, now, retry, cancel]
         default: check
+      episode:
+        description: "episode id for cancel"
+        type: string
+        default: ""
 
 permissions: {}
 
@@ -34,6 +38,7 @@ jobs:
       - name: Publish
         env:
           MODE: ${{ inputs.mode }}
+          EPISODE: ${{ inputs.episode }}
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
