@@ -569,14 +569,11 @@
    "script": "098",
    "slot": "2026-11-13T12:30:00+06:00",
    "done": {
-    "youtube": "6Un4o5-9hVE",
-    "facebook": "2354154052002076",
-    "tiktok": "6af579a83edeaff13c0bbe7f",
-    "linkedin": "6af579a93edeaff13c0bbed1",
-    "twitter": "6af579a925c368b6720b9543",
-    "fb_photos": "cancelled"
+    "youtube": "6Un4o5-9hVE"
    },
-   "errors": {},
+   "errors": {
+    "cancel": "some platforms could not be cancelled"
+   },
    "mode": "live",
    "updated": "2026-11-12T08:32:12.854324+00:00"
   }
