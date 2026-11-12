@@ -339,6 +339,33 @@ def fb_photos_publish(meta, mp4, slot, mode):
     return r["id"], f"{len(ids)} photos, {state}"
 
 
+def fb_photos_cancel(state, now):
+    """Owner, 13 Nov 2026: no more Facebook photo-card posts. Delete every photo post that is still scheduled
+    (its slot + offset is in the future) and mark it cancelled, so nothing goes out."""
+    off = PL.get("facebook_photos", {}).get("offset_minutes", 150)
+    todo = [(ep, r) for ep, r in state["posts"].items()
+            if str(r.get("done", {}).get("fb_photos", "")).count("_") == 1
+            and parse_slot(r["slot"]) + timedelta(minutes=off) > now + timedelta(minutes=2)]
+    if not todo:
+        return 0
+    page, auth, proof, g = fb_auth()
+    bad = 0
+    for ep, r in todo:
+        pid = r["done"]["fb_photos"]
+        try:
+            q = urllib.parse.urlencode(proof)
+            res = jhttp("DELETE", f"{g}/{pid}?{q}", auth)
+            if res.get("success") is False:
+                raise RuntimeError(f"delete refused: {res}")
+            r["done"]["fb_photos"] = "cancelled"
+            r.get("errors", {}).pop("fb_photos", None)
+            note("notice", f"{ep} fb_photos: scheduled photo post cancelled (owner order 13 Nov 2026)")
+        except Exception as e:
+            bad += 1; r.setdefault("errors", {})["fb_photos_cancel"] = redact(e)[:300]
+            note("error", f"{ep} fb_photos: could not cancel the scheduled photo post: {redact(e)}")
+    return bad
+
+
 # ------------------------------------------------------------------ main
 TRANSIENT = ("HTTP 500", "HTTP 502", "HTTP 503", "HTTP 504", "HTTP 429", "network error", "timed out", "temporarily")
 
@@ -367,6 +394,11 @@ def main():
               **{k: bool(v.get("enabled")) for k, v in PL["buffer"].items()},
               "fb_photos": bool(PL.get("facebook_photos", {}).get("enabled"))}
     bad = 0
+    if mode != "check" and not active["fb_photos"]:
+        try:
+            bad += fb_photos_cancel(state, now)
+        except Exception as e:
+            bad += 1; note("error", f"fb_photos cancel: {redact(e)}")
 
     if mode == "check":
         for name, fn in (("youtube", yt_check), ("facebook", fb_check), ("buffer", buffer_check)):

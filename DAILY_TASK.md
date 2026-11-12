@@ -17,12 +17,34 @@ differences listed in this file override it** — above all: the video is now a 
 Nobody is watching: never stop to ask. If something blocks, finish what can be finished and report it in the final
 message (that message is what the owner is notified about).
 
+## Owner's order — 13 Nov 2026 (newest; wins over everything below)
+1. **No Facebook photo cards any more.** Do not write `cards.json`, do not run `tools/cards.py`, no
+   `facebook_photos` block in post.json. `config.json` → `facebook_photos.enabled` is false; publish.py cancels any photo
+   post that is still scheduled. Never turn it back on unless the owner asks.
+2. **Fluent, error-free Bangla.** The narration must sound like a real person talking — smooth, natural spoken
+   (প্রমিত কথ্য) Bangla, never broken telegram style ("দেশের এক নম্বর, প্রমাণ নেই" ✗ → "লিখেছিলেন দেশের সেরা, অথচ কোনো
+   প্রমাণ নেই" ✓). Full short sentences with a verb, natural joins (তারপর / কিন্তু / তাই / এবার), no list of bare nouns.
+   Before voicing, re-read every line aloud in your head and fix: spelling (বানান), grammar, wrong word, missing verb,
+   awkward order, unclear meaning, Banglish mix. The subtitles show the same text, so a typo is a visible error.
+   If the 50 s limit forces a cut, cut a whole idea, never the grammar.
+3. **Useful first.** Every Short must leave the viewer with something they can do today: a concrete step, check,
+   document name, number with its year, or a do/don't. Say the fix, not only the problem (for a "mistakes" topic: each
+   mistake + its fix in one natural sentence). No filler, no vague motivation lines.
+4. **Built for reach (how Shorts/Reels/TikTok rank: viewers who stay, rewatch, share and save).**
+   - Hook in the first 1–2 s: a specific relatable problem, surprise or number, spoken AND shown big by 0.3 s. Never a slow
+     intro.
+   - Open a loop early ("পাঁচটা ভুল…", "শেষেরটাই সবচেয়ে বড়…") and close it at the end, so people watch to the end.
+   - A turn every 5–7 s (new point, twist, re-hook at ≈ 50 %); something new on screen every 1–1.5 s.
+   - End on a clear, save-worthy takeaway; a last line that echoes the hook so the loop replays smoothly.
+   - Keep 44–48 s; shorter and tighter beats longer and slow.
+   - Captions: keyword in the first line, one easy specific question at the end, no engagement bait.
+
 ## Owner's order — Shorts only, max 50 s (6–7 Nov 2026; THIS SECTION IS THE AUTHORITY)
 From script 087 on, the job makes **two Shorts a day, at 12:30 and 19:30 Bangladesh time** (the old 18:00 slot is
 gone), from the same numbered script prompts in strict number order. **No long videos any more**, and everything that
 belonged only to the long videos is dropped: the 90–150 s length, the long 150 s structure, the road-map header, the
 Exportain/brand scene, the advice scene, the spoken CTA, the company page. Kept: research, the locked voice,
-illustrated 9:16 scenes, burned-in subtitles, covers, captions, photo cards, all six platforms, deliver.
+illustrated 9:16 scenes, burned-in subtitles, covers, captions, all six platforms, deliver (photo cards dropped 13 Nov 2026).
 - **No Exportain talk in the video:** nothing about Exportain is said or shown in the scenes (no "এক্সপোর্টেইন হলো…",
   no "ভিজিট করুন / যোগ দিন"). The only Exportain element is a **1-second silent logo end card** at the very end (plus the
   small corner logo badge the build adds). After `new_project.sh` run `sed -i 's/--endcard 2.5/--endcard 1/' $P/build.sh`.
@@ -43,7 +65,7 @@ illustrated 9:16 scenes, burned-in subtitles, covers, captions, photo cards, all
   "১/৫"-style point counter chip instead of the road-map, big short on-screen words; facts stay verified and dated,
   invented numbers labelled "উদাহরণ".
 - **Captions:** same platforms and rules (a short natural exportain.com mention is allowed in captions only);
-  YouTube description and LinkedIn text short (LinkedIn ≤ 1,500 chars). Facebook photo cards: 3–4 cards.
+  YouTube description and LinkedIn text short (LinkedIn ≤ 1,500 chars). (No Facebook photo cards since 13 Nov 2026.)
 - The older sections below are kept only for the process steps (setup, research sources, voice, build, QA, render,
   subtitles, covers, deliver, self-repair). Wherever they mention 90–150 s, 18:00, the road-map, brand/advice/CTA
   scenes or the long structure, this section wins.
@@ -227,15 +249,7 @@ python3 tools/thumbs.py <EP> $P --video $P/out/<Name_9x16>.mp4
 #   thumb_li.jpg + thumb_li9.jpg (LinkedIn, English). Read every one; fix thumbs.json and re-run.
 python3 tools/cover.py --prepend $P/thumb_yt9.jpg --video $P/out/<Name_9x16>_sub.mp4 --out $P/final.mp4 --hold 0.5
 ```
-**Facebook photo carousel** (owner, 31 Oct 2026 — photo posts often reach more people on Facebook): every video also
-gets 3–5 colourful 4:5 key-takeaway cards, posted as one Page photo post 150 min after the video's slot
-(`config.json` → `platforms.facebook_photos`). Write `$P/cards.json` (format in the header of `tools/cards.py`): a cover
-card (big hook headline + a video frame), 1–3 point cards (2–4 short verified lines each, "উদাহরণ" note on invented
-numbers), an end card; palette different from the covers. Then
-`python3 tools/cards.py <EP> $P --video $P/out/<Name_9x16>.mp4` and **read every card** (text inside the white panel,
-nothing clipped). deliver uploads `card_*.jpg` automatically. Its caption is `facebook_photos.message` in post.json:
-Bangla, keyword first line, the takeaways in 3–5 short lines, "পুরো ভিডিও আমাদের পেজে" style pointer, one specific
-question, 3–5 hashtags, no URL, different from the video caption.
+**Facebook photo carousel: DROPPED by the owner on 13 Nov 2026** — no cards.json, no cards.py, no `facebook_photos` in post.json.
 
 **SEO first:** `keyword-research` skill for the topic (Bangla + Banglish + English, Bangladesh; TikTok Creator Search
 Insights cannot be reached from here — use web research). Then write every platform's text by `CAPTION_GUIDE.md`
@@ -254,7 +268,6 @@ with these overrides, as `$P/post.json`:
  "tiktok":   {"caption": "Bangla, keyword-rich first line, value, CTA, 11–15 relevant hashtags incl. #FYP #ForYou, no URL"},
  "linkedin": {"text": "ENGLISH, ≤ 2,900 chars, professional insight-led, 3–5 hashtags, no URL"},
  "twitter":  {"text": "ENGLISH, ≤ 275 weighted chars, 0–2 hashtags, no URL"},
- "facebook_photos": {"message": "Bangla caption of the photo carousel (see above), ≤ 2,000 chars"},
  "playlist": "suggested YouTube playlist: Export Business Basics | Bangladesh Export Documentation | International Trade Regulations | Shipping and Logistics | Product Export Guides | International Certification | Bangladesh Export Opportunities"}
 ```
 Never reuse identical text across platforms. CTA in captions: educate first, invite naturally, never promise orders.
@@ -266,7 +279,7 @@ bait ("লাইক/শেয়ার/ট্যাগ/কমেন্টে ল
 setsid nohup python3 tools/studio.py deliver <EP> $P --mode live --meta post.json > $P/deliver.log 2>&1 < /dev/null &
 ```
 (poll `$P/deliver.log` and `status`). Deliver checks the files (9:16, 90–150 s, thumbnail ≤ 2 MB, texts within
-limits), copies the photo cards, makes the platform copies (Facebook/Instagram without the still cover so they start in motion; TikTok and
+limits), makes the platform copies (Facebook/Instagram without the still cover so they start in motion; TikTok and
 LinkedIn with their own covers; X gets the reel, or its first 135 s if longer), puts everything on the `media` branch (GitHub Pages serves it to Buffer), runs
 `publish.yml` (YouTube files a 9:16 ≤ 3 min video as a Short) and starts the Instagram job. Never claim a platform as
 scheduled unless `status` shows it in `posted`. A platform error is retried by the next deliver/publish while the

@@ -57,8 +57,9 @@
    "enabled": true
   },
   "facebook_photos": {
-   "enabled": true,
-   "offset_minutes": 150
+   "enabled": false,
+   "offset_minutes": 150,
+   "_note": "Disabled by the owner on 13 Nov 2026: no more Facebook photo-card posts. Already scheduled ones are cancelled by publish.py."
   }
  },
  "prompts_file": "prompts/Exportain_Reels_500_Script_Prompts.md",
