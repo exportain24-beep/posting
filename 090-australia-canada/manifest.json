@@ -1,0 +1,12 @@
+{
+ "takes": {
+  "00_hook": "e4419fcec029e767",
+  "01_dutyfree": "e16be56d07b02b89",
+  "02_diaspora": "c1feb66fb4dd6231",
+  "03_bio": "28013b6c7c323ed7",
+  "04_demand": "752040bd700d92ba",
+  "05_freight": "2e772e454bd7d3df",
+  "06_end": "97642f3325d7b5b6"
+ },
+ "updated": "2026-11-08T08:15:34.340990+00:00"
+}

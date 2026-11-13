@@ -1,0 +1,11 @@
+{
+ "takes": {
+  "00_hook": "ed4178b29a826ad0",
+  "01_story": "fd5e99a60cc104c2",
+  "02_story": "ce5273cc730bb01f",
+  "03_market": "6fa7bb389f4ea82e",
+  "04_capacity": "22b5279c38f72df4",
+  "05_end": "4dbe920f8a70b50c"
+ },
+ "updated": "2026-11-12T03:15:28.316733+00:00"
+}

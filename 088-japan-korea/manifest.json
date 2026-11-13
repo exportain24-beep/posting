@@ -1,0 +1,11 @@
+{
+ "takes": {
+  "00_hook": "0ebd92ec09e96af6",
+  "01_quality": "d45ee29371940d58",
+  "02_duty": "aeb432d0d261e9ae",
+  "03_spec": "48745fe047bb0244",
+  "04_trust": "1e5fd5b6b16b0c91",
+  "05_end": "bf7fcfba5bf3ec58"
+ },
+ "updated": "2026-11-07T09:00:57.717140+00:00"
+}

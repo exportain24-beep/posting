@@ -1,0 +1,12 @@
+{
+ "takes": {
+  "00_hook": "a88bf08e12d8c08d",
+  "01_story": "67d57a709fe5ae3f",
+  "02_products": "ae8f88aa076a5e8b",
+  "03_payment": "9bb62d522a47addf",
+  "04_markets": "477428e118d5f13f",
+  "05_mission": "42751840b3071c66",
+  "06_end": "31581b247cd66cc0"
+ },
+ "updated": "2026-11-08T03:14:36.626923+00:00"
+}
