@@ -692,6 +692,20 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-11-13T21:40:05.307230+00:00"
+  },
+  "107-factory-video-tour": {
+   "script": "107",
+   "slot": "2026-11-17T19:30:00+06:00",
+   "done": {
+    "youtube": "sFv5bZxb6To",
+    "facebook": "1071624715894883",
+    "tiktok": "6af786ced16af15d4dd610fe",
+    "linkedin": "6af786cfbb36d00909ce305a",
+    "twitter": "6af786cf81e1228421c7bfe2"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-11-13T21:52:08.248389+00:00"
   }
  }
 }
