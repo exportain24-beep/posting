@@ -748,7 +748,7 @@
     "twitter": "createPost: Scheduled posts limit reached. You have 10 scheduled posts out of 10 allowed."
    },
    "mode": "live",
-   "updated": "2026-11-13T23:16:51.104236+00:00"
+   "updated": "2026-11-13T23:20:41.507248+00:00"
   },
   "111-whatsapp-business": {
    "script": "111",
@@ -763,7 +763,7 @@
     "twitter": "createPost: Scheduled posts limit reached. You have 10 scheduled posts out of 10 allowed."
    },
    "mode": "live",
-   "updated": "2026-11-13T23:16:51.104236+00:00"
+   "updated": "2026-11-13T23:20:41.507248+00:00"
   },
   "113-sending-profile": {
    "script": "113",
@@ -778,7 +778,22 @@
     "twitter": "createPost: Scheduled posts limit reached. You have 10 scheduled posts out of 10 allowed."
    },
    "mode": "live",
-   "updated": "2026-11-13T23:16:51.104236+00:00"
+   "updated": "2026-11-13T23:20:41.507248+00:00"
+  },
+  "112-certificates-awards": {
+   "script": "112",
+   "slot": "2026-11-20T12:30:00+06:00",
+   "done": {
+    "youtube": "U041p1Qt7oM",
+    "facebook": "1172242081895368"
+   },
+   "errors": {
+    "tiktok": "createPost: Scheduled posts limit reached. You have 10 scheduled posts out of 10 allowed.",
+    "linkedin": "createPost: Scheduled posts limit reached. You have 10 scheduled posts out of 10 allowed.",
+    "twitter": "createPost: Scheduled posts limit reached. You have 10 scheduled posts out of 10 allowed."
+   },
+   "mode": "live",
+   "updated": "2026-11-13T23:20:41.507248+00:00"
   }
  }
 }
