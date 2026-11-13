@@ -734,6 +734,21 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-11-13T22:43:48.753880+00:00"
+  },
+  "109-seo-google": {
+   "script": "109",
+   "slot": "2026-11-18T19:30:00+06:00",
+   "done": {
+    "youtube": "Vm7cm4TUtY8",
+    "facebook": "1676963924018072"
+   },
+   "errors": {
+    "tiktok": "createPost: Scheduled posts limit reached. You have 10 scheduled posts out of 10 allowed.",
+    "linkedin": "createPost: Scheduled posts limit reached. You have 10 scheduled posts out of 10 allowed.",
+    "twitter": "createPost: Scheduled posts limit reached. You have 10 scheduled posts out of 10 allowed."
+   },
+   "mode": "live",
+   "updated": "2026-11-13T22:48:22.739909+00:00"
   }
  }
 }
