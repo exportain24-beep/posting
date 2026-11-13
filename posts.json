@@ -664,6 +664,21 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-11-13T09:47:49.086928+00:00"
+  },
+  "105-domain-email": {
+   "script": "105",
+   "slot": "2026-11-16T19:30:00+06:00",
+   "done": {
+    "youtube": "sr9k8RKKBtc",
+    "tiktok": "6af725ce999051dc87f3b5be",
+    "linkedin": "6af725cf5d42e353d998d49d",
+    "twitter": "6af725cfbc4abf9aec2175bf"
+   },
+   "errors": {
+    "facebook": "HTTP 400 POST https://graph-video.facebook.com/v23.0/***/videos: {\"error\":{\"message\":\"yourcompany.com\\n\\nYour content couldn't be shared, because this link goes against our Community Standards\",\"type\":\"OAuthException\",\"code\":368,\"error_data\":{\"sentry_block_data\":\"Aesqa19kiAN2JSaSfZnlFlrt1wiU8YyWbCzmubnF8JpzxoZiyTTiD3t27_AGKRprkeGbMeynxkE62iQ0lwuKMUQY4pRfFjl1CvmpGYxaAMnTGDL0uX9dUDEq_AB_KEwg2nqjiy6X"
+   },
+   "mode": "live",
+   "updated": "2026-11-13T14:58:18.106903+00:00"
   }
  }
 }
