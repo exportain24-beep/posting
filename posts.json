@@ -678,6 +678,20 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-11-13T15:05:26.900061+00:00"
+  },
+  "106-mobile-photography": {
+   "script": "106",
+   "slot": "2026-11-17T12:30:00+06:00",
+   "done": {
+    "youtube": "fGdYZGD1elo",
+    "facebook": "1502982308342630",
+    "tiktok": "6af783e84b28296eb118c12e",
+    "linkedin": "6af783e981e1228421c6dc6b",
+    "twitter": "6af783ea81e1228421c6dca9"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-11-13T21:40:05.307230+00:00"
   }
  }
 }
