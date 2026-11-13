@@ -720,6 +720,20 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-11-13T22:10:21.617210+00:00"
+  },
+  "110-google-business-profile": {
+   "script": "110",
+   "slot": "2026-11-19T12:30:00+06:00",
+   "done": {
+    "youtube": "e5GcDRcDeD4",
+    "facebook": "4156168964687649",
+    "tiktok": "6af792da78196a0a9726a988",
+    "linkedin": "6af792da81e1228421cb9442",
+    "twitter": "6af792db4b28296eb11d8c8c"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-11-13T22:43:48.753880+00:00"
   }
  }
 }
