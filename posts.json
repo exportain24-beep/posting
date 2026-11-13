@@ -608,6 +608,20 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-11-13T08:29:32.083979+00:00"
+  },
+  "104-linkedin-profile": {
+   "script": "104",
+   "slot": "2026-11-16T12:30:00+06:00",
+   "done": {
+    "youtube": "dWlQt1WJNgA",
+    "facebook": "985584947444470",
+    "tiktok": "6af6dab862b543d21d6a51a7",
+    "linkedin": "6af6dab98d3369bfa3d5a4f3",
+    "twitter": "6af6daba8d3369bfa3d5a52c"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-11-13T09:38:25.131636+00:00"
   }
  }
 }
