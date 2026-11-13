@@ -706,6 +706,20 @@
    "errors": {},
    "mode": "live",
    "updated": "2026-11-13T21:52:08.248389+00:00"
+  },
+  "108-b2b-marketplace-profile": {
+   "script": "108",
+   "slot": "2026-11-18T12:30:00+06:00",
+   "done": {
+    "youtube": "mY_-zN--C0I",
+    "facebook": "39988167177464494",
+    "tiktok": "6af78b0f4b28296eb11b29a8",
+    "linkedin": "6af78b1078196a0a97243dd9",
+    "twitter": "6af78b1078196a0a97243e40"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-11-13T22:10:21.617210+00:00"
   }
  }
 }
