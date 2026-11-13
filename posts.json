@@ -580,6 +580,20 @@
    },
    "mode": "live",
    "updated": "2026-11-12T21:30:15.738606+00:00"
+  },
+  "099-catalog-price-list": {
+   "script": "099",
+   "slot": "2026-11-13T19:30:00+06:00",
+   "done": {
+    "youtube": "4uzAOzdpIcs",
+    "facebook": "1672969717955931",
+    "tiktok": "6af684ca5ec1c9d5be58a131",
+    "linkedin": "6af684cb5ec1c9d5be58a15b",
+    "twitter": "6af684cbda25c4db3e91ac30"
+   },
+   "errors": {},
+   "mode": "live",
+   "updated": "2026-11-13T03:31:59.908009+00:00"
   }
  }
 }
