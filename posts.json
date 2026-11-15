@@ -776,22 +776,21 @@
     "twitter": "createPost: Scheduled posts limit reached. You have 10 scheduled posts out of 10 allowed."
    },
    "mode": "live",
-   "updated": "2026-11-15T03:12:28.290138+00:00"
+   "updated": "2026-11-15T08:12:30.919229+00:00"
   },
   "112-certificates-awards": {
    "script": "112",
    "slot": "2026-11-20T12:30:00+06:00",
    "done": {
     "youtube": "U041p1Qt7oM",
-    "facebook": "1172242081895368"
+    "facebook": "1172242081895368",
+    "tiktok": "6af9698ac5b364e06241a89f",
+    "linkedin": "6af9698ab9a106584c9652ff",
+    "twitter": "6af9698be86a5789a6fa0df4"
    },
-   "errors": {
-    "tiktok": "createPost: Scheduled posts limit reached. You have 10 scheduled posts out of 10 allowed.",
-    "linkedin": "createPost: Scheduled posts limit reached. You have 10 scheduled posts out of 10 allowed.",
-    "twitter": "createPost: Scheduled posts limit reached. You have 10 scheduled posts out of 10 allowed."
-   },
+   "errors": {},
    "mode": "live",
-   "updated": "2026-11-15T03:12:28.290138+00:00"
+   "updated": "2026-11-15T08:12:30.919229+00:00"
   }
  }
 }
