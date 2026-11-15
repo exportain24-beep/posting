@@ -754,15 +754,14 @@
    "slot": "2026-11-19T19:30:00+06:00",
    "done": {
     "youtube": "Oo3AnsugW84",
-    "facebook": "1160863696507205"
+    "facebook": "1160863696507205",
+    "tiktok": "6af9234de86a5789a6e7e43c",
+    "linkedin": "6af9234eb9a106584c847825",
+    "twitter": "6af9234fc5b364e0622f854f"
    },
-   "errors": {
-    "tiktok": "createPost: Scheduled posts limit reached. You have 10 scheduled posts out of 10 allowed.",
-    "linkedin": "createPost: Scheduled posts limit reached. You have 10 scheduled posts out of 10 allowed.",
-    "twitter": "createPost: Scheduled posts limit reached. You have 10 scheduled posts out of 10 allowed."
-   },
+   "errors": {},
    "mode": "live",
-   "updated": "2026-11-14T08:12:58.783706+00:00"
+   "updated": "2026-11-15T03:12:28.290138+00:00"
   },
   "113-sending-profile": {
    "script": "113",
@@ -777,7 +776,7 @@
     "twitter": "createPost: Scheduled posts limit reached. You have 10 scheduled posts out of 10 allowed."
    },
    "mode": "live",
-   "updated": "2026-11-14T08:12:58.783706+00:00"
+   "updated": "2026-11-15T03:12:28.290138+00:00"
   },
   "112-certificates-awards": {
    "script": "112",
@@ -792,7 +791,7 @@
     "twitter": "createPost: Scheduled posts limit reached. You have 10 scheduled posts out of 10 allowed."
    },
    "mode": "live",
-   "updated": "2026-11-14T08:12:58.783706+00:00"
+   "updated": "2026-11-15T03:12:28.290138+00:00"
   }
  }
 }
